@@ -7,13 +7,9 @@
             <RouterLink class="font-Anton w-3/4 text-3xl pr-10" to="/">shopChella</RouterLink>
       
 
-            <ul class="flex w-1/4 items-end uppercase gap-4 justify-center">
-                <li class="tracking-wide cursor-pointer px-2 hover:text-gray-400 ">
-                    login in
-                </li>
-                <li class="tracking-wide cursor-pointer px-2 hover:text-gray-400 ">
-                    Register
-                </li>
+            <ul class="flex w-1/4 uppercase gap-4 justify-center items-center">
+                <router-link  to="/User"> <i class="fa fa-user-o" aria-hidden="true"></i></router-link>     
+                <i class="fa fa-shopping-cart text-black" aria-hidden="true"></i>         
             </ul>
         </nav>
     </div>

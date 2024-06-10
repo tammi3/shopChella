@@ -12,9 +12,9 @@ export default {
             <p class="text-6xl font-EdGaramond font-bold ">Your Ultimate Shopping Destination!</p>
             <p class="text-xl uppercase font-Ubuntu font-medium ">shop smart. shop easy, shop at <span
                     class="font-Anton lowercase tracking-wide">shopChella</span>.</p>
-            <router-link to="/products"
+            <router-link to="/Shop"
                 class="bg-rosePink w-48 h-20 flex justify-center items-center rounded-full text-lg font-semiBold tracking-wider font-Ubuntu ">
-                Explore Products</router-link>
+                Explore</router-link>
 
         </div>
         <div class="w-2/4">

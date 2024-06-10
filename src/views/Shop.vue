@@ -1,8 +1,8 @@
 <script>
 import axios from "axios"
-import searchMixins from "@/mixins/searchMixins";
+import searchMixin from "@/mixins/searchMixin"
 export default {
-    mixins: [searchMixins],
+    mixins: [searchMixin],
     props: ['categories'],
     data() {
         return {

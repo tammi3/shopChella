@@ -31,7 +31,6 @@ export default {
 <template>
   <div class="h-screen w-sreen overflow-scroll">
     <AppHeader />
-    <RouterView :categories="categories" />
-    
+    <RouterView :categories="categories" /> 
   </div>
 </template>
