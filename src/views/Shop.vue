@@ -34,7 +34,7 @@ export default {
         <div class="pl-410 pr-10 py-20 w-full justify-center grid grid-cols-4 gap-10">
             <div class="flex flex-col justify-end items-center border border-gray-400 border-solid"
                 v-for="product in filteredProducts">
-                <img class="w-56 object-fit pb-4" :src="product.image" alt="">
+                <img class="w-56 object-fit py-4" :src="product.image" alt="">
                 <div class="p-4 w-full border-t border-gray-400">
                     <span class="font-bold">{{ product.title }}</span>
                     <span class=" text-gray-500 text-sm flex justify-end">${{ product.price }}</span>

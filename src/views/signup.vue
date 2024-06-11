@@ -47,8 +47,9 @@ export default {
         <label for="">Password</label>
         <input class="font-normal border-b border-gray-600" type="text" placeholder="Password" name="" id="">
     </div>
-    <a class="bg-purple w-3/4 h-16 font-bold rounded-lg hover:bg- border border-gray-500 p-4 justify-center items-center flex"
+    <a class="bg-purple w-3/4 h-16 font-bold rounded-lg hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg hover:shadow-purple/75 transform duration-200 ease-in-out border border-gray-500 p-4 justify-center items-center flex"
         href="http://">REGISTER</a>
-    <p class="font-normal tracking-wide">Already have an account? <Span class="cursor-pointer underline">Login
-            here</Span></p>
+    <p class="font-normal tracking-wide">Already have an account? 
+        <router-link to="/User/login" class="cursor-pointer border-b border-gray-400 hover:border-gray-800">Login here</router-link to="/User/login">
+    </p>
 </template>
