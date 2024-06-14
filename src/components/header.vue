@@ -1,10 +1,11 @@
 <script>
+import axios from 'axios'
 export default {
     data() {
         return {
             products: [],
             search: "",
-            cart: "",
+            cart: {},
             cartDisplay: ""
         }
     },
@@ -20,32 +21,18 @@ export default {
                 this.cartDisplay.classList.remove("flex");
             }
         },
-       
+        created() {
+
+            axios.get('https://fakestoreapi.com/carts/user/2').then((data) => {
+
+                this.cart = data.data;
+               console.log(this.cart);
+
+            });
+        }
 
     },
 
-
-    // created() {
-    //     this.$http.get('https://fakestoreapi.com/products').then(function (data) {
-    //         return data.json()
-    //     }).then(function (data) {
-    //         var productsArray = [];
-    //         for (let key in data) {
-    //             data[key].id = key;
-    //             productsArray.push(data[key]);
-    //         }
-    //         this.products = productsArray;
-
-    //     });
-    // },
-    filters: {
-        toUppercase(value) {
-            return value.toUpperCase();
-        },
-        snippet(value) {
-            return value.slice(0, 100) + '...';
-        }
-    }
 }
 </script>
 <template>
@@ -78,10 +65,17 @@ export default {
                         </g>
                     </svg>
                 </div>
-                Your cart is empty
+                <div v-if="cart == ''"
+                    class="font-EdGaramond text-4xl flex flex-col gap-16 p-10 justify-center items-center">
+                    <p>Your cart is empty :( </p>
+                    <img class="w-2/4" src="../assets/bag (1).png">
+                </div>
+                <div>
+
+                </div>
             </div>
         </div>
-       
+
 
     </div>
 </template>

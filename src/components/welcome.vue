@@ -14,7 +14,7 @@ export default {
             <p class="text-xl uppercase font-Ubuntu font-medium ">shop smart. shop easy, shop at <span
                     class="font-Anton lowercase tracking-wide">shopChella</span>.</p>
            </div>
-            <router-link to="/Shop"
+            <router-link to="/Shop/categories"
                 class="bg-rosePink hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg hover:shadow-rosePink/75 transform duration-200 ease-in-out w-60 uppercase h-16 flex justify-center items-center rounded-xl text-lg text-gray-700/75 font-bold tracking-wider font-Ubuntu ">
                 Explore</router-link>
 
