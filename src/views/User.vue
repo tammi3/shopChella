@@ -2,11 +2,22 @@
 
 
 export default {
+    data() {
+        return {
+
+
+        }
+    },
+    methods: {
+        handleSubmit() {
+            console.log("Submitted");
+        }
+    }
 
 }
 </script>
 <template>
-    <div class="flex px-20 py-10 font-Ubuntu">
+    <div class="flex px-20 py-10 font-Ubuntu ">
         <div class="w-2/4 flex flex-col gap-10">
             <div class="w-full flex gap-4 font-semibold">
                 <router-link
@@ -20,9 +31,10 @@ export default {
             <img class="w-3/4" src="../assets/woman.png" alt="">
 
         </div>
-        <div class="w-2/4 p-10 flex flex-col justify-center items-center gap-10 font-medium ">
+        <form @submit.prevent="handleSubmit"
+            class="w-2/4 p-10 flex flex-col justify-center items-center gap-10 font-medium ">
             <router-view></router-view>
-        </div>
+        </form>
 
     </div>
 </template>
