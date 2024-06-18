@@ -8,12 +8,6 @@ export default {
 
         }
     },
-    methods: {
-        handleSubmit() {
-            console.log("Submitted");
-        }
-    }
-
 }
 </script>
 <template>
@@ -31,10 +25,8 @@ export default {
             <img class="w-3/4" src="../assets/woman.png" alt="">
 
         </div>
-        <form @submit.prevent="handleSubmit"
-            class="w-2/4 p-10 flex flex-col justify-center items-center gap-10 font-medium ">
-            <router-view></router-view>
-        </form>
+
+        <router-view></router-view>
 
     </div>
 </template>
