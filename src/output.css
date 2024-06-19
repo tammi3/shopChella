@@ -736,6 +736,10 @@ video {
   justify-content: space-between;
 }
 
+.gap-1{
+  gap: 0.25rem;
+}
+
 .gap-10{
   gap: 2.5rem;
 }
@@ -770,10 +774,6 @@ video {
 
 .gap-6{
   gap: 1.5rem;
-}
-
-.gap-1{
-  gap: 0.25rem;
 }
 
 .overflow-scroll{
@@ -849,11 +849,6 @@ video {
 .bg-white{
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
-}
-
-.bg-gray-400{
-  --tw-bg-opacity: 1;
-  background-color: rgb(156 163 175 / var(--tw-bg-opacity));
 }
 
 .p-10{

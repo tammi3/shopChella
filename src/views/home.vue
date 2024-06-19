@@ -1,4 +1,5 @@
 <script>
+import axios from 'axios'
 import welcome from '../components/welcome.vue'
 import AppFooter from '../components/footer.vue'
 import services from '../components/services.vue'
@@ -9,6 +10,14 @@ export default {
         AppFooter,
         services,
         reviews
+    },
+    async created() {
+     const response = await axios.get('user',{
+        headers:{
+            Authorization: 'Bearer' + localStorage.getItem('token')
+        }
+     });
+     console.log(response);
     }
 }
 </script>

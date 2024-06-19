@@ -19,13 +19,11 @@ export default {
         if (this.category == 'all') {
             axios.get('https://fakestoreapi.com/products').then((data) => {
                 this.products = data.data;
-                console.log(this.products);
 
             });
         } else {
             axios.get('https://fakestoreapi.com/products/category/' + this.category).then((data) => {
                 this.products = data.data;
-                console.log(this.products);
 
             });
         }
