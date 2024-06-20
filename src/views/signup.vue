@@ -1,14 +1,16 @@
 <script>
 import axios from "axios"
+import { createUserWithEmailAndPassword, auth } from '../main.js'
+import togglePassword from "@/mixins/togglePassword.js";
 export default {
-
+    mixins: [togglePassword],
     data() {
         return {
             firstName: "",
             lastName: "",
             street: "",
             email: "",
-            username:"",
+            username: "",
             password: "",
             confirmPassword: "",
             phone: "",
@@ -20,34 +22,48 @@ export default {
         }
     },
     methods: {
-       async handleSubmit() {
-          const response =  await axios.post('https://fakestoreapi.com/users', {
-                email: this.email,
-                username: this.username,
-                password: this.password,
-                confirm_password: this.confirmPassword,
-                name: {
-                    firstname: this.firstName,
-                    lastname: this.lastName
-                },
-                address: {
-                    country: this.selectedCountry,
-                    city: this.selectedCity,
-                    street: this.street
-                },
-                phone: this.phone
-            }
-        );
-        console.log(response);
-        this.$router.push('/User/login');
-        },
+        handleSubmit() {
+            const signupForm = document.querySelector('.signup');
+            const email = signupForm.email.value;
+            const password = signupForm.password.value;
 
+            createUserWithEmailAndPassword(auth, email, password)
+                .then(cred => {
+                    console.log('user created:', cred.user)
+                    signupForm.reset()
+                })
+                .catch(err => {
+                    console.log(err.message)
+                })
+
+            //   const response =  await axios.post('https://fakestoreapi.com/users', {
+            //         email: this.email,
+            //         username: this.username,
+            //         password: this.password,
+            //         confirm_password: this.confirmPassword,
+            //         name: {
+            //             firstname: this.firstName,
+            //             lastname: this.lastName
+            //         },
+            //         address: {
+            //             country: this.selectedCountry,
+            //             city: this.selectedCity,
+            //             street: this.street
+            //         },
+            //         phone: this.phone
+            //     }
+            // );
+            // console.log(response);
+            this.$router.push('/');
+        },
         updateCities() {
             this.cities = this.countries[this.selectedCountryCode].cities;
             this.selectedCity = '';
             this.selectedCountry = this.countries[this.selectedCountryCode].country;
         },
+       
     },
+    
     created() {
         axios.get('https://countriesnow.space/api/v0.1/countries/').then((data) => {
 
@@ -60,26 +76,20 @@ export default {
 </script>
 <template>
     <form @submit.prevent="handleSubmit"
-        class="w-2/4 p-10 flex flex-col justify-center items-center gap-10 font-medium tracking-wide ">
+        class="signup w-2/4 p-10 flex flex-col justify-center items-center gap-10 font-medium tracking-wide ">
 
         <!-- NAME -->
 
         <div class="w-3/4 flex flex-col gap-3">
             <label for="">First Name</label>
             <input v-model="firstName" class="font-normal border-b border-gray-600" type="text" placeholder="First Name"
-                name="" id="">
+                name="firstName">
         </div>
 
         <div class="w-3/4 flex flex-col gap-3">
             <label for="">Last Name</label>
             <input v-model="lastName" class="font-normal border-b border-gray-600" type="text" placeholder="Last Name"
-                name="" id="">
-        </div>
-
-        <div class="w-3/4 flex flex-col gap-3">
-            <label for="">Username</label>
-            <input v-model="username" class="font-normal border-b border-gray-600" type="text" placeholder="@johndoe"
-                name="" id="">
+                name="lastName">
         </div>
 
         <!-- ADDRESS -->
@@ -106,7 +116,7 @@ export default {
             </div>
             <div class="flex flex-col">
                 <input v-model="street" class="font-normal border-b border-gray-600" type="text" placeholder="Street"
-                    name="" id="">
+                    name="street">
             </div>
         </div>
 
@@ -115,25 +125,28 @@ export default {
         <div class="w-3/4 flex flex-col gap-3">
             <label for="">Email</label>
             <input v-model="email" class="font-normal border-b border-gray-600" type="text"
-                placeholder="name@address.com" name="" id="">
+                placeholder="name@address.com" name="email">
         </div>
         <div class="w-3/4 flex flex-col gap-3">
             <label for="">Phone</label>
             <input id="phone" v-model="phone" class="font-normal border-b border-gray-600"
-                v-mask="['(###) ###-####', '+1 (###) ###-####']" placeholder="Enter your phone number">
+                v-mask="['####-###-####', '####-###-####']" placeholder="Enter your phone number" name="phone">
         </div>
 
         <!-- PASSWORD -->
 
         <div class="w-3/4 flex flex-col gap-3 tracking-wide">
             <label for="">Password</label>
-            <input v-model="password" class="font-normal border-b border-gray-600" type="text" placeholder="Password"
-                name="" id="">
+            <div class="w-full flex relative">
+                <input  id="userPassword" class="w-full font-normal border-b border-gray-600"
+                    type="password" placeholder="Password" name="password">
+                <i class="fa fa-eye fa-lg py-1 pl-2 border-b border-gray-600 cursor-pointer" id="iconEye" @click="togglePassword" aria-hidden="true"></i>
+            </div>
         </div>
         <div v-if="password != ''" class="w-3/4 flex flex-col gap-3 tracking-wide">
             <label for="">Confirm Password</label>
             <input v-model="confirmPassword" class="font-normal border-b border-gray-600" type="text"
-                placeholder="Confirm Password" name="" id="">
+                placeholder="Confirm Password" name="confirmPassword">
         </div>
 
 

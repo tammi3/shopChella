@@ -1,24 +1,30 @@
 <script>
-import axios from 'axios'
+//import { auth, onAuthStateChanged } from '../main.js'
 import welcome from '../components/welcome.vue'
 import AppFooter from '../components/footer.vue'
 import services from '../components/services.vue'
 import reviews from '../components/reviews.vue'
 export default {
+    props: ['categories'],
     components: {
         welcome,
         AppFooter,
         services,
         reviews
     },
-    async created() {
-     const response = await axios.get('user',{
-        headers:{
-            Authorization: 'Bearer' + localStorage.getItem('token')
-        }
-     });
-     console.log(response);
-    }
+    // created() {
+    //     onAuthStateChanged(auth, (user) => {
+    //         if (user) {
+    //             // User is signed in, see docs for a list of available properties
+    //             // https://firebase.google.com/docs/reference/js/auth.user
+    //             const uid = user.uid;
+    //             console.log(uid);
+    //             // ...
+    //         } else {
+    //             this.$router.push('/User/login');
+    //         }
+    //     });
+    // }
 }
 </script>
 <template>
@@ -26,6 +32,6 @@ export default {
         <welcome />
         <services />
         <reviews />
-        <AppFooter />
+        <AppFooter :categories="categories" />
     </div>
 </template>

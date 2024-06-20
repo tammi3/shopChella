@@ -42,7 +42,7 @@ export default {
 
 
             <ul class="flex w-1/4 uppercase gap-4 justify-center items-center">
-                <router-link class="hover:opacity-60" to="/User/signup"> <i class="fa fa-user-o fa-lg"
+                <router-link class="hover:opacity-60" to="/profile"> <i class="fa fa-user-o fa-lg"
                         aria-hidden="true"></i></router-link>
                 <svg @click="toggleCart" id="cart" class=" opacity-80 hover:opacity-60 cursor-pointer" width="30px"
                     height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -65,7 +65,8 @@ export default {
                         </g>
                     </svg>
                 </div>
-                <div v-if="cart == ''"
+                <!-- <div v-if="cart == ''" -->
+                <div
                     class="font-EdGaramond text-4xl flex flex-col gap-16 p-10 justify-center items-center">
                     <p>Your cart is empty :( </p>
                     <img class="w-2/4" src="../assets/bag (1).png">

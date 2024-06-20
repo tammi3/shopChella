@@ -7,6 +7,7 @@ export default {
 
 <template>
     <div class="flex w-full p-32 gap-5">
+
         <!-- About -->
         <div class="flex flex-col w-1/4 gap-3">
             <p class="text-xl uppercase font-Ubuntu font-medium ">shop smart. shop easy. shop at <span
@@ -19,13 +20,15 @@ export default {
                 <img class="w-8" src="../assets/discover.png" alt="">
             </div>
         </div>
+
         <!-- Categories -->
         <div class="flex flex-col w-1/4 gap-3">
             <p class="font-Ubuntu uppercase font-medium text-lg tracking-wider">Categories</p>
             <ul class="capitalize font-EdGaramond text-lg tracking-wider flex flex-col gap-2">
-                <li class="hover:text-gray-400 cursor-pointer" v-for="category in categories">{{ category }}</li>
+                <li class="hover:text-gray-400 cursor-pointer" v-for="category in categories" > {{ category }} </li>
             </ul>
         </div>
+
         <!-- Information -->
         <div class="flex flex-col w-1/4 gap-3">
             <p class="font-Ubuntu uppercase font-medium text-lg tracking-wider">Information</p>
@@ -35,6 +38,7 @@ export default {
                 <li class="hover:text-gray-400 cursor-pointer">Shipping & Delivery</li>
             </ul>
         </div>
+        
         <!-- Contact -->
         <div class="flex flex-col w-1/4 gap-3">
             <p class="font-Ubuntu uppercase font-medium text-lg tracking-wider">Contact</p>

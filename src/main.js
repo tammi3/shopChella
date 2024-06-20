@@ -8,10 +8,21 @@ import VueTheMask from "vue-the-mask";
 import {
     getFirestore
 } from 'firebase/firestore';
-import { 
-    getAuth 
-} from 'firebase/auth';
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut
+} from 'firebase/auth'
 const app = createApp(App);
+
+app.use(router);
+app.use(VueTheMask);
+
+app.mount("#app");
+
+
 const firebaseConfig = {
   apiKey: "AIzaSyAzpFVYcXSSWycfGwkFR_3oT2LIviY6nYs",
   authDomain: "shopchella-glo.firebaseapp.com",
@@ -22,10 +33,33 @@ const firebaseConfig = {
 };
 
 initializeApp(firebaseConfig);
-const db = getFirestore;
-const auth = getAuth();
+ const db = getFirestore();
+ const auth = getAuth();
 
-app.use(router);
-app.use(VueTheMask);
+ export {
+  auth,
+  db,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut
+ }
 
-app.mount("#app");
+
+// // signing users up
+// const signupForm = document.querySelector('.signup')
+// signupForm.addEventListener('submit', (e) => {
+//   e.preventDefault()
+
+//   const email = signupForm.email.value
+//   const password = signupForm.password.value
+
+//   createUserWithEmailAndPassword(auth, email, password)
+//     .then(cred => {
+//       console.log('user created:', cred.user)
+//       signupForm.reset()
+//     })
+//     .catch(err => {
+//       console.log(err.message)
+//     })
+// })
