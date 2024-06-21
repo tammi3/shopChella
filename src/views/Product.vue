@@ -7,6 +7,9 @@ export default {
             product: {}
         }
     },
+    beforeCreate(){
+        
+    },
     created() {
         axios.get('https://fakestoreapi.com/products/'+ this.id).then((data) => {
             this.product = data.data;

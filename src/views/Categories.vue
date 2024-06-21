@@ -33,7 +33,7 @@ export default {
 <template>
     <div class="pl-410 pr-10 py-20 flex flex-col gap-10">
         <div class="w-96 h-10 relative bg-purple/50 rounded-lg">
-            <input v-model="search" class="absolute bg-transparent top-0 left-0 h-full w-full pr-2 pl-12  text-black"
+            <input v-model="search" class="focus:outline-none absolute bg-transparent top-0 left-0 h-full w-full pr-2 pl-12  text-black"
                 type="text" placeholder="Search products" />
             <svg class="absolute top-1 left-3 flex justify-center items-center pr-3" width="30px" height="30px"
                 viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

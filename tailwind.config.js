@@ -19,6 +19,7 @@ module.exports = {
       },
       animation: {
         lift: 'lift .3s ease',
+        'spin-slow': 'spin 3s linear infinite',
       },
       keyframes: {
         lift: {

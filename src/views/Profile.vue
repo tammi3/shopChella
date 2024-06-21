@@ -1,5 +1,5 @@
 <script>
-import {auth, signOut, onAuthStateChanged} from '../main.js'
+import {auth, signOut} from '../db/firebase.js'
 
 export default {
     methods: {
@@ -8,25 +8,13 @@ export default {
             signOut(auth)
                 .then(() => {
                     console.log('user signed out')
+                    this.$router.replace({name: 'Login'})
                 })
                 .catch(err => {
                     console.log(err.message)
                 })
 
         }
-    },
-    created() {
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                // User is signed in, see docs for a list of available properties
-                // https://firebase.google.com/docs/reference/js/auth.user
-                const uid = user.uid;
-                console.log(uid);
-         
-            } else{
-                this.$router.push('User/login');
-            }
-        });
     }
 }
 </script>
