@@ -1,11 +1,12 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, doc, setDoc, onSnapshot, updateDoc } from "firebase/firestore";
 import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
+import { getStorage, ref,  uploadBytes } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAzpFVYcXSSWycfGwkFR_3oT2LIviY6nYs",
@@ -20,29 +21,19 @@ initializeApp(firebaseConfig);
 
 const db = getFirestore();
 const auth = getAuth();
+const storage = getStorage();
 
 export {
   auth,
   db,
+  onSnapshot,
+  doc,
+  setDoc,
+  updateDoc,
+  storage, 
+  uploadBytes,
+  ref,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
 };
-
-// // signing users up
-// const signupForm = document.querySelector('.signup')
-// signupForm.addEventListener('submit', (e) => {
-//   e.preventDefault()
-
-//   const email = signupForm.email.value
-//   const password = signupForm.password.value
-
-//   createUserWithEmailAndPassword(auth, email, password)
-//     .then(cred => {
-//       console.log('user created:', cred.user)
-//       signupForm.reset()
-//     })
-//     .catch(err => {
-//       console.log(err.message)
-//     })
-// })

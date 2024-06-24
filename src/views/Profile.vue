@@ -1,25 +1,146 @@
 <script>
-import {auth, signOut} from '../db/firebase.js'
+import {
+  auth,
+  signOut,
+  onSnapshot,
+  doc,
+  db,
+  updateDoc,
+  storage,
+  ref,
+  uploadBytes,
+} from "../db/firebase.js";
 
 export default {
-    methods: {
-        
-        logOut() {
-            signOut(auth)
-                .then(() => {
-                    console.log('user signed out')
-                    this.$router.replace({name: 'Login'})
-                })
-                .catch(err => {
-                    console.log(err.message)
-                })
-
-        }
-    }
-}
+  data() {
+    return {
+      userInfo: {},
+      updateProfileImage: true,
+    };
+  },
+  methods: {
+    uploadImage() {
+      var profileImg = document.getElementById("profileImg");
+      var inputFile = document.getElementById("inputFile");
+      profileImg.src = URL.createObjectURL(inputFile.files[0]);
+      var image = inputFile.files[0];
+      const user = auth.currentUser;
+      const storageRef = ref(storage, image.name);
+      uploadBytes(storageRef, image).then((snapshot) => {
+        this.updateProfileImage = false;
+      });
+      updateDoc(doc(db, "users", user.uid), {
+        profile_image: image.name,
+      });
+    },
+    logOut() {
+      signOut(auth)
+        .then(() => {
+          this.$router.replace({ name: "Login" });
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+    },
+  },
+  created() {
+    const user = auth.currentUser;
+    onSnapshot(doc(db, "users", user.uid), (doc) => {
+      this.userInfo = doc.data();
+    });
+  },
+};
 </script>
 <template>
-    <div>
-        <button @click="logOut">LOGOUT</button>
+  <div
+    v-if="userInfo.name"
+    class="flex flex-col px-20 py-10 font-Ubuntu w-full gap-10"
+  >
+    <h1 class="text-6xl">Hello, {{ userInfo.name.firstname }} !</h1>
+    <div class="flex w-full gap-16 justify-center">
+      <div class="w-1/4 p-4 flex gap-3 flex-col justify-center items-center">
+        <img
+          id="profileImg"
+          class="h-96 w-96 rounded-full"
+          src="../assets/user.png"
+          alt=""
+        />
+        <div class="flex py-4 relative items-center justify-center">
+          <!--default html file upload button-->
+          <input
+          v-if="updateProfileImage"
+            class="opacity-0"
+            type="file"
+            accept="image/png, image/jpeg"
+            id="inputFile"
+            v-on:change="uploadImage"
+          />
+
+          <!--custom html file upload button-->
+          <label
+            v-if="updateProfileImage"
+            for="inputFile"
+            class="absolute bg-purple w-56 h-8 text-lg font-medium rounded-lg hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg hover:shadow-purple/75 transform duration-200 ease-in-out border border-gray-500 p-4 justify-center items-center flex"
+          >
+            Update image
+          </label>
+        </div>
+      </div>
+      <div class="w-3/4 flex flex-col gap-10 py-4 pl-10">
+        <div class="text-4xl font-medium">User Information</div>
+        <div class="flex flex-col gap-3">
+          <!-- Name -->
+          <div class="flex flex-col gap-3 p-2">
+            <h1 class="text-2xl font-normal tracking-wide">Name</h1>
+            <h2 class="text-lg font-normal">
+              {{ userInfo.name.firstname }} {{ userInfo.name.lastname }}
+            </h2>
+          </div>
+
+          <!-- Address -->
+          <div class="flex flex-col gap-3 p-2">
+            <h1 class="text-2xl font-normal tracking-wide">Address</h1>
+            <div class="flex gap-2">
+              <i class="fa fa-home pt-1" aria-hidden="true"></i>
+              <div class="flex flex-col gap-2">
+                <h2 class="text-lg font-normal">
+                  {{ userInfo.address.street }}
+                </h2>
+                <h2 class="text-lg font-normal">
+                  {{ userInfo.address.city }}, {{ userInfo.address.country }}.
+                </h2>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contact-->
+          <div class="flex flex-col gap-3 p-2">
+            <h1 class="text-2xl font-normal tracking-wide">Contact</h1>
+            <div class="flex flex-col gap-8">
+              <div class="flex gap-2">
+                <i
+                  class="fa fa-phone flex items-center justify-center"
+                  aria-hidden="true"
+                ></i>
+                <h2 class="text-lg font-normal">{{ userInfo.phone }}</h2>
+              </div>
+              <div class="flex gap-2">
+                <i
+                  class="fa fa-envelope flex items-center justify-center"
+                  aria-hidden="true"
+                ></i>
+                <h2 class="text-lg font-normal">{{ userInfo.email }}</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button
+          class="bg-purple w-96 h-16 font-bold rounded-lg hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg hover:shadow-purple/75 transform duration-200 ease-in-out border border-gray-500 p-4 justify-center items-center flex"
+          @click="logOut"
+        >
+          LOGOUT
+        </button>
+      </div>
     </div>
+  </div>
 </template>

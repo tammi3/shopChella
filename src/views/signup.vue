@@ -1,6 +1,12 @@
 <script>
 import axios from "axios";
-import { createUserWithEmailAndPassword, auth } from "../db/firebase.js";
+import {
+  createUserWithEmailAndPassword,
+  db,
+  auth,
+  doc,
+  setDoc,
+} from "../db/firebase.js";
 import togglePassword from "@/mixins/togglePassword.js";
 export default {
   mixins: [togglePassword],
@@ -10,7 +16,6 @@ export default {
       lastName: "",
       street: "",
       email: "",
-      username: "",
       password: "",
       phone: "",
       countries: [],
@@ -30,30 +35,27 @@ export default {
 
       createUserWithEmailAndPassword(auth, email, password)
         .then((cred) => {
+          const user = auth.currentUser;
           console.log("user created:", cred.user);
+          setDoc(doc(db, "users", user.uid), {
+            email: this.email,
+            password: this.password,
+            name: {
+              firstname: this.firstName,
+              lastname: this.lastName,
+            },
+            address: {
+              country: this.selectedCountry,
+              city: this.selectedCity,
+              street: this.street,
+            },
+            phone: this.phone,
+          });
           this.$router.replace({ name: "Shop" });
         })
         .catch((err) => {
           console.log(err.message);
         });
-
-      //   const response =  await axios.post('https://fakestoreapi.com/users', {
-      //         email: this.email,
-      //         username: this.username,
-      //         password: this.password,
-      //         name: {
-      //             firstname: this.firstName,
-      //             lastname: this.lastName
-      //         },
-      //         address: {
-      //             country: this.selectedCountry,
-      //             city: this.selectedCity,
-      //             street: this.street
-      //         },
-      //         phone: this.phone
-      //     }
-      // );
-      // console.log(response);
     },
     updateCities() {
       this.cities = this.countries[this.selectedCountryCode].cities;
@@ -174,6 +176,7 @@ export default {
           type="password"
           placeholder="Password"
           name="password"
+          v-model="password"
         />
         <i
           class="fa fa-eye fa-lg py-1 pl-2 border-b border-gray-600 cursor-pointer"
