@@ -9,28 +9,35 @@ import {
   storage,
   ref,
   uploadBytes,
+  deleteObject,
+  getDownloadURL,
+  deleteUser,
+  deleteDoc,
 } from "../db/firebase.js";
 
 export default {
   data() {
     return {
       userInfo: {},
-      updateProfileImage: true,
+      // updateProfileImage: true,
     };
   },
   methods: {
     uploadImage() {
-      var profileImg = document.getElementById("profileImg");
+      var updateImg = document.getElementById("updateImg");
       var inputFile = document.getElementById("inputFile");
-      profileImg.src = URL.createObjectURL(inputFile.files[0]);
+      updateImg.src = URL.createObjectURL(inputFile.files[0]);
       var image = inputFile.files[0];
       const user = auth.currentUser;
       const storageRef = ref(storage, image.name);
+
+      //uploads image to database
       uploadBytes(storageRef, image).then((snapshot) => {
-        this.updateProfileImage = false;
-      });
-      updateDoc(doc(db, "users", user.uid), {
-        profile_image: image.name,
+        //updates the user profile picture information
+        updateDoc(doc(db, "users", user.uid), {
+          profile_image: image.name,
+          updatedProfileImage: true,
+        });
       });
     },
     logOut() {
@@ -42,11 +49,43 @@ export default {
           console.log(err.message);
         });
     },
+    deleteUser() {
+      const user = auth.currentUser;
+      const storageRef = ref(storage, user.profile_image);
+      const userRef = doc(db, "users", user.uid);
+      deleteUser(user)
+        .then(() => {
+          deleteDoc(userRef).then(() => {
+            deleteObject(storageRef)
+              .then(() => {
+                // File deleted successfully
+              })
+              .catch((error) => {
+                // Uh-oh, an error occurred!
+              });
+          });
+        })
+        .catch((error) => {
+          // An error ocurred
+          // ...
+        });
+    },
   },
   created() {
     const user = auth.currentUser;
     onSnapshot(doc(db, "users", user.uid), (doc) => {
       this.userInfo = doc.data();
+      if (this.userInfo.updatedProfileImage) {
+        getDownloadURL(ref(storage, this.userInfo.profile_image))
+          .then((url) => {
+            // Or inserted into an <img> element
+            const img = document.getElementById("profileImg");
+            img.setAttribute("src", url);
+          })
+          .catch((error) => {
+            console.log(error.message);
+          });
+      }
     });
   },
 };
@@ -60,15 +99,23 @@ export default {
     <div class="flex w-full gap-16 justify-center">
       <div class="w-1/4 p-4 flex gap-3 flex-col justify-center items-center">
         <img
-          id="profileImg"
+          v-if="!userInfo.updatedProfileImage"
+          id="updateImg"
           class="h-96 w-96 rounded-full"
           src="../assets/user.png"
+          alt=""
+        />
+        <img
+          v-if="userInfo.updatedProfileImage"
+          id="profileImg"
+          class="h-96 w-96 rounded-full"
+          src=""
           alt=""
         />
         <div class="flex py-4 relative items-center justify-center">
           <!--default html file upload button-->
           <input
-          v-if="updateProfileImage"
+            v-if="!userInfo.updatedProfileImage"
             class="opacity-0"
             type="file"
             accept="image/png, image/jpeg"
@@ -78,7 +125,7 @@ export default {
 
           <!--custom html file upload button-->
           <label
-            v-if="updateProfileImage"
+            v-if="!userInfo.updatedProfileImage"
             for="inputFile"
             class="absolute bg-purple w-56 h-8 text-lg font-medium rounded-lg hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg hover:shadow-purple/75 transform duration-200 ease-in-out border border-gray-500 p-4 justify-center items-center flex"
           >
@@ -134,12 +181,20 @@ export default {
             </div>
           </div>
         </div>
-        <button
-          class="bg-purple w-96 h-16 font-bold rounded-lg hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg hover:shadow-purple/75 transform duration-200 ease-in-out border border-gray-500 p-4 justify-center items-center flex"
-          @click="logOut"
-        >
-          LOGOUT
-        </button>
+        <div class="flex gap-10">
+          <button
+            class="bg-purple w-96 h-16 font-bold rounded-lg hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg hover:shadow-purple/75 transform duration-200 ease-in-out border border-gray-500 p-4 justify-center items-center flex"
+            @click="logOut"
+          >
+            LOGOUT
+          </button>
+          <button
+            class="bg-purple w-96 h-16 font-bold rounded-lg hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg hover:shadow-purple/75 transform duration-200 ease-in-out border border-gray-500 p-4 justify-center items-center flex"
+            @click="logOut"
+          >
+            DELETE ACCOUNT
+          </button>
+        </div>
       </div>
     </div>
   </div>

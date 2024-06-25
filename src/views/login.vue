@@ -6,25 +6,33 @@ export default {
   data() {
     return {
       loading: false,
+      error: "",
     };
   },
   methods: {
     handleSubmit() {
-      this.loading = true;
       const loginForm = document.querySelector(".login");
       const email = loginForm.email.value;
       const password = loginForm.password.value;
-      signInWithEmailAndPassword(auth, email, password)
-        .then((cred) => {
-          console.log("user logged in:", cred.user);
-          this.$router.replace({ name: "Shop" });
-        })
-        .catch((err) => {
-          console.log(err.message);
-        });
+      if (email == "") this.error = "Enter your email";
+      else if (password == "") this.error = "Enter your password";
+      else {
+        this.loading = true;
+        signInWithEmailAndPassword(auth, email, password)
+          .then((cred) => {
+            console.log("user logged in:", cred.user);
+            this.$router.replace({ name: "Shop" });
+          })
+          .catch((err) => {
+            if ((err.message = "Firebase: Error (auth/invalid-email).")) {
+              this.error = "Invalid email.";
+            } else {
+              this.error = "Invalid password.";
+            }
+          });
+      }
     },
   },
-  created() {},
 };
 </script>
 
@@ -33,6 +41,7 @@ export default {
     @submit.prevent="handleSubmit"
     class="login w-2/4 p-10 flex flex-col justify-center items-center gap-10 font-medium tracking-wide"
   >
+    <p v-if="error != ''" class="text-red-600">{{ error }}</p>
     <div class="w-3/4 flex flex-col gap-3">
       <label for="">Email</label>
       <input
@@ -40,6 +49,8 @@ export default {
         type="text"
         placeholder="@johndoe"
         name="email"
+        v-on:keydown="error = ''"
+        v-on:focus="loading = false"
         id=""
       />
     </div>
@@ -52,6 +63,8 @@ export default {
           type="password"
           placeholder="Password"
           name="password"
+          v-on:keydown="error = ''"
+          v-on:focus="loading = false"
         />
         <i
           class="fa fa-eye fa-lg py-1 pl-2 border-b border-gray-600 cursor-pointer"

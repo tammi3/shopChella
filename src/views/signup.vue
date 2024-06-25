@@ -24,38 +24,66 @@ export default {
       selectedCity: "",
       cities: [],
       loading: false,
+      error: "",
     };
   },
   methods: {
     handleSubmit() {
-      this.loading = true;
       const signupForm = document.querySelector(".signup");
       const email = signupForm.email.value;
       const password = signupForm.password.value;
-
-      createUserWithEmailAndPassword(auth, email, password)
-        .then((cred) => {
-          const user = auth.currentUser;
-          console.log("user created:", cred.user);
-          setDoc(doc(db, "users", user.uid), {
-            email: this.email,
-            password: this.password,
-            name: {
-              firstname: this.firstName,
-              lastname: this.lastName,
-            },
-            address: {
-              country: this.selectedCountry,
-              city: this.selectedCity,
-              street: this.street,
-            },
-            phone: this.phone,
+      var regularPassword =
+        /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
+      if (this.firstName == "") this.error = "Enter your first name.";
+      else if (this.lastName == "") this.error = "Enter your last name.";
+      else if (this.selectedCountry == "") this.error = "Enter your country.";
+      else if (this.selectedCity == "") this.error = "Enter your city.";
+      else if (this.street == "") this.error = "Enter your street.";
+      else if (this.email == "") this.error = "Enter your email.";
+      else if (this.phone == "") this.error = "Enter your phone number.";
+      else if (this.password == "") this.error = "Enter your password.";
+      //validates password
+      else if (
+        this.password !== "" &&
+        (this.password.length <= 5 || this.password.length > 20)
+      )
+        this.error = "Password should be 6-20 characters long.";
+      else if (!regularPassword.test(this.password))
+        this.error =
+          "Password should contain atleast one number and one special character.";
+      else {
+        this.loading = true;
+        createUserWithEmailAndPassword(auth, email, password)
+          .then((cred) => {
+            const user = auth.currentUser;
+            console.log("user created:", cred.user);
+            setDoc(doc(db, "users", user.uid), {
+              email: this.email,
+              password: this.password,
+              name: {
+                firstname: this.firstName,
+                lastname: this.lastName,
+              },
+              address: {
+                country: this.selectedCountry,
+                city: this.selectedCity,
+                street: this.street,
+              },
+              phone: this.phone,
+              updatedProfileImage: false,
+            });
+            this.$router.replace({ name: "Shop" });
+          })
+          .catch((err) => {
+            if (
+              (err.message = "Firebase: Error (auth/email-already-in-use).")
+            ) {
+              this.error = "This email is being used already.";
+            } else {
+              this.error = err.message.slice(9);
+            }
           });
-          this.$router.replace({ name: "Shop" });
-        })
-        .catch((err) => {
-          console.log(err.message);
-        });
+      }
     },
     updateCities() {
       this.cities = this.countries[this.selectedCountryCode].cities;
@@ -76,11 +104,16 @@ export default {
     @submit.prevent="handleSubmit"
     class="signup w-2/4 p-10 flex flex-col justify-center items-center gap-10 font-medium tracking-wide"
   >
+    <!-- Error message -->
+    <p v-if="error != ''" class="text-red-600">{{ error }}</p>
+
     <!-- NAME -->
 
     <div class="w-3/4 flex flex-col gap-3">
       <label for="">First Name</label>
       <input
+        v-on:keydown="error = ''"
+        v-on:focus="loading = false"
         v-model="firstName"
         class="font-normal focus:outline-none border-b border-gray-600"
         type="text"
@@ -92,6 +125,8 @@ export default {
     <div class="w-3/4 flex flex-col gap-3">
       <label for="">Last Name</label>
       <input
+        v-on:keydown="error = ''"
+        v-on:focus="loading = false"
         v-model="lastName"
         class="font-normal focus:outline-none border-b border-gray-600"
         type="text"
@@ -107,6 +142,8 @@ export default {
         <div class="flex gap-1 w-2/4">
           <label for="country">Country:</label>
           <select
+            v-on:change="error = ''"
+            v-on:focus="loading = false"
             id="country"
             class="border border-gray-600 w-40"
             v-model="selectedCountryCode"
@@ -121,6 +158,8 @@ export default {
         <div class="flex gap-1 w-2/4" v-if="selectedCountryCode">
           <label for="city">City:</label>
           <select
+            v-on:change="error = ''"
+            v-on:focus="loading = false"
             id="city"
             class="border border-gray-600 w-40"
             v-model="selectedCity"
@@ -132,6 +171,8 @@ export default {
       </div>
       <div class="flex flex-col">
         <input
+          v-on:keydown="error = ''"
+          v-on:focus="loading = false"
           v-model="street"
           class="font-normal focus:outline-none border-b border-gray-600"
           type="text"
@@ -146,6 +187,8 @@ export default {
     <div class="w-3/4 flex flex-col gap-3">
       <label for="">Email</label>
       <input
+        v-on:keydown="error = ''"
+        v-on:focus="loading = false"
         v-model="email"
         class="font-normal focus:outline-none border-b border-gray-600"
         type="text"
@@ -156,6 +199,8 @@ export default {
     <div class="w-3/4 flex flex-col gap-3">
       <label for="">Phone</label>
       <input
+        v-on:keydown="error = ''"
+        v-on:focus="loading = false"
         id="phone"
         v-model="phone"
         class="font-normal focus:outline-none border-b border-gray-600"
@@ -171,6 +216,8 @@ export default {
       <label for="">Password</label>
       <div class="w-full flex relative">
         <input
+          v-on:keydown="error = ''"
+          v-on:focus="loading = false"
           id="userPassword"
           class="focus:outline-none w-full font-normal border-b border-gray-600"
           type="password"
