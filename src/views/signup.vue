@@ -71,6 +71,7 @@ export default {
               },
               phone: this.phone,
               updatedProfileImage: false,
+              userId: user.uid,
             });
             this.$router.replace({ name: "Shop" });
           })
@@ -78,9 +79,11 @@ export default {
             if (
               (err.message = "Firebase: Error (auth/email-already-in-use).")
             ) {
-              this.error = "This email is being used already.";
+              this.error = "Email already associated with another account.";
+              this.loading = false;
             } else {
               this.error = err.message.slice(9);
+              this.loading = false;
             }
           });
       }
@@ -113,7 +116,6 @@ export default {
       <label for="">First Name</label>
       <input
         v-on:keydown="error = ''"
-        v-on:focus="loading = false"
         v-model="firstName"
         class="font-normal focus:outline-none border-b border-gray-600"
         type="text"
@@ -126,7 +128,6 @@ export default {
       <label for="">Last Name</label>
       <input
         v-on:keydown="error = ''"
-        v-on:focus="loading = false"
         v-model="lastName"
         class="font-normal focus:outline-none border-b border-gray-600"
         type="text"
@@ -143,7 +144,6 @@ export default {
           <label for="country">Country:</label>
           <select
             v-on:change="error = ''"
-            v-on:focus="loading = false"
             id="country"
             class="border border-gray-600 w-40"
             v-model="selectedCountryCode"
@@ -159,7 +159,6 @@ export default {
           <label for="city">City:</label>
           <select
             v-on:change="error = ''"
-            v-on:focus="loading = false"
             id="city"
             class="border border-gray-600 w-40"
             v-model="selectedCity"
@@ -172,7 +171,6 @@ export default {
       <div class="flex flex-col">
         <input
           v-on:keydown="error = ''"
-          v-on:focus="loading = false"
           v-model="street"
           class="font-normal focus:outline-none border-b border-gray-600"
           type="text"
@@ -188,7 +186,6 @@ export default {
       <label for="">Email</label>
       <input
         v-on:keydown="error = ''"
-        v-on:focus="loading = false"
         v-model="email"
         class="font-normal focus:outline-none border-b border-gray-600"
         type="text"
@@ -200,7 +197,6 @@ export default {
       <label for="">Phone</label>
       <input
         v-on:keydown="error = ''"
-        v-on:focus="loading = false"
         id="phone"
         v-model="phone"
         class="font-normal focus:outline-none border-b border-gray-600"
@@ -217,7 +213,6 @@ export default {
       <div class="w-full flex relative">
         <input
           v-on:keydown="error = ''"
-          v-on:focus="loading = false"
           id="userPassword"
           class="focus:outline-none w-full font-normal border-b border-gray-600"
           type="password"

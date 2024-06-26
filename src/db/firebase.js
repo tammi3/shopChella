@@ -13,6 +13,8 @@ import {
   signInWithEmailAndPassword,
   signOut,
   deleteUser,
+  reauthenticateWithCredential,
+  EmailAuthProvider
 } from "firebase/auth";
 import {
   getStorage,
@@ -51,6 +53,8 @@ export {
   ref,
   deleteUser,
   deleteDoc,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,

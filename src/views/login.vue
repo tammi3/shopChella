@@ -19,15 +19,16 @@ export default {
       else {
         this.loading = true;
         signInWithEmailAndPassword(auth, email, password)
-          .then((cred) => {
-            console.log("user logged in:", cred.user);
+          .then(() => {
             this.$router.replace({ name: "Shop" });
           })
           .catch((err) => {
             if ((err.message = "Firebase: Error (auth/invalid-email).")) {
               this.error = "Invalid email.";
+              this.loading = false;
             } else {
-              this.error = "Invalid password.";
+              this.error = "Invalid credentials.";
+               this.loading = false;
             }
           });
       }

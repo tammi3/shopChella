@@ -30,8 +30,11 @@ export default {
       <RouterLink class="font-Anton w-3/4 text-3xl pr-10" to="/"
         >shopChella</RouterLink
       >
-
-      <ul class="flex w-1/4 uppercase gap-4 justify-center items-center">
+      
+      <ul class="flex w-1/4 justify-center items-center gap-4 ">
+        <RouterLink class="font-EdGaramond font-bold flex w-1/3 justify-center items-center text-xl pr-10" to="/Shop/category"
+        >Shop</RouterLink
+      >
         <router-link class="hover:opacity-60" to="/profile">
           <i class="fa fa-user-o fa-lg" aria-hidden="true"></i>
           </router-link

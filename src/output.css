@@ -624,6 +624,10 @@ video {
   height: 4rem;
 }
 
+.h-2\/4{
+  height: 50%;
+}
+
 .h-3\/4{
   height: 75%;
 }
@@ -646,6 +650,14 @@ video {
 
 .h-screen{
   height: 100vh;
+}
+
+.h-56{
+  height: 14rem;
+}
+
+.h-32{
+  height: 8rem;
 }
 
 .w-1\/3{
@@ -728,6 +740,10 @@ video {
 
 .grid-cols-4{
   grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.grid-cols-5{
+  grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 
 .flex-col{
@@ -1107,6 +1123,12 @@ video {
 
 .opacity-80{
   opacity: 0.8;
+}
+
+.shadow-lg{
+  --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
 .shadow-md{
