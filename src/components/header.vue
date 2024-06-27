@@ -1,10 +1,20 @@
 <script>
+import {
+  db,
+  auth,
+  getDownloadURL,
+  onSnapshot,
+  doc,
+  ref,
+  storage,
+} from "../db/firebase.js";
 export default {
   data() {
     return {
-      userInfo: [],
+      userInfo: {},
       search: "",
       cartDisplay: "",
+      updatedProfileImage: true,
     };
   },
   methods: {
@@ -20,6 +30,27 @@ export default {
       }
     },
   },
+  created() {
+    const user = auth.currentUser;
+    if (user) {
+      onSnapshot(doc(db, "users", user.uid), (doc) => {
+        this.userInfo = doc.data();
+        if (this.userInfo.updatedProfileImage) {
+          this.updatedProfileImage = false;
+          getDownloadURL(ref(storage, "profile/" + this.userInfo.profile_image))
+            .then((url) => {
+              // Or inserted into an <img> element
+              const img = document.getElementById("profile");
+              img.setAttribute("src", url);
+            })
+            .catch((error) => {});
+        }
+        if (!this.userInfo.updatedProfileImage) {
+          this.updatedProfileImage = true;
+        }
+      });
+    }
+  },
 };
 </script>
 <template>
@@ -30,15 +61,31 @@ export default {
       <RouterLink class="font-Anton w-3/4 text-3xl pr-10" to="/"
         >shopChella</RouterLink
       >
-      
-      <ul class="flex w-1/4 justify-center items-center gap-4 ">
-        <RouterLink class="font-EdGaramond font-bold flex w-1/3 justify-center items-center text-xl pr-10" to="/Shop/category"
-        >Shop</RouterLink
-      >
-        <router-link class="hover:opacity-60" to="/profile">
-          <i class="fa fa-user-o fa-lg" aria-hidden="true"></i>
-          </router-link
-        >
+
+      <ul class="flex w-1/4 justify-center items-center gap-4">
+        <div class="flex gap-3 w-2/4 justify-center items-center">
+          <RouterLink
+            class="font-EdGaramond font-bold text-xl pr-10"
+            to="/Shop/category"
+            >Shop</RouterLink
+          >
+        </div>
+        <router-link class="hover:opacity-60" to="/Profile">
+          <!-- default profile image -->
+          <i
+            v-if="updatedProfileImage"
+            class="fa fa-user-o fa-lg"
+            aria-hidden="true"
+          ></i>
+          <!-- custom profile image -->
+          <img
+            v-if="userInfo.updatedProfileImage"
+            id="profile"
+            class="w-10 h-10 rounded-full"
+            src=""
+            alt=""
+          />
+        </router-link>
         <svg
           @click="toggleCart"
           id="cart"

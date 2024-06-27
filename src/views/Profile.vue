@@ -14,7 +14,7 @@ import {
   deleteUser,
   deleteDoc,
   reauthenticateWithCredential,
-  EmailAuthProvider
+  EmailAuthProvider,
 } from "../db/firebase.js";
 import togglePassword from "@/mixins/togglePassword.js";
 
@@ -26,6 +26,7 @@ export default {
       loading: false,
       error: "",
       password: "",
+      admin: false,
     };
   },
 
@@ -36,7 +37,7 @@ export default {
       updateImg.src = URL.createObjectURL(inputFile.files[0]);
       var image = inputFile.files[0];
       const user = auth.currentUser;
-      const storageRef = ref(storage, image.name);
+      const storageRef = ref(storage, "profile/" + image.name);
 
       //uploads image to database
       uploadBytes(storageRef, image).then((snapshot) => {
@@ -44,6 +45,15 @@ export default {
         updateDoc(doc(db, "users", user.uid), {
           profile_image: image.name,
           updatedProfileImage: true,
+        });
+      });
+    },
+    deleteImage() {
+      const user = auth.currentUser;
+      const storageRef = ref(storage, "profile/" + this.userInfo.profile_image);
+      deleteObject(storageRef).then(() => {
+        updateDoc(doc(db, "users", user.uid), {
+          updatedProfileImage: false,
         });
       });
     },
@@ -58,7 +68,7 @@ export default {
     },
     deleteUserCred() {
       const user = auth.currentUser;
-      const storageRef = ref(storage, this.userInfo.profile_image);
+      const storageRef = ref(storage, "profile/" + this.userInfo.profile_image);
       const userRef = doc(db, "users", this.userInfo.userId);
 
       if (this.password == "") this.error = "Enter your password.";
@@ -129,8 +139,11 @@ export default {
     const user = auth.currentUser;
     onSnapshot(doc(db, "users", user.uid), (doc) => {
       this.userInfo = doc.data();
+      if (this.userInfo.userId == "lvfgmkM6dtfKWye6GUeMdr9ob462") {
+        this.admin = true;
+      }
       if (this.userInfo.updatedProfileImage) {
-        getDownloadURL(ref(storage, this.userInfo.profile_image))
+        getDownloadURL(ref(storage, "profile/" + this.userInfo.profile_image))
           .then((url) => {
             // Or inserted into an <img> element
             const img = document.getElementById("profileImg");
@@ -145,11 +158,23 @@ export default {
 <template>
   <div
     v-if="userInfo.name"
-    class="flex flex-col px-20 py-10 font-Ubuntu w-full gap-10"
+    class="flex flex-col px-20 py-8 font-Ubuntu w-full gap-10"
   >
-    <h1 class="text-6xl">Hello, {{ userInfo.name.firstname }} !</h1>
+    <div class="flex w-full gap-10 py-3">
+      <h1 class="text-6xl w-2/4">Hello, {{ userInfo.name.firstname }} !</h1>
+      <div class="w-2/4 px-3 flex justify-end items-center ">
+        <RouterLink
+          v-if="admin"
+          class="bg-purple w-56 h-8 text-lg font-medium rounded-lg hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg hover:shadow-purple/75 transform duration-200 ease-in-out border border-gray-500 p-4 justify-center items-center flex"
+          to="/Admin/adminProducts"
+          >Admin</RouterLink
+        >
+      </div>
+    </div>
+
     <div class="flex w-full gap-16 justify-center">
       <div class="w-1/4 p-4 flex gap-3 flex-col justify-center items-center">
+        <!-- default profile image -->
         <img
           v-if="!userInfo.updatedProfileImage"
           id="updateImg"
@@ -157,6 +182,7 @@ export default {
           src="../assets/user.png"
           alt=""
         />
+        <!-- custom profile image -->
         <img
           v-if="userInfo.updatedProfileImage"
           id="profileImg"
@@ -183,6 +209,15 @@ export default {
           >
             Update image
           </label>
+
+          <!-- delete image -->
+          <button
+            @click="deleteImage"
+            v-if="userInfo.updatedProfileImage"
+            class="bg-purple w-56 h-8 text-lg font-medium rounded-lg hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg hover:shadow-purple/75 transform duration-200 ease-in-out border border-gray-500 p-4 justify-center items-center flex"
+          >
+            Delete image
+          </button>
         </div>
       </div>
       <div class="w-3/4 flex flex-col gap-10 py-4 pl-10">
@@ -254,7 +289,7 @@ export default {
       class="w-full right-0 h-screen absolute hidden justify-center items-center top-0 backdrop-blur-lg z-50"
     >
       <div
-        class="w-2/4 h-2/4 items-center justify-start bg-white z-50  flex flex-col gap-4 shadow-lg border-gray-400"
+        class="w-2/4 h-2/4 items-center justify-start bg-white z-50 flex flex-col gap-4 shadow-lg border-gray-400"
       >
         <div class="w-full px-10 py-4 flex justify-end items-center">
           <svg

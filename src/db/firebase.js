@@ -5,7 +5,8 @@ import {
   setDoc,
   onSnapshot,
   updateDoc,
-  deleteDoc
+  deleteDoc,
+  Timestamp
 } from "firebase/firestore";
 import {
   getAuth,
@@ -53,6 +54,7 @@ export {
   ref,
   deleteUser,
   deleteDoc,
+  Timestamp,
   EmailAuthProvider,
   reauthenticateWithCredential,
   createUserWithEmailAndPassword,

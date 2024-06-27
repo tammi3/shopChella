@@ -23,7 +23,7 @@ export default {
             this.$router.replace({ name: "Shop" });
           })
           .catch((err) => {
-            if ((err.message = "Firebase: Error (auth/invalid-email).")) {
+            if (err.message == "Firebase: Error (auth/invalid-email).") {
               this.error = "Invalid email.";
               this.loading = false;
             } else {

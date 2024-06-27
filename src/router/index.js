@@ -1,7 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home.vue";
-import SignUp from "../views/Signup.vue";
-import { auth } from "../db/firebase.js";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -38,28 +36,45 @@ const router = createRouter({
         {
           path: "signup",
           name: "Signup",
-          component: SignUp,
+          component: () => import("../views/Signup.vue"),
         },
       ],
     },
     {
-      path: "/profile",
+      path: "/Profile",
       name: "Profile",
       meta: { requiresAuth: true },
       component: () => import("../views/Profile.vue"),
+    },
+    {
+      path: "/Admin",
+      name: "Admin",
+      meta: { requiresAuth: true },
+      component: () => import("../views/Admin.vue"),
+      children: [
+        {
+          path: "adminProducts",
+          name: "AdminProducts",
+          component: () => import("../views/AdminProducts.vue"),
+        },
+        {
+          path: "adminCats",
+          name: "AdminCats",
+          component: () => import("../views/AdminCats.vue"),
+        },
+      ],
     },
   ],
 });
 
 router.beforeEach(async (to, from) => {
+  let loggedIn =
+    (localStorage.getItem("loggedIn") == "true" ? true : false) || false;
 
-
-  let loggedIn = (localStorage.getItem("loggedIn") == 'true' ? true : false) || false;
-
-
-  if (to.path.includes("User") && loggedIn) return {name: 'Shop'};
+  if (to.path.includes("User") && loggedIn) return { name: "Shop" };
   if (to.meta.requiresAuth && !loggedIn) return { name: "Login" };
   if (to.meta.requiresAuth && loggedIn) return true;
+  // if (to.path.includes("Admin") && loggedIn && user.uid=="lvfgmkM6dtfKWye6GUeMdr9ob462") return true;
   if (!to.meta.requiresAuth && !loggedIn) return true;
 });
 

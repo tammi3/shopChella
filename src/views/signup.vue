@@ -56,7 +56,7 @@ export default {
         createUserWithEmailAndPassword(auth, email, password)
           .then((cred) => {
             const user = auth.currentUser;
-            console.log("user created:", cred.user);
+            console.log("user created:", cred.user, user);
             setDoc(doc(db, "users", user.uid), {
               email: this.email,
               password: this.password,
@@ -72,7 +72,9 @@ export default {
               phone: this.phone,
               updatedProfileImage: false,
               userId: user.uid,
+              creationTime: user.metadata.creationTime,
             });
+
             this.$router.replace({ name: "Shop" });
           })
           .catch((err) => {
@@ -117,7 +119,7 @@ export default {
       <input
         v-on:keydown="error = ''"
         v-model="firstName"
-        class="font-normal focus:outline-none border-b border-gray-600"
+        class="font-normal capitalize focus:outline-none border-b border-gray-600"
         type="text"
         placeholder="First Name"
         name="firstName"
@@ -129,7 +131,7 @@ export default {
       <input
         v-on:keydown="error = ''"
         v-model="lastName"
-        class="font-normal focus:outline-none border-b border-gray-600"
+        class="font-normal capitalize focus:outline-none border-b border-gray-600"
         type="text"
         placeholder="Last Name"
         name="lastName"
