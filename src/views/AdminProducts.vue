@@ -20,9 +20,9 @@
 
         <th scope="col" class="px-6 py-3">Category</th>
         <th scope="col" class="px-6 py-3">Price</th>
-
-        <th scope="col" class="px-6 py-3">Action</th>
         <th scope="col" class="px-6 py-3">Item</th>
+        <th scope="col" class="px-6 py-3">Action</th>
+        <th scope="col" class="px-6 py-3">Add Product</th>
       </tr>
     </thead>
     <tbody>
@@ -49,6 +49,13 @@
         </th>
         <td class="px-6 py-4">Laptop</td>
         <td class="px-6 py-4">$2999</td>
+        <td class="px-6 py-4">
+          <img
+            class="w-10 h-10 rounded"
+            src="../assets/customer-service.png"
+            alt="Default avatar"
+          />
+        </td>
         <td class="flex items-center px-6 py-4">
           <a
             href="#"
@@ -60,13 +67,6 @@
             class="font-medium text-red-600 dark:text-red-500 hover:underline ms-3"
             >Remove</a
           >
-        </td>
-        <td>
-          <img
-            class="w-10 h-10 rounded"
-            src="../assets/customer-service.png"
-            alt="Default avatar"
-          />
         </td>
       </tr>
     </tbody>
@@ -90,7 +90,6 @@
               id="name"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
               placeholder="Type product name"
-              required=""
             />
           </div>
 
@@ -106,7 +105,6 @@
               id="price"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
               placeholder="$299"
-              required=""
             />
           </div>
           <div>
@@ -119,11 +117,7 @@
               id="category"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
             >
-              <option selected="">Electronics</option>
-              <option value="TV">TV/Monitors</option>
-              <option value="PC">PC</option>
-              <option value="GA">Gaming/Console</option>
-              <option value="PH">Phones</option>
+              <option>Electronics</option>
             </select>
           </div>
 
