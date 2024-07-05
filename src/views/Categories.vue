@@ -1,5 +1,6 @@
 <script>
 import axios from "axios";
+import { doc, db, onSnapshot } from "./db/firebase.js";
 import searchMixin from "@/mixins/searchMixin";
 export default {
   mixins: [searchMixin],

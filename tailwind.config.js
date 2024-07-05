@@ -1,7 +1,9 @@
 module.exports = {
-  purge: [],
-  purge: ["./index.html", "./src/**/*.{vue,js,ts,jsx,tsx}"],
-  darkMode: false, // or 'media' or 'class'
+  content: [
+    "./index.html",
+    "./src/**/*.{vue,js,ts,jsx,tsx}",
+    "./node_modules/flowbite/**/*.js",
+  ],
   theme: {
     extend: {
       colors: {
@@ -17,9 +19,12 @@ module.exports = {
       padding: {
         410: "410px",
       },
+      spacing: {
+        '400': '400px',
+      },
       animation: {
-        lift: 'lift .3s ease',
-        'spin-slow': 'spin 3s linear infinite',
+        lift: "lift .3s ease",
+        "spin-slow": "spin 3s linear infinite",
       },
       keyframes: {
         lift: {
@@ -36,6 +41,6 @@ module.exports = {
     variants: {
       extend: {},
     },
-    plugins: [],
+    plugins: [require("flowbite/plugin")],
   },
 };

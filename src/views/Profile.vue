@@ -74,10 +74,7 @@ export default {
       if (this.password == "") this.error = "Enter your password.";
       else if (this.userInfo.updatedProfileImage) {
         this.loading = true;
-        const credential = EmailAuthProvider.credential(
-          user.email,
-          this.password
-        );
+        const credential = EmailAuthProvider.credential(user.email, this.password);
         reauthenticateWithCredential(user, credential)
           .then(() => {
             deleteUser(user)
@@ -101,10 +98,7 @@ export default {
           });
       } else {
         this.loading = true;
-        const credential = EmailAuthProvider.credential(
-          user.email,
-          this.password
-        );
+        const credential = EmailAuthProvider.credential(user.email, this.password);
         reauthenticateWithCredential(user, credential)
           .then(() => {
             deleteUser(user)
@@ -146,6 +140,7 @@ export default {
         getDownloadURL(ref(storage, "profile/" + this.userInfo.profile_image))
           .then((url) => {
             // Or inserted into an <img> element
+            console.log(url);
             const img = document.getElementById("profileImg");
             img.setAttribute("src", url);
           })
@@ -156,17 +151,14 @@ export default {
 };
 </script>
 <template>
-  <div
-    v-if="userInfo.name"
-    class="flex flex-col px-20 py-8 font-Ubuntu w-full gap-10"
-  >
+  <div v-if="userInfo.name" class="flex flex-col px-20 py-8 font-Ubuntu w-full gap-10">
     <div class="flex w-full gap-10 py-3">
       <h1 class="text-6xl w-2/4">Hello, {{ userInfo.name.firstname }} !</h1>
-      <div class="w-2/4 px-3 flex justify-end items-center ">
+      <div class="w-2/4 px-3 flex justify-end items-center">
         <RouterLink
           v-if="admin"
           class="bg-purple w-56 h-8 text-lg font-medium rounded-lg hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg hover:shadow-purple/75 transform duration-200 ease-in-out border border-gray-500 p-4 justify-center items-center flex"
-          to="/Admin/adminProducts"
+          to="/Admin"
           >Admin</RouterLink
         >
       </div>

@@ -1,6 +1,5 @@
 <script>
-import axios from "axios";
-import { auth, doc, db, setDoc } from "../db/firebase.js";
+import { auth, doc, db, setDoc, onSnapshot } from "../db/firebase.js";
 export default {
   data() {
     return {
@@ -12,25 +11,23 @@ export default {
   methods: {
     addToCart() {
       const user = auth.currentUser;
-      setDoc(doc(db, "carts", user.uid), {
-        
-      });
+      setDoc(doc(db, "carts", user.uid), {});
     },
   },
   created() {
-    axios.get("https://fakestoreapi.com/products/" + this.id).then((data) => {
-      this.product = data.data;
+    onSnapshot(doc(db, "products", this.id), (doc) => {
+      this.product = doc.data();
     });
   },
 };
 </script>
 <template>
   <div class="w-full p-24 flex items-center justify-center gap-20 font-ubuntu">
-    <img class="w-96 " :src="product.image" />
+    <img class="w-96" :src="product.image" />
     <div class="w-2/4 flex flex-col pl-20 gap-20">
       <div class="flex flex-col gap-10">
         <p class="text-2xl uppercase font-semibold tracking-wide">
-          {{ product.title }}
+          {{ product.name }}
         </p>
         <p class="font-EdGaramond text-xl tracking-wide w-3/4">
           {{ product.description }}

@@ -3,7 +3,7 @@ export default {
         filteredProducts: function(){
             return this.products.filter((product) => {
                
-                return product.title.toLowerCase().includes(this.search.toLowerCase());
+                return product.name.toLowerCase().includes(this.search.toLowerCase());
             });
         }
     }

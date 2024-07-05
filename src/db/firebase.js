@@ -3,10 +3,15 @@ import {
   getFirestore,
   doc,
   setDoc,
+  addDoc,
   onSnapshot,
   updateDoc,
   deleteDoc,
-  Timestamp
+  collection,
+  query,
+  where,
+  Timestamp,
+  getDocs,
 } from "firebase/firestore";
 import {
   getAuth,
@@ -15,7 +20,7 @@ import {
   signOut,
   deleteUser,
   reauthenticateWithCredential,
-  EmailAuthProvider
+  EmailAuthProvider,
 } from "firebase/auth";
 import {
   getStorage,
@@ -48,12 +53,17 @@ export {
   setDoc,
   updateDoc,
   storage,
+  addDoc,
+  getDocs,
   uploadBytes,
   deleteObject,
   getDownloadURL,
   ref,
+  query,
+  where,
   deleteUser,
   deleteDoc,
+  collection,
   Timestamp,
   EmailAuthProvider,
   reauthenticateWithCredential,

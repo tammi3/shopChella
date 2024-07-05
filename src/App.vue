@@ -1,7 +1,7 @@
 <script>
-import { RouterView } from 'vue-router'
-import AppHeader from './components/header.vue'
-import axios from "axios"
+import { RouterView } from "vue-router";
+import { doc, db, onSnapshot, getDocs, collection } from "./db/firebase.js";
+import AppHeader from "./components/Header.vue";
 
 export default {
   components: {
@@ -10,27 +10,21 @@ export default {
   data() {
     return {
       categories: [],
-
-    }
+    };
   },
-  methods: {
-
-  },
-  created() {
-
-    axios.get('https://fakestoreapi.com/products/categories').then((data) => {
-
-      this.categories = data.data;
-
+  methods: {},
+  async created() {
+    const querySnapshot = await getDocs(collection(db, "categories"));
+    querySnapshot.forEach((doc) => {
+      this.categories.push(doc.id);
     });
   },
-}
-
+};
 </script>
 
 <template>
   <div class="h-screen w-screen overflow-scroll">
     <AppHeader />
-    <RouterView :categories="categories" /> 
+    <RouterView :categories="categories" />
   </div>
 </template>
