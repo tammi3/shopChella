@@ -9,9 +9,8 @@ export default {
     };
   },
   methods: {
-    addToCart() {
+    addToCart(product) {
       const user = auth.currentUser;
-      setDoc(doc(db, "carts", user.uid), {});
     },
   },
   created() {
@@ -41,7 +40,9 @@ export default {
       <span
         class="text-black p-4 font-semibold tracking-wide w-full h-10 bg-purple hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg hover:shadow-purple/75 transform duration-200 ease-in-out rounded-lg text-md flex justify-between items-center cursor-pointer"
       >
-        <p class="uppercase flex justify-start">add to cart</p>
+        <p @click="addToCart(product)" class="uppercase flex justify-start">
+          add to cart
+        </p>
         <p class="flex justify-end">${{ product.price }}</p>
       </span>
     </div>

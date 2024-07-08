@@ -74,6 +74,13 @@ export default {
               userId: user.uid,
               creationTime: user.metadata.creationTime,
             });
+            addDoc(collection(db, "carts"), {
+              userId: user.uid,
+              status: "active",
+              
+              
+              items: [],
+            });
 
             this.$router.replace({ name: "Shop" });
           })

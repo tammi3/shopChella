@@ -140,7 +140,7 @@ export default {
         getDownloadURL(ref(storage, "profile/" + this.userInfo.profile_image))
           .then((url) => {
             // Or inserted into an <img> element
-            console.log(url);
+
             const img = document.getElementById("profileImg");
             img.setAttribute("src", url);
           })

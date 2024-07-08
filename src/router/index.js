@@ -11,7 +11,7 @@ const router = createRouter({
       component: Home,
     },
     {
-      path: "/Shop/:category?",
+      path: "/Shop/:category",
       name: "Shop",
       meta: { requiresAuth: true },
       component: () => import("../views/Shop.vue"),

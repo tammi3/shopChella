@@ -26,11 +26,43 @@ export default {
   methods: {
     editProduct() {
       const productForm = document.querySelector(".addProduct");
-
       productForm.name.value = this.product.name;
       productForm.price.value = this.product.price;
       productForm.description.value = this.product.description;
       productForm.category.value = this.product.category;
+    },
+    updateProduct() {
+      const productForm = document.querySelector(".addProduct");
+      const title = productForm.name.value;
+      const price = productForm.price.value;
+      const description = productForm.description.value;
+      const category = productForm.category.value;
+      const inputFile = document.getElementById("image");
+      const uploadImage = inputFile.files[0];
+      const storageRef = ref(storage, "products/" + uploadImage.name);
+
+      // if (uploadImage == !"") {
+      //   deleteObject(ref(storage, this.product.image)).then(() => {
+      uploadBytes(storageRef, uploadImage).then((snapshot) => {
+        getDownloadURL(storageRef).then((url) => {
+          updateDoc(doc(db, "products", this.product.id), {
+            name: title,
+            price: price,
+            description: description,
+            category: category,
+            image: url,
+          });
+          this.closeModal();
+          // this.$router.go(0);
+        });
+      });
+      //   });
+      // }
+    },
+    closeModal() {
+      const productForm = document.querySelector(".addProduct");
+      productForm.reset();
+      this.$emit("close");
     },
     uploadProduct() {
       const productForm = document.querySelector(".addProduct");
@@ -56,12 +88,15 @@ export default {
             image: url,
           });
         });
-        this.$router.replace({ name: "Admin" });
+        this.closeModal();
       });
     },
     submitForm() {
       if (this.action == "add") {
         this.uploadProduct();
+      }
+      if (this.action == "edit") {
+        this.updateProduct();
       }
     },
   },
@@ -75,24 +110,24 @@ export default {
     id="addProduct"
     class="w-full right-0 absolute justify-center flex items-center top-0 backdrop-blur-lg z-50 overflow-scroll h-dvh"
   >
-    <div
-      class="w-16 h-16 flex items-center shadow-lg justify-center bg-gray-200 rounded-full absolute top-4 right-6"
-    >
-      <svg
-        class="cursor-pointer"
-        @click="$emit('close')"
-        xmlns="http://www.w3.org/2000/svg"
-        width="20"
-        height="21"
-      >
-        <g fill="#e4c1f9" fill-rule="evenodd">
-          <path d="M2.575.954l16.97 16.97-2.12 2.122L.455 3.076z" />
-          <path d="M.454 17.925L17.424.955l2.122 2.12-16.97 16.97z" />
-        </g>
-      </svg>
-    </div>
     <div class="w-full flex justify-center items-center py-4">
-      <section class="shadow-lg rounded-lg bg-white dark:bg-gray-900 w-96 md:w-2/4">
+      <section
+        class="flex flex-col shadow-lg rounded-lg bg-white dark:bg-gray-900 w-96 md:w-2/4"
+      >
+        <div class="flex justify-end p-4 items-center">
+          <svg
+            class="cursor-pointer"
+            @click="closeModal()"
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="21"
+          >
+            <g fill="#e4c1f9" fill-rule="evenodd">
+              <path d="M2.575.954l16.97 16.97-2.12 2.122L.455 3.076z" />
+              <path d="M.454 17.925L17.424.955l2.122 2.12-16.97 16.97z" />
+            </g>
+          </svg>
+        </div>
         <div class="max-w-xl px-4 py-8 mx-auto lg:py-16">
           <form class="addProduct" @submit.prevent="submitForm">
             <div class="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">

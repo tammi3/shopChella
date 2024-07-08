@@ -7,6 +7,7 @@ import {
   query,
   where,
   updateDoc,
+  getDocs,
 } from "../db/firebase.js";
 import searchMixin from "@/mixins/searchMixin";
 export default {
@@ -16,24 +17,37 @@ export default {
     return {
       products: [],
       search: "",
-      category: "all",
     };
   },
   methods: {
-    setCategory(cat) {
-      this.category = cat;
+    async setCategory(cat) {
+      if (cat == "all") {
+        this.products = [];
+        const q = query(collection(db, "products"));
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            this.products.push({
+              id: doc.id,
+              ...doc.data(),
+            });
+          });
+        });
+      } else {
+        this.products = [];
+        const categoriesRef = collection(db, "products");
+        const q = query(categoriesRef, where("category", "==", cat));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+          this.products.push({
+            id: doc.id,
+            ...doc.data(),
+          });
+        });
+      }
     },
   },
   created() {
-    const q = query(collection(db, "products"));
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        this.products.push({
-          id: doc.id,
-          ...doc.data(),
-        });
-      });
-    });
+    this.setCategory("all");
 
     console.log(this.products);
   },
@@ -44,6 +58,7 @@ export default {
   <div v-if="categories">
     <div class="flex items-center justify-center py-4 md:py-8 flex-wrap">
       <button
+        @click="setCategory('all')"
         type="button"
         class="text-blue-700 hover:text-white border border-blue-600 bg-white hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-full text-base font-medium px-5 py-2.5 text-center me-3 mb-3 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:bg-gray-900 dark:focus:ring-blue-800"
       >

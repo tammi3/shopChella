@@ -13,6 +13,7 @@
     "firebase": "^10.12.2",
     "flowbite": "^2.4.1",
     "pinia": "^2.1.7",
+    "sweetalert2": "^11.12.2",
     "vue": "^3.4.27",
     "vue-router": "^4.3.0",
     "vue-the-mask": "^0.11.1"
