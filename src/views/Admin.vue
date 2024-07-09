@@ -50,11 +50,21 @@ export default {
         confirmButtonText: "Yes, delete it!",
       }).then((result) => {
         if (result.isConfirmed) {
-          Swal.fire({
-            title: "Deleted!",
-            text: "Your file has been deleted.",
-            icon: "success",
-          });
+          const productImageRef = ref(storage, product.image);
+
+          // Delete the file
+          deleteObject(productImageRef)
+            .then(() => {
+              deleteDoc(doc(db, "products", product.id));
+              Swal.fire({
+                title: "Deleted!",
+                text: "Your file has been deleted.",
+                icon: "success",
+              });
+            })
+            .catch((error) => {
+              // Uh-oh, an error occurred!
+            });
         }
       });
     },

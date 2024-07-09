@@ -7,11 +7,15 @@ import {
   doc,
   ref,
   storage,
+  getDocs,
+  query,
+  collection,
 } from "../db/firebase.js";
 export default {
   data() {
     return {
       userInfo: {},
+      cart: {},
       search: "",
       cartDisplay: "",
       updatedProfileImage: true,
@@ -29,10 +33,23 @@ export default {
         this.cartDisplay.classList.remove("flex");
       }
     },
+    async getCart() {
+      this.cart = {};
+      const cartRef = collection(db, "carts");
+      const q = query(cartRef);
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        this.cart = {
+          ...doc.data().items,
+        };
+      });
+      console.log(this.cart);
+    },
   },
   created() {
     const user = auth.currentUser;
     if (user) {
+      this.getCart();
       onSnapshot(doc(db, "users", user.uid), (doc) => {
         this.userInfo = doc.data();
         if (this.userInfo.updatedProfileImage) {
@@ -55,28 +72,20 @@ export default {
 </script>
 <template>
   <div class="sticky top-0 w-full z-50 border-b-black border-solid border">
-    <nav
-      class="font-Ubuntu flex justify-between bg-white text-lg px-10 py-6 gap-10"
-    >
-      <RouterLink class="font-Anton w-3/4 text-3xl pr-10" to="/"
-        >shopChella</RouterLink
-      >
+    <nav class="font-Ubuntu flex justify-between bg-white text-lg px-10 py-6 gap-10">
+      <RouterLink class="font-Anton w-1/4 text-3xl pr-10" to="/">shopChella</RouterLink>
 
-      <ul class="flex w-1/4 justify-center items-center gap-4">
+      <ul class="flex w-3/4 justify-end items-center gap-4">
         <div class="flex gap-3 w-2/4 justify-center items-center">
           <RouterLink
             class="font-EdGaramond font-bold text-xl pr-10"
-            to="/Shop/category"
+            to="/Shop/allcategories"
             >Shop</RouterLink
           >
         </div>
         <router-link class="hover:opacity-60" to="/Profile">
           <!-- default profile image -->
-          <i
-            v-if="updatedProfileImage"
-            class="fa fa-user-o fa-lg"
-            aria-hidden="true"
-          ></i>
+          <i v-if="updatedProfileImage" class="fa fa-user-o fa-lg" aria-hidden="true"></i>
           <!-- custom profile image -->
           <img
             v-if="userInfo.updatedProfileImage"
@@ -111,7 +120,7 @@ export default {
       id="cartDisplay"
       class="w-full right-0 h-screen absolute hidden justify-end top-0 backdrop-blur-lg z-50"
     >
-      <div class="w-2/4 bg-white z-50 h-screen flex flex-col">
+      <div class="w-full lg:w-2/4 bg-white z-50 h-screen flex flex-col">
         <div class="w-full p-10 flex justify-end items-center">
           <svg
             class="cursor-pointer"
@@ -128,12 +137,43 @@ export default {
         </div>
         <!-- <div v-if="cart == ''" -->
         <div
-          class="font-EdGaramond text-4xl flex flex-col gap-16 p-10 justify-center items-center"
+          v-if="cart == ''"
+          class="w-full font-EdGaramond text-4xl flex flex-col gap-16 p-10 justify-center items-center"
         >
           <p>Your cart is empty :(</p>
           <img class="w-2/4" src="../assets/bag (1).png" />
         </div>
-        <div></div>
+        <div v-else>
+          <div class="w-full mx-auto bg-white overflow-hidden">
+            <div class="px-4 py-2">
+              <h1 class="text-gray-200 text-3xl font-semibold">Shopping Cart</h1>
+            </div>
+            <div class="max-h-vh overflow-y-auto">
+              <div v-for="product in cart" class="p-4 flex items-center border-b">
+                <img
+                  class="w-16 h-16 object-cover rounded"
+                  :src="product.product_image"
+                  alt="Product Image"
+                />
+                <div class="ml-4 flex-1">
+                  <h3 class="text-gray-800 text-xl">{{ product.product_name }}</h3>
+                  <p class="text-gray-600">${{ product.price }}</p>
+                  <p class="text-gray-600">Quantity: 2</p>
+                  <p class="text-gray-600">Total: $39.98</p>
+                </div>
+              </div>
+
+              <!-- Repeat for more items -->
+            </div>
+            <div class="px-4 py-2 bg-gray-800">
+              <button
+                class="w-full text-gray-200 bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded"
+              >
+                Checkout
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

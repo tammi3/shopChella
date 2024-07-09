@@ -20,7 +20,7 @@ export default {
         this.loading = true;
         signInWithEmailAndPassword(auth, email, password)
           .then(() => {
-            this.$router.replace({ name: "Shop" });
+            this.$router.replace({ path: "/Shop/allcategories" });
           })
           .catch((err) => {
             if (err.message == "Firebase: Error (auth/invalid-email).") {
@@ -28,7 +28,7 @@ export default {
               this.loading = false;
             } else {
               this.error = "Invalid credentials.";
-               this.loading = false;
+              this.loading = false;
             }
           });
       }

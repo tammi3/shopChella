@@ -6,6 +6,9 @@ import {
   auth,
   doc,
   setDoc,
+  collection,
+  addDoc,
+  Timestamp,
 } from "../db/firebase.js";
 import togglePassword from "@/mixins/togglePassword.js";
 export default {
@@ -32,8 +35,7 @@ export default {
       const signupForm = document.querySelector(".signup");
       const email = signupForm.email.value;
       const password = signupForm.password.value;
-      var regularPassword =
-        /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
+      var regularPassword = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
       if (this.firstName == "") this.error = "Enter your first name.";
       else if (this.lastName == "") this.error = "Enter your last name.";
       else if (this.selectedCountry == "") this.error = "Enter your country.";
@@ -73,21 +75,19 @@ export default {
               updatedProfileImage: false,
               userId: user.uid,
               creationTime: user.metadata.creationTime,
-            });
-            addDoc(collection(db, "carts"), {
-              userId: user.uid,
-              status: "active",
-              
-              
-              items: [],
+            }).then(() => {
+              setDoc(doc(db, "carts", user.uid), {
+                status: "active",
+                created_at: Timestamp.fromDate(new Date()),
+                updated_at: Timestamp.fromDate(new Date()),
+                items: [],
+              });
             });
 
-            this.$router.replace({ name: "Shop" });
+            this.$router.replace({ path: "/Shop/allcategories" });
           })
           .catch((err) => {
-            if (
-              (err.message = "Firebase: Error (auth/email-already-in-use).")
-            ) {
+            if ((err.message = "Firebase: Error (auth/email-already-in-use).")) {
               this.error = "Email already associated with another account.";
               this.loading = false;
             } else {

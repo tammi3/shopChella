@@ -9,19 +9,18 @@ import {
   updateDoc,
   getDocs,
 } from "../db/firebase.js";
-import searchMixin from "@/mixins/searchMixin";
 export default {
-  mixins: [searchMixin],
   props: ["categories"],
   data() {
     return {
+      cat: this.$route.params.category,
       products: [],
       search: "",
     };
   },
   methods: {
     async setCategory(cat) {
-      if (cat == "all") {
+      if (cat == "allcategories") {
         this.products = [];
         const q = query(collection(db, "products"));
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -47,9 +46,7 @@ export default {
     },
   },
   created() {
-    this.setCategory("all");
-
-    console.log(this.products);
+    this.setCategory(this.cat);
   },
 };
 </script>
@@ -57,23 +54,26 @@ export default {
 <template>
   <div v-if="categories">
     <div class="flex items-center justify-center py-4 md:py-8 flex-wrap">
-      <button
-        @click="setCategory('all')"
+      <routerLink
+        to="/shop/allcategories"
+        @click="setCategory('allcategories')"
         type="button"
         class="text-blue-700 hover:text-white border border-blue-600 bg-white hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-full text-base font-medium px-5 py-2.5 text-center me-3 mb-3 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:bg-gray-900 dark:focus:ring-blue-800"
       >
         All categories
-      </button>
-      <button
+      </routerLink>
+      <routerLink
         v-for="cat in categories"
         @click="setCategory(cat)"
+        :to="'/shop/' + cat"
         type="button"
         class="text-gray-900 border border-white hover:border-gray-200 dark:border-gray-900 dark:bg-gray-900 dark:hover:border-gray-700 bg-white focus:ring-4 focus:outline-none focus:ring-gray-300 rounded-full text-base font-medium px-5 py-2.5 text-center me-3 mb-3 dark:text-white dark:focus:ring-gray-800"
       >
         {{ cat }}
-      </button>
+      </routerLink>
     </div>
-    <div class="flex flex-col gap-3">
+    <router-view :products="products"></router-view>
+    <!-- <div class="flex flex-col gap-3">
       <div class="flex justify-center items-center m-4">
         <div class="w-96 h-10 relative bg-purple/50 rounded-lg">
           <input
@@ -120,6 +120,6 @@ export default {
           </routerLink>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>

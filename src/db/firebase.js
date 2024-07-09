@@ -12,6 +12,7 @@ import {
   where,
   Timestamp,
   getDocs,
+  arrayUnion
 } from "firebase/firestore";
 import {
   getAuth,
@@ -66,6 +67,7 @@ export {
   collection,
   Timestamp,
   EmailAuthProvider,
+  arrayUnion,
   reauthenticateWithCredential,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,

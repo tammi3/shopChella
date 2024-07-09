@@ -1,21 +1,47 @@
 <script>
-import { auth, doc, db, setDoc, onSnapshot } from "../db/firebase.js";
+import {
+  auth,
+  doc,
+  db,
+  setDoc,
+  onSnapshot,
+  updateDoc,
+  Timestamp,
+  arrayUnion,
+} from "../db/firebase.js";
 export default {
   data() {
     return {
       id: this.$route.params.id,
       product: {},
-      userInfo: {},
     };
   },
   methods: {
-    addToCart(product) {
+    async addToCart() {
       const user = auth.currentUser;
+      const item = {
+        product_id: this.product.id,
+        product_image: this.product.image,
+        product_name: this.product.name,
+        quantity: 1,
+        price: this.product.price,
+        total_price: this.product.price,
+      };
+      console.log(item);
+      await updateDoc(doc(db, "carts", user.uid), {
+        items: arrayUnion(item),
+        updated_at: Timestamp.fromDate(new Date()),
+      }).then(() => {
+        console.log("added to cart");
+      });
     },
   },
   created() {
     onSnapshot(doc(db, "products", this.id), (doc) => {
-      this.product = doc.data();
+      this.product = {
+        ...doc.data(),
+        id: this.id,
+      };
     });
   },
 };
@@ -38,11 +64,10 @@ export default {
       </div>
 
       <span
+        @click="addToCart()"
         class="text-black p-4 font-semibold tracking-wide w-full h-10 bg-purple hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg hover:shadow-purple/75 transform duration-200 ease-in-out rounded-lg text-md flex justify-between items-center cursor-pointer"
       >
-        <p @click="addToCart(product)" class="uppercase flex justify-start">
-          add to cart
-        </p>
+        <p class="uppercase flex justify-start">add to cart</p>
         <p class="flex justify-end">${{ product.price }}</p>
       </span>
     </div>

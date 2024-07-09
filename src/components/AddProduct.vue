@@ -1,18 +1,14 @@
 <script>
 import {
-  onSnapshot,
   doc,
   db,
   updateDoc,
   storage,
   ref,
   uploadBytes,
-  deleteObject,
   getDownloadURL,
-  deleteDoc,
   collection,
   addDoc,
-  getDocs,
 } from "../db/firebase.js";
 
 export default {
