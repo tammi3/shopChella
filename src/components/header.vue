@@ -23,6 +23,7 @@ export default {
   },
   methods: {
     toggleCart() {
+      this.getCart();
       this.cartDisplay = document.querySelector("#cartDisplay");
 
       if (this.cartDisplay.classList.contains("hidden")) {
@@ -43,7 +44,6 @@ export default {
           ...doc.data().items,
         };
       });
-      console.log(this.cart);
     },
   },
   created() {
@@ -144,14 +144,14 @@ export default {
           <img class="w-2/4" src="../assets/bag (1).png" />
         </div>
         <div v-else>
-          <div class="w-full mx-auto bg-white overflow-hidden">
+          <div class="w-full mx-auto h-dvh bg-white">
             <div class="px-4 py-2">
-              <h1 class="text-gray-200 text-3xl font-semibold">Shopping Cart</h1>
+              <h1 class="text-black text-3xl font-semibold">Cart</h1>
             </div>
-            <div class="max-h-vh overflow-y-auto">
+            <div class="max-h-[400px] sm:max-h-[500px] overflow-y-auto">
               <div v-for="product in cart" class="p-4 flex items-center border-b">
                 <img
-                  class="w-16 h-16 object-cover rounded"
+                  class="w-16 h-16 object-fit rounded"
                   :src="product.product_image"
                   alt="Product Image"
                 />
@@ -162,12 +162,10 @@ export default {
                   <p class="text-gray-600">Total: $39.98</p>
                 </div>
               </div>
-
-              <!-- Repeat for more items -->
             </div>
-            <div class="px-4 py-2 bg-gray-800">
+            <div class="px-4 py-2">
               <button
-                class="w-full text-gray-200 bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded"
+                class="w-full text-gray-200 bg-purple hover:bg-purple/50 px-4 py-2 rounded"
               >
                 Checkout
               </button>

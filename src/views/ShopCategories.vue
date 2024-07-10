@@ -1,13 +1,64 @@
 <script>
+import {
+  doc,
+  db,
+  onSnapshot,
+  collection,
+  query,
+  where,
+  updateDoc,
+  getDocs,
+} from "../db/firebase.js";
 import searchMixin from "@/mixins/searchMixin";
 export default {
+  mixins: [searchMixin],
   data() {
     return {
+      cat: this.$route.params.category,
+      products: [],
       search: "",
+      loading: true,
     };
   },
-  mixins: [searchMixin],
-  props: ["products"],
+  watch: {
+    $route: {
+      async handler(oldValue, newValue) {
+        await this.setCategory(oldValue.params.category);
+      },
+    },
+  },
+  methods: {
+    async setCategory(cat) {
+      this.loading = true;
+      if (cat == "allcategories") {
+        this.products = [];
+        const q = query(collection(db, "products"));
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            this.products.push({
+              id: doc.id,
+              ...doc.data(),
+            });
+          });
+        });
+      } else {
+        this.products = [];
+        const categoriesRef = collection(db, "products");
+        const q = query(categoriesRef, where("category", "==", cat));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+          this.products.push({
+            id: doc.id,
+            ...doc.data(),
+          });
+        });
+      }
+      this.loading = false;
+    },
+  },
+  async created() {
+    await this.setCategory(this.cat);
+  },
 };
 </script>
 <template>
@@ -39,23 +90,50 @@ export default {
       </div>
     </div>
     <div class="px-10 grid items-end grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-      <div v-for="product in filteredProducts" class="mx-auto bg-white overflow-hidden">
-        <div class="w-full flex justify-center overflow-hidden">
-          <img
-            class="w-72 object-fit"
-            :src="product.image"
-            :alt="product.name + ' image'"
-          />
+      <div
+        v-if="!loading"
+        v-for="product in filteredProducts"
+        class="mx-auto bg-white overflow-hidden"
+      >
+        <div>
+          <div class="w-full flex justify-center overflow-hidden">
+            <img
+              class="w-72 object-fit"
+              :src="product.image"
+              :alt="product.name + ' image'"
+            />
+          </div>
+          <routerLink
+            :to="'/Product/' + product.id"
+            class="p-2 flex flex-col justify-center items-center space-y-1"
+          >
+            <h2 class="text-xl font-semibold text-center text-gray-800">
+              {{ product.name }}
+            </h2>
+            <p class="text-lg font-bold text-black">${{ product.price }}</p>
+          </routerLink>
         </div>
-        <routerLink
-          :to="'/Product/' + product.id"
-          class="p-2 flex flex-col justify-center items-center space-y-1"
-        >
-          <h2 class="text-xl font-semibold text-center text-gray-800">
-            {{ product.name }}
-          </h2>
-          <p class="text-lg font-bold text-black">${{ product.price }}</p>
-        </routerLink>
+      </div>
+      <div
+        v-else
+        class="max-w-[288px] w-72 mx-auto bg-white shadow-lg rounded-lg overflow-hidden"
+      >
+        <div class="animate-pulse">
+          <!-- Image Placeholder -->
+          <div class="bg-gray-300 h-72 w-full"></div>
+
+          <!-- Content Placeholder -->
+          <div class="p-4 space-y-4">
+            <!-- Title Placeholder -->
+            <div class="bg-gray-300 h-6 w-3/4"></div>
+
+            <!-- Price Placeholder -->
+            <div class="bg-gray-300 h-4 w-1/4"></div>
+
+            <!-- Button Placeholder -->
+            <div class="bg-gray-300 h-8 w-1/2 rounded-md"></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
