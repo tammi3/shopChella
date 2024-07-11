@@ -198,7 +198,7 @@ export default {
             </div>
             <div class="flex items-center">
               <button
-                class="cursor-pointer bg-purple w-44 h-16 rounded-lg hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg hover:shadow-gray-500/75 transform duration-200 ease-in-out border border-gray-500 p-4 justify-center items-center flex"
+                class="cursor-pointer bg-purple uppercase w-44 h-16 rounded-lg hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg hover:shadow-gray-500/75 transform duration-200 ease-in-out border border-gray-500 p-4 justify-center items-center flex"
               >
                 <span v-if="action == 'add'">Add Product</span>
                 <span v-if="action == 'edit'">Update Product</span>

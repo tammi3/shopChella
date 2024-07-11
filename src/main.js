@@ -8,6 +8,7 @@ import VueTheMask from "vue-the-mask";
 import { auth } from './db/firebase.js';
 
 
+
 const pinia = createPinia()
 const app = createApp(App);
 
@@ -21,6 +22,7 @@ auth.onAuthStateChanged((user) => {
 
 
   localStorage.setItem('loggedIn', user ? true : false);
+  localStorage.setItem('userUID', user.uid)
 
   if (!mounted) {
     app.mount("#app");

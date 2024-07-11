@@ -15,13 +15,13 @@ const router = createRouter({
       name: "Shop",
       meta: { requiresAuth: true },
       component: () => import("../views/Shop.vue"),
-      children:[
+      children: [
         {
           path: ":category",
           name: "Category",
           component: () => import("../views/ShopCategories.vue"),
         },
-      ]
+      ],
     },
     {
       path: "/Product/:id",
@@ -65,12 +65,19 @@ const router = createRouter({
 router.beforeEach(async (to, from) => {
   let loggedIn =
     (localStorage.getItem("loggedIn") == "true" ? true : false) || false;
-
-  if (to.path.includes("User") && loggedIn) return { path: "/Shop/allcategories" };
+  let userUID = localStorage.getItem("userUID");
+  if (to.path.includes("User") && loggedIn)
+    return { path: "/Shop/allcategories" };
+  if (
+    to.path.includes("Admin") &&
+    loggedIn &&
+    userUID !== "lvfgmkM6dtfKWye6GUeMdr9ob462"
+  )
+    return { path: "/" };
   if (to.path == "/User" || to.path == "/User/") return { name: "Login" };
   if (to.meta.requiresAuth && !loggedIn) return { name: "Login" };
   if (to.meta.requiresAuth && loggedIn) return true;
-  // if (to.path.includes("Admin") && loggedIn && user.uid=="lvfgmkM6dtfKWye6GUeMdr9ob462") return true;
+
   if (!to.meta.requiresAuth && !loggedIn) return true;
 });
 

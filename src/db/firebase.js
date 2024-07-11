@@ -12,7 +12,8 @@ import {
   where,
   Timestamp,
   getDocs,
-  arrayUnion
+  arrayUnion,
+   arrayRemove
 } from "firebase/firestore";
 import {
   getAuth,
@@ -68,6 +69,7 @@ export {
   Timestamp,
   EmailAuthProvider,
   arrayUnion,
+  arrayRemove,
   reauthenticateWithCredential,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,

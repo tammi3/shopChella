@@ -10,6 +10,9 @@ import {
   getDocs,
   query,
   collection,
+  updateDoc,
+  arrayRemove,
+  Timestamp,
 } from "../db/firebase.js";
 export default {
   data() {
@@ -34,17 +37,28 @@ export default {
         this.cartDisplay.classList.remove("flex");
       }
     },
-    async getCart() {
-      this.cart = {};
-      const cartRef = collection(db, "carts");
-      const q = query(cartRef);
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
+    getCart() {
+      const user = auth.currentUser;
+      onSnapshot(doc(db, "carts", user.uid), (doc) => {
         this.cart = {
           ...doc.data().items,
         };
+        console.log("Current data: ", doc.data().items);
       });
     },
+    //     async deleteFromCart(index) {
+    //       const user = auth.currentUser;
+    //       const docRef = doc(db, "cart",  user.uid);
+    // const docSnap = await getDoc(docRef);
+
+    // if (docSnap.exists()) {
+    //   console.log("Document data:", docSnap.data());
+    // } else {
+    //   // docSnap.data() will be undefined in this case
+    //   console.log("No such document!");
+    // }
+
+    //   },
   },
   created() {
     const user = auth.currentUser;
@@ -118,7 +132,7 @@ export default {
 
     <div
       id="cartDisplay"
-      class="w-full right-0 h-screen absolute hidden justify-end top-0 backdrop-blur-lg z-50"
+      class="w-full right-0 font-Ubuntu h-screen absolute hidden justify-end top-0 backdrop-blur-lg z-50"
     >
       <div class="w-full lg:w-2/4 bg-white z-50 h-screen flex flex-col">
         <div class="w-full p-10 flex justify-end items-center">
@@ -135,7 +149,7 @@ export default {
             </g>
           </svg>
         </div>
-        <!-- <div v-if="cart == ''" -->
+
         <div
           v-if="cart == ''"
           class="w-full font-EdGaramond text-4xl flex flex-col gap-16 p-10 justify-center items-center"
@@ -149,23 +163,34 @@ export default {
               <h1 class="text-black text-3xl font-semibold">Cart</h1>
             </div>
             <div class="max-h-[400px] sm:max-h-[500px] overflow-y-auto">
-              <div v-for="product in cart" class="p-4 flex items-center border-b">
+              <div
+                v-for="(product, index) in cart"
+                :key="index"
+                class="p-4 flex items-center border-b"
+              >
                 <img
                   class="w-16 h-16 object-fit rounded"
                   :src="product.product_image"
                   alt="Product Image"
                 />
                 <div class="ml-4 flex-1">
-                  <h3 class="text-gray-800 text-xl">{{ product.product_name }}</h3>
+                  <h3 class="text-gray-800 text-xl">
+                    {{ product.product_name }}
+                  </h3>
                   <p class="text-gray-600">${{ product.price }}</p>
-                  <p class="text-gray-600">Quantity: 2</p>
-                  <p class="text-gray-600">Total: $39.98</p>
+                  <p class="text-gray-600">Quantity: {{ product.quantity }}</p>
+                  <p class="text-gray-600">Total: ${{ product.total_price }}</p>
                 </div>
+                <i
+                  @click="deleteFromCart(index)"
+                  class="p-2 fa fa-trash-o fa-lg cursor-pointer hover:text-gray-400"
+                  aria-hidden="true"
+                ></i>
               </div>
             </div>
             <div class="px-4 py-2">
               <button
-                class="w-full text-gray-200 bg-purple hover:bg-purple/50 px-4 py-2 rounded"
+                class="w-full uppercase font-bold bg-purple hover:bg-purple/75 px-4 py-2 rounded"
               >
                 Checkout
               </button>
