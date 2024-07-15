@@ -1,23 +1,23 @@
 <script>
-import welcome from "../components/Welcome.vue";
+import Welcome from "../components/Welcome.vue";
 import AppFooter from "../components/Footer.vue";
-import services from "../components/Services.vue";
-import reviews from "../components/Reviews.vue";
+import Services from "../components/Services.vue";
+import Reviews from "../components/Reviews.vue";
 export default {
   props: ["categories"],
   components: {
-    welcome,
+    Welcome,
     AppFooter,
-    services,
-    reviews,
+    Services,
+    Reviews,
   },
 };
 </script>
 <template>
   <div>
-    <welcome />
-    <services />
-    <reviews />
+    <Welcome />
+    <Services />
+    <Reviews />
     <AppFooter :categories="categories" />
   </div>
 </template>

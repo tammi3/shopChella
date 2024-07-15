@@ -13,7 +13,9 @@ import {
   Timestamp,
   getDocs,
   arrayUnion,
-   arrayRemove
+  arrayRemove,
+  getAggregateFromServer,
+  sum,
 } from "firebase/firestore";
 import {
   getAuth,
@@ -68,6 +70,8 @@ export {
   collection,
   Timestamp,
   EmailAuthProvider,
+  getAggregateFromServer,
+  sum,
   arrayUnion,
   arrayRemove,
   reauthenticateWithCredential,

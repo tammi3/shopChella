@@ -22,7 +22,7 @@ auth.onAuthStateChanged((user) => {
 
 
   localStorage.setItem('loggedIn', user ? true : false);
-  localStorage.setItem('userUID', user.uid)
+  localStorage.setItem('userUID',  user ? user.uid : '' );
 
   if (!mounted) {
     app.mount("#app");

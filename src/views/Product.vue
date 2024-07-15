@@ -9,7 +9,7 @@ import {
   Timestamp,
   arrayUnion,
 } from "../db/firebase.js";
-
+import Swal from "sweetalert2";
 export default {
   data() {
     return {
@@ -48,7 +48,13 @@ export default {
         items: arrayUnion(item),
         updated_at: Timestamp.fromDate(new Date()),
       }).then(() => {
-        console.log("added to cart");
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Add to cart!",
+          showConfirmButton: false,
+          timer: 1500,
+        });
       });
     },
     inputCounter(operation) {
