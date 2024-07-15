@@ -1,7 +1,7 @@
 export default{
     methods:{
         togglePassword() {
-            var userPassword = document.querySelector('#userPassword');
+            var userPassword = document.querySelector('#password');
             var iconEye = document.querySelector('#iconEye');
             if (userPassword.type === "password") {
                userPassword.type = "text";

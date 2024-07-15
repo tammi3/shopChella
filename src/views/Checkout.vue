@@ -5,9 +5,13 @@ import {
   db,
   auth,
   onSnapshot,
+  updateDoc,
+  arrayUnion,
+  Timestamp,
   getAggregateFromServer,
   sum,
 } from "../../../shopChella - Copy/src/db/firebase.js";
+import Swal from "sweetalert2";
 export default {
   data() {
     return {
@@ -18,9 +22,16 @@ export default {
       selectedCountryCode: "",
       selectedCity: "",
       subtotal: 0,
+      loading: false,
       cities: [],
       cart: {},
-      number: 1,
+      cardName: "",
+      cardNumber: "",
+      expiryDate: "",
+      cvv: "",
+      phone: "",
+      isValid: null,
+      errorMessage: "",
       total: 0,
     };
   },
@@ -54,7 +65,6 @@ export default {
       if (modal.classList.contains("hidden")) {
         modal.classList.remove("hidden");
         modal.classList.add("flex");
-        this.getCart();
       } else {
         modal.classList.add("hidden");
         modal.classList.remove("flex");
@@ -65,6 +75,67 @@ export default {
       this.selectedCity = "";
       this.selectedCountry = this.countries[this.selectedCountryCode].country;
     },
+    validateCard() {
+      this.errorMessage = "";
+      this.isValid = this.luhnCheck(this.cardNumber);
+      if (!this.isValid) {
+        this.errorMessage = "Invalid card number";
+      }
+    },
+    luhnCheck(cardNumber) {
+      let sum = 0;
+      let shouldDouble = false;
+      for (let i = cardNumber.length - 1; i >= 0; i--) {
+        let digit = parseInt(cardNumber[i]);
+        if (shouldDouble) {
+          digit *= 2;
+          if (digit > 9) {
+            digit -= 9;
+          }
+        }
+        sum += digit;
+        shouldDouble = !shouldDouble;
+      }
+      return sum % 10 === 0;
+    },
+    async payCart() {
+      this.validateCard();
+      if (this.isValid) {
+        const user = auth.currentUser;
+        const order = {
+          cart: this.cart,
+          shipping_info: {
+            country: this.selectedCountry,
+            city: this.selectedCity,
+            address: this.address,
+            phone: this.phone,
+            subtotal: this.subtotal,
+            total: this.total,
+            shipping_fee: 24.0,
+          },
+          created_at: Timestamp.fromDate(new Date()),
+        };
+        console.log(order);
+        await updateDoc(doc(db, "orders", user.uid), {
+          orders: arrayUnion(order),
+          updated_at: Timestamp.fromDate(new Date()),
+        }).then(() => {
+          updateDoc(doc(db, "carts", user.uid), {
+            items: [],
+            updated_at: Timestamp.fromDate(new Date()),
+          });
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Order success!",
+            showConfirmButton: false,
+            timer: 1500,
+          }).then(() => {
+            this.$router.replace({ path: "/Shop/allcategories" });
+          });
+        });
+      }
+    },
   },
 
   created() {
@@ -72,7 +143,7 @@ export default {
     const user = auth.currentUser;
     onSnapshot(doc(db, "users", user.uid), (doc) => {
       this.userInfo = doc.data();
-      this.selectedCountryCode = this.userInfo.address.country;
+      console.log(this.userInfo);
     });
     axios.get("https://countriesnow.space/api/v0.1/countries/").then((data) => {
       this.countries = data.data.data;
@@ -97,7 +168,9 @@ export default {
                 class="w-16 h-16 object-fit rounded mr-4"
               />
               <div>
-                <h4 class="text-lg font-semibold">{{ product.product_name }}</h4>
+                <h4 class="text-lg font-semibold">
+                  {{ product.product_name }}
+                </h4>
                 <p class="text-gray-600">Quantity: {{ product.quantity }}</p>
                 <p class="text-gray-600">Price: ${{ product.total_price }}</p>
               </div>
@@ -127,7 +200,7 @@ export default {
         <!-- Shipping Information -->
         <div>
           <h3 class="text-xl font-semibold mb-4">Shipping Information</h3>
-          <form>
+          <form @submit.prevent="toggleModal()">
             <div class="mb-4">
               <label class="block text-gray-700 mb-2" for="address">Address</label>
               <input
@@ -172,7 +245,8 @@ export default {
               <label class="block text-gray-700 mb-2" for="phone">Phone Number</label>
               <input
                 class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                type="number"
+                type="text"
+                v-model="phone"
                 id="phone"
                 required
               />
@@ -192,11 +266,11 @@ export default {
     <!--Payment  Modal -->
     <div
       id="modal"
-      class="hidden fixed inset-0 w-full bg-black bg-opacity-50 items-center justify-center"
+      class="hidden fixed inset-0 w-full bg-black bg-opacity-50 z-50 items-center justify-center"
     >
       <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
         <h2 class="text-xl font-semibold mb-4">Enter Card Details</h2>
-        <form>
+        <form @submit.prevent="payCart()">
           <div class="mb-4">
             <label class="block text-gray-700 mb-2" for="cardName">Name on Card</label>
             <input
@@ -212,8 +286,12 @@ export default {
               class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               type="text"
               id="cardNumber"
+              v-model="cardNumber"
               required
             />
+            <p v-if="errorMessage" class="text-red-500 text-sm mt-2">
+              {{ errorMessage }}
+            </p>
           </div>
           <div class="flex mb-4">
             <div class="w-1/2 mr-2">
@@ -247,7 +325,13 @@ export default {
               type="submit"
               class="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75"
             >
-              Pay Now
+              <img
+                v-if="loading"
+                class="animate-spin-slow w-6"
+                src="../assets/loading.png"
+                alt=""
+              />
+              <span v-if="!loading">Pay Now</span>
             </button>
           </div>
         </form>
@@ -255,16 +339,3 @@ export default {
     </div>
   </div>
 </template>
-<style>
-/* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-/* Firefox */
-input[type="number"] {
-  -moz-appearance: textfield;
-}
-</style>

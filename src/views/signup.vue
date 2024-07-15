@@ -32,20 +32,12 @@ export default {
   },
   methods: {
     handleSubmit() {
-      const signupForm = document.querySelector(".signup");
-      const email = signupForm.email.value;
-      const password = signupForm.password.value;
+      const email = this.email;
+      const password = this.password;
       var regularPassword = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
-      if (this.firstName == "") this.error = "Enter your first name.";
-      else if (this.lastName == "") this.error = "Enter your last name.";
-      else if (this.selectedCountry == "") this.error = "Enter your country.";
-      else if (this.selectedCity == "") this.error = "Enter your city.";
-      else if (this.street == "") this.error = "Enter your street.";
-      else if (this.email == "") this.error = "Enter your email.";
-      else if (this.phone == "") this.error = "Enter your phone number.";
-      else if (this.password == "") this.error = "Enter your password.";
+
       //validates password
-      else if (
+      if (
         this.password !== "" &&
         (this.password.length <= 5 || this.password.length > 20)
       )
@@ -81,6 +73,11 @@ export default {
                 created_at: Timestamp.fromDate(new Date()),
                 updated_at: Timestamp.fromDate(new Date()),
                 items: [],
+              });
+              setDoc(doc(db, "orders", user.uid), {
+                created_at: Timestamp.fromDate(new Date()),
+                updated_at: Timestamp.fromDate(new Date()),
+                orders: [],
               });
             });
 
@@ -124,24 +121,24 @@ export default {
     <div class="w-3/4 flex flex-col gap-3">
       <label for="">First Name</label>
       <input
-        v-on:keydown="error = ''"
         v-model="firstName"
         class="font-normal capitalize focus:outline-none border-b border-gray-600"
         type="text"
         placeholder="First Name"
         name="firstName"
+        required
       />
     </div>
 
     <div class="w-3/4 flex flex-col gap-3">
       <label for="">Last Name</label>
       <input
-        v-on:keydown="error = ''"
         v-model="lastName"
         class="font-normal capitalize focus:outline-none border-b border-gray-600"
         type="text"
         placeholder="Last Name"
         name="lastName"
+        required
       />
     </div>
 
@@ -157,6 +154,7 @@ export default {
             class="border border-gray-600 w-40"
             v-model="selectedCountryCode"
             @change="updateCities"
+            required
           >
             <option value="" disabled selected>Select a country</option>
             <option v-for="(country, code) in countries" :value="code">
@@ -171,6 +169,7 @@ export default {
             id="city"
             class="border border-gray-600 w-40"
             v-model="selectedCity"
+            required
           >
             <option value="" disabled selected>Select a city</option>
             <option v-for="city in cities" :value="city">{{ city }}</option>
@@ -179,12 +178,12 @@ export default {
       </div>
       <div class="flex flex-col">
         <input
-          v-on:keydown="error = ''"
           v-model="street"
           class="font-normal focus:outline-none border-b border-gray-600"
           type="text"
           placeholder="Street"
           name="street"
+          required
         />
       </div>
     </div>
@@ -194,24 +193,24 @@ export default {
     <div class="w-3/4 flex flex-col gap-3">
       <label for="">Email</label>
       <input
-        v-on:keydown="error = ''"
         v-model="email"
         class="font-normal focus:outline-none border-b border-gray-600"
         type="text"
         placeholder="name@address.com"
         name="email"
+        required
       />
     </div>
     <div class="w-3/4 flex flex-col gap-3">
       <label for="">Phone</label>
       <input
-        v-on:keydown="error = ''"
         id="phone"
         v-model="phone"
         class="font-normal focus:outline-none border-b border-gray-600"
         v-mask="['####-###-####', '####-###-####']"
         placeholder="Enter your phone number"
         name="phone"
+        required
       />
     </div>
 
@@ -221,13 +220,13 @@ export default {
       <label for="">Password</label>
       <div class="w-full flex relative">
         <input
-          v-on:keydown="error = ''"
-          id="userPassword"
+          id="password"
           class="focus:outline-none w-full font-normal border-b border-gray-600"
           type="password"
           placeholder="Password"
           name="password"
           v-model="password"
+          required
         />
         <i
           class="fa fa-eye fa-lg py-1 pl-2 border-b border-gray-600 cursor-pointer"
@@ -241,6 +240,7 @@ export default {
     <!-- REGISTER BUTTON -->
 
     <button
+      type="submit"
       class="bg-purple w-3/4 h-16 font-bold rounded-lg hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg hover:shadow-purple/75 transform duration-200 ease-in-out border border-gray-500 p-4 justify-center items-center flex"
       href="http://"
     >

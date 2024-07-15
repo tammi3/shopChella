@@ -14,6 +14,7 @@ import {
   arrayRemove,
   Timestamp,
 } from "../db/firebase.js";
+
 export default {
   data() {
     return {
@@ -26,12 +27,12 @@ export default {
   },
   methods: {
     toggleCart() {
-      this.getCart();
       this.cartDisplay = document.querySelector("#cartDisplay");
 
       if (this.cartDisplay.classList.contains("hidden")) {
         this.cartDisplay.classList.remove("hidden");
         this.cartDisplay.classList.add("flex");
+        this.getCart();
       } else {
         this.cartDisplay.classList.add("hidden");
         this.cartDisplay.classList.remove("flex");
@@ -39,26 +40,30 @@ export default {
     },
     getCart() {
       const user = auth.currentUser;
-      onSnapshot(doc(db, "carts", user.uid), (doc) => {
-        this.cart = {
-          ...doc.data().items,
-        };
-        console.log("Current data: ", doc.data().items);
+      if (user) {
+        onSnapshot(doc(db, "carts", user.uid), (doc) => {
+          if (doc.data().items.length == 0) {
+            this.cart = "";
+          } else {
+            this.cart = {
+              ...doc.data().items,
+            };
+          }
+        });
+      } else {
+        this.cart = "";
+      }
+    },
+    async deleteFromCart(index) {
+      const user = auth.currentUser;
+      const item = this.cart[index];
+      await updateDoc(doc(db, "carts", user.uid), {
+        items: arrayRemove(item),
+        updated_at: Timestamp.fromDate(new Date()),
+      }).then(() => {
+        console.log("deleted to cart");
       });
     },
-    //     async deleteFromCart(index) {
-    //       const user = auth.currentUser;
-    //       const docRef = doc(db, "cart",  user.uid);
-    // const docSnap = await getDoc(docRef);
-
-    // if (docSnap.exists()) {
-    //   console.log("Document data:", docSnap.data());
-    // } else {
-    //   // docSnap.data() will be undefined in this case
-    //   console.log("No such document!");
-    // }
-
-    //   },
   },
   created() {
     const user = auth.currentUser;
@@ -189,11 +194,13 @@ export default {
               </div>
             </div>
             <div class="px-4 py-2">
-              <button
-                class="w-full uppercase font-bold bg-purple hover:bg-purple/75 px-4 py-2 rounded"
+              <routerLink
+                to="/Checkout"
+                @click="toggleCart"
+                class="w-full uppercase font-bold bg-purple flex items-center justify-center hover:bg-purple/75 px-4 py-2 rounded"
               >
-                Checkout
-              </button>
+                <span> Checkout</span>
+              </routerLink>
             </div>
           </div>
         </div>

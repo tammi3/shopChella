@@ -8,46 +8,43 @@ export default {
     return {
       loading: false,
       error: "",
+      email: "",
+      password: "",
     };
   },
   methods: {
     handleSubmit() {
-      const loginForm = document.querySelector(".login");
-      const email = loginForm.email.value;
-      const password = loginForm.password.value;
-      if (email == "") this.error = "Enter your email";
-      else if (password == "") this.error = "Enter your password";
-      else {
-        this.loading = true;
-        signInWithEmailAndPassword(auth, email, password)
-          .then(() => {
-            const Toast = Swal.mixin({
-              toast: true,
-              position: "top-end",
-              showConfirmButton: false,
-              timer: 3000,
-              timerProgressBar: true,
-              didOpen: (toast) => {
-                toast.onmouseenter = Swal.stopTimer;
-                toast.onmouseleave = Swal.resumeTimer;
-              },
-            });
-            Toast.fire({
-              icon: "success",
-              title: "Signed in successfully",
-            });
-            this.$router.replace({ path: "/Shop/allcategories" });
-          })
-          .catch((err) => {
-            if (err.message == "Firebase: Error (auth/invalid-email).") {
-              this.error = "Invalid email.";
-              this.loading = false;
-            } else {
-              this.error = "Invalid credentials.";
-              this.loading = false;
-            }
+      const email = this.email;
+      const password = this.password;
+      this.loading = true;
+      signInWithEmailAndPassword(auth, email, password)
+        .then(() => {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            },
           });
-      }
+          Toast.fire({
+            icon: "success",
+            title: "Signed in successfully",
+          });
+          this.$router.replace({ path: "/Shop/allcategories" });
+        })
+        .catch((err) => {
+          if (err.message == "Firebase: Error (auth/invalid-email).") {
+            this.error = "Invalid email.";
+            this.loading = false;
+          } else {
+            this.error = "Invalid credentials.";
+            this.loading = false;
+          }
+        });
     },
   },
 };
@@ -66,22 +63,22 @@ export default {
         type="text"
         placeholder="@johndoe"
         name="email"
-        v-on:keydown="error = ''"
-        v-on:focus="loading = false"
-        id=""
+        v-model="email"
+        id="email"
+        required
       />
     </div>
     <div class="w-3/4 flex flex-col gap-3 tracking-wide">
       <label for="">Password</label>
       <div class="w-full flex relative">
         <input
-          id="userPassword"
+          id="password"
           class="focus:outline-none w-full font-normal border-b border-gray-600"
           type="password"
           placeholder="Password"
           name="password"
-          v-on:keydown="error = ''"
-          v-on:focus="loading = false"
+          required
+          v-model="password"
         />
         <i
           class="fa fa-eye fa-lg py-1 pl-2 border-b border-gray-600 cursor-pointer"
@@ -92,8 +89,8 @@ export default {
       </div>
     </div>
     <button
+      type="submit"
       class="bg-purple w-3/4 h-16 font-bold rounded-lg hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg hover:shadow-purple/75 transform duration-200 ease-in-out border border-gray-500 p-4 justify-center items-center flex"
-      href="http://"
     >
       <img
         v-if="loading"
