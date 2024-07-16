@@ -104,7 +104,7 @@ export default {
 <template>
   <div
     id="addProduct"
-    class="w-full right-0 absolute justify-center flex items-center top-0 backdrop-blur-lg z-50 overflow-scroll h-dvh"
+    class="w-full right-0 absolute justify-center flex items-center top-0 backdrop-blur-lg h-full"
   >
     <div class="w-full flex justify-center items-center py-4">
       <section

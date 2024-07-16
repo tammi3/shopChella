@@ -8,9 +8,14 @@ import {
   updateDoc,
   arrayUnion,
   Timestamp,
+  collection,
+  query,
+  where,
+  getDocs,
   getAggregateFromServer,
   sum,
-} from "../../../shopChella - Copy/src/db/firebase.js";
+} from "../db/firebase.js";
+import { v4 as uuidv4 } from "uuid";
 import Swal from "sweetalert2";
 export default {
   data() {
@@ -33,6 +38,7 @@ export default {
       isValid: null,
       errorMessage: "",
       total: 0,
+      orders: [],
     };
   },
   methods: {
@@ -100,6 +106,8 @@ export default {
     },
     async payCart() {
       this.validateCard();
+      let uuid = uuidv4();
+
       if (this.isValid) {
         const user = auth.currentUser;
         const order = {
@@ -113,6 +121,8 @@ export default {
             total: this.total,
             shipping_fee: 24.0,
           },
+          orderID: uuid,
+          status: "Processing",
           created_at: Timestamp.fromDate(new Date()),
         };
         console.log(order);
@@ -140,6 +150,7 @@ export default {
 
   created() {
     this.getCart();
+
     const user = auth.currentUser;
     onSnapshot(doc(db, "users", user.uid), (doc) => {
       this.userInfo = doc.data();
@@ -152,7 +163,14 @@ export default {
 };
 </script>
 <template>
-  <div class="min-h-screen flex items-center justify-center p-6">
+  <div
+    v-if="cart == ''"
+    class="w-full h-dvh font-EdGaramond text-4xl flex flex-col gap-10 p-10 justify-center items-center"
+  >
+    <p>Your cart is empty :(</p>
+    <img class="max-w-sm" src="../assets/bag (1).png" />
+  </div>
+  <div v-else class="min-h-screen flex items-center justify-center p-6">
     <div class="container mx-auto max-w-4xl">
       <div class="bg-white shadow-md rounded-lg p-6">
         <h2 class="text-2xl font-semibold mb-6">Checkout</h2>

@@ -90,7 +90,7 @@ export default {
 };
 </script>
 <template>
-  <div class="sticky top-0 w-full z-50 border-b-black border-solid border">
+  <div class="sticky top-0 w-full z-50 border-solid border-b">
     <nav class="font-Ubuntu flex justify-between bg-white text-lg px-10 py-6 gap-10">
       <RouterLink class="font-Anton w-1/4 text-3xl pr-10" to="/">shopChella</RouterLink>
 
@@ -194,13 +194,13 @@ export default {
               </div>
             </div>
             <div class="px-4 py-2">
-              <routerLink
+              <RouterLink
                 to="/Checkout"
                 @click="toggleCart"
                 class="w-full uppercase font-bold bg-purple flex items-center justify-center hover:bg-purple/75 px-4 py-2 rounded"
               >
                 <span> Checkout</span>
-              </routerLink>
+              </RouterLink>
             </div>
           </div>
         </div>

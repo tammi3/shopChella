@@ -58,6 +58,18 @@ const router = createRouter({
       name: "Admin",
       meta: { requiresAuth: true },
       component: () => import("../views/Admin.vue"),
+      children:[
+        {
+          path: "Products",
+          name: "AdminProducts",
+          component: () => import("../views/AdminProducts.vue"),
+        },
+        {
+          path: "Orders",
+          name: "AdminOrders",
+          component: () => import("../views/AdminOrders.vue"),
+        },
+      ]
     },
     {
       path: "/Checkout",
