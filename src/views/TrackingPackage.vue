@@ -1,25 +1,33 @@
 <script>
-methods:{
+export default {
+  methods: {
     trackPackage() {
-            const trackingNumber = document.getElementById('tracking-number').value;
-            const statusText = document.getElementById('status-text');
-            const trackingResult = document.getElementById('tracking-result');
+      const trackingNumber = document.getElementById("tracking-number").value;
+      const statusText = document.getElementById("status-text");
+      const trackingResult = document.getElementById("tracking-result");
 
-            if (trackingNumber === '') {
-                alert('Please enter a tracking number');
-                return;
-            }
+      if (trackingNumber === "") {
+        alert("Please enter a tracking number");
+        return;
+      }
 
-            // Simulate an API call to get the package status
-            setTimeout(() => {
-                const statuses = ['In Transit', 'Delivered', 'Out for Delivery', 'Pending', 'Exception'];
-                const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
+      // Simulate an API call to get the package status
+      setTimeout(() => {
+        const statuses = [
+          "In Transit",
+          "Delivered",
+          "Out for Delivery",
+          "Pending",
+          "Exception",
+        ];
+        const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
 
-                statusText.textContent = `The status of your package (${trackingNumber}) is: ${randomStatus}`;
-                trackingResult.classList.remove('hidden');
-            }, 1000);
-        }
-}
+        statusText.textContent = `The status of your package (${trackingNumber}) is: ${randomStatus}`;
+        trackingResult.classList.remove("hidden");
+      }, 1000);
+    },
+  },
+};
 </script>
 <template>
   <div class="container mx-auto p-4">

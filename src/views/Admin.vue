@@ -1,7 +1,7 @@
 <template>
   <div class="relative">
     <div
-      class="sticky top-20 w-full z-50 border-solid border-b flex items-center justify-center gap-4 backdrop-blur-lg py-4 font-Ubuntu font-semibold uppercase"
+      class="sticky top-16 w-full z-20 border-solid border-b flex items-center justify-center gap-4 backdrop-blur-lg py-2 font-Ubuntu font-semibold uppercase"
     >
       <router-link
         activeClass="bg-purple hover:shadow-purple/75 border-purple"

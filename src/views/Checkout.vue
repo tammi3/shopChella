@@ -9,6 +9,7 @@ import {
   arrayUnion,
   Timestamp,
   collection,
+  addDoc,
   query,
   where,
   getDocs,
@@ -110,7 +111,7 @@ export default {
 
       if (this.isValid) {
         const user = auth.currentUser;
-        const order = {
+        const docRef = await addDoc(collection(db, "orders"), {
           cart: this.cart,
           shipping_info: {
             country: this.selectedCountry,
@@ -122,13 +123,9 @@ export default {
             shipping_fee: 24.0,
           },
           orderID: uuid,
+          userID: user.uid,
           status: "Processing",
           created_at: Timestamp.fromDate(new Date()),
-        };
-        console.log(order);
-        await updateDoc(doc(db, "orders", user.uid), {
-          orders: arrayUnion(order),
-          updated_at: Timestamp.fromDate(new Date()),
         }).then(() => {
           updateDoc(doc(db, "carts", user.uid), {
             items: [],

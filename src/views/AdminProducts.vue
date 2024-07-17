@@ -84,7 +84,7 @@ export default {
 </script>
 <template>
   <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-    <div class="w-full p-4 flex justify-center items-center gap-4 font-semibold">
+    <div class="w-full p-4 flex justify-center items-center font-semibold">
       <button
         @click="toggleAddProduct()"
         class="cursor-pointer uppercase bg-purple w-44 h-10 rounded-xl hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg hover:shadow-purple/75 transform duration-200 ease-in-out border border-purple p-4 justify-center items-center flex"

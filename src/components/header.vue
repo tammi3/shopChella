@@ -91,48 +91,79 @@ export default {
 </script>
 <template>
   <div class="sticky top-0 w-full z-50 border-solid border-b">
-    <nav class="font-Ubuntu flex justify-between bg-white text-lg px-10 py-6 gap-10">
-      <RouterLink class="font-Anton w-1/4 text-3xl pr-10" to="/">shopChella</RouterLink>
+    <nav class="font-Ubuntu bg-white">
+      <div class="container mx-auto px-4 py-2 flex justify-between items-center">
+        <!-- Brand Name -->
 
-      <ul class="flex w-3/4 justify-end items-center gap-4">
-        <div class="flex gap-3 w-2/4 justify-center items-center">
+        <RouterLink class="font-Anton text-2xl font-bold text-gray-800" to="/"
+          >shopChella</RouterLink
+        >
+
+        <!-- Navigation Links -->
+        <div class="hidden md:flex space-x-6">
           <RouterLink
-            class="font-EdGaramond font-bold text-xl pr-10"
             to="/Shop/allcategories"
+            class="text-gray-700 font-bold hover:text-gray-900"
             >Shop</RouterLink
           >
         </div>
-        <router-link class="hover:opacity-60" to="/Profile">
-          <!-- default profile image -->
-          <i v-if="updatedProfileImage" class="fa fa-user-o fa-lg" aria-hidden="true"></i>
-          <!-- custom profile image -->
-          <img
-            v-if="userInfo.updatedProfileImage"
-            id="profile"
-            class="w-10 h-10 rounded-full"
-            src=""
-            alt=""
-          />
-        </router-link>
-        <svg
-          @click="toggleCart"
-          id="cart"
-          class="opacity-80 hover:opacity-60 cursor-pointer"
-          width="30px"
-          height="30px"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M9 11V6C9 4.34315 10.3431 3 12 3C13.6569 3 15 4.34315 15 6V10.9673M10.4 21H13.6C15.8402 21 16.9603 21 17.816 20.564C18.5686 20.1805 19.1805 19.5686 19.564 18.816C20 17.9603 20 16.8402 20 14.6V12.2C20 11.0799 20 10.5198 19.782 10.092C19.5903 9.71569 19.2843 9.40973 18.908 9.21799C18.4802 9 17.9201 9 16.8 9H7.2C6.0799 9 5.51984 9 5.09202 9.21799C4.71569 9.40973 4.40973 9.71569 4.21799 10.092C4 10.5198 4 11.0799 4 12.2V14.6C4 16.8402 4 17.9603 4.43597 18.816C4.81947 19.5686 5.43139 20.1805 6.18404 20.564C7.03968 21 8.15979 21 10.4 21Z"
-            stroke="#000000"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
-      </ul>
+
+        <!-- Icons and Dropdown -->
+        <div class="flex items-center space-x-4">
+          <!-- Cart Icon -->
+          <a href="#" class="relative">
+            <svg
+              @click="toggleCart"
+              id="cart"
+              class="opacity-80 hover:opacity-60 cursor-pointer"
+              width="30px"
+              height="30px"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M9 11V6C9 4.34315 10.3431 3 12 3C13.6569 3 15 4.34315 15 6V10.9673M10.4 21H13.6C15.8402 21 16.9603 21 17.816 20.564C18.5686 20.1805 19.1805 19.5686 19.564 18.816C20 17.9603 20 16.8402 20 14.6V12.2C20 11.0799 20 10.5198 19.782 10.092C19.5903 9.71569 19.2843 9.40973 18.908 9.21799C18.4802 9 17.9201 9 16.8 9H7.2C6.0799 9 5.51984 9 5.09202 9.21799C4.71569 9.40973 4.40973 9.71569 4.21799 10.092C4 10.5198 4 11.0799 4 12.2V14.6C4 16.8402 4 17.9603 4.43597 18.816C4.81947 19.5686 5.43139 20.1805 6.18404 20.564C7.03968 21 8.15979 21 10.4 21Z"
+                stroke="#000000"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            <span
+              class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full"
+              >{{ Object.keys(cart).length }}</span
+            >
+          </a>
+
+          <!-- Profile Dropdown -->
+          <div class="relative dropdown">
+            <button class="flex items-center focus:outline-none">
+              <i
+                v-if="updatedProfileImage"
+                class="fa fa-user-o fa-lg"
+                aria-hidden="true"
+              ></i>
+              <!-- custom profile image -->
+              <img
+                v-if="userInfo.updatedProfileImage"
+                id="profile"
+                class="w-10 h-10 rounded-full"
+                src=""
+                alt=""
+              />
+            </button>
+            <div class="dropdown-content right-0 mt-2 rounded-lg shadow-lg">
+              <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-200"
+                >Profile</a
+              >
+              <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-200"
+                >Logout</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
     </nav>
 
     <div
@@ -208,3 +239,16 @@ export default {
     </div>
   </div>
 </template>
+<style>
+/* Additional styles for dropdown functionality */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+}
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+</style>

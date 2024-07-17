@@ -74,11 +74,6 @@ export default {
                 updated_at: Timestamp.fromDate(new Date()),
                 items: [],
               });
-              setDoc(doc(db, "orders", user.uid), {
-                created_at: Timestamp.fromDate(new Date()),
-                updated_at: Timestamp.fromDate(new Date()),
-                orders: [],
-              });
             });
 
             this.$router.replace({ path: "/Shop/allcategories" });
