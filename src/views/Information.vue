@@ -1,6 +1,6 @@
 <template>
   <div class="container mx-auto p-6">
-    <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+    <div class="p-6 mb-6">
       <h1 class="text-3xl font-bold mb-4">Shopchella Information</h1>
 
       <!-- Terms & Conditions Section -->

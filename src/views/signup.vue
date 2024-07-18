@@ -245,7 +245,7 @@ export default {
         src="../assets/loading.png"
         alt=""
       />
-      <span v-if="!loading">REGISTER</span>
+      <span v-else>REGISTER</span>
     </button>
     <p class="font-normal tracking-wide">
       Already have an account?

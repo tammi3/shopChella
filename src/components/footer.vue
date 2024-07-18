@@ -5,9 +5,9 @@ export default {
 </script>
 
 <template>
-  <div class="flex w-full p-32 gap-5">
+  <div class="flex flex-col lg:flex-row w-full p-10 gap-5">
     <!-- About -->
-    <div class="flex flex-col w-1/4 gap-3">
+    <div class="flex flex-col lg:w-1/4 gap-3">
       <p class="text-xl uppercase font-Ubuntu font-medium">
         shop smart. shop easy. shop at
         <span class="font-Anton lowercase tracking-wide">shopChella</span>.
@@ -22,7 +22,7 @@ export default {
     </div>
 
     <!-- Categories -->
-    <div class="flex flex-col w-1/4 gap-3">
+    <div class="flex flex-col lg:w-1/4 gap-3">
       <routerLink
         to="/Shop/allcategories"
         class="font-Ubuntu uppercase font-medium text-lg tracking-wider"
@@ -40,17 +40,24 @@ export default {
     </div>
 
     <!-- Information -->
-    <div class="flex flex-col w-1/4 gap-3">
-      <p class="font-Ubuntu uppercase font-medium text-lg tracking-wider">Information</p>
+    <div class="flex flex-col lg:w-1/4 gap-3">
+      <routerLink
+        to="/Information"
+        class="font-Ubuntu uppercase font-medium text-lg tracking-wider"
+        >Information</routerLink
+      >
       <ul class="capitalize font-EdGaramond tracking-wider text-lg flex flex-col gap-2">
         <li class="hover:text-gray-400 cursor-pointer">Terms & Conditions</li>
         <li class="hover:text-gray-400 cursor-pointer">Returns & Exchange</li>
         <li class="hover:text-gray-400 cursor-pointer">Shipping & Delivery</li>
+        <router-link class="hover:text-gray-400 cursor-pointer" to="/Tracking"
+          >Tracking Package</router-link
+        >
       </ul>
     </div>
 
     <!-- Contact -->
-    <div class="flex flex-col w-1/4 gap-3">
+    <div class="flex flex-col lg:w-1/4 gap-3">
       <p class="font-Ubuntu uppercase font-medium text-lg tracking-wider">Contact</p>
       <div class="flex gap-2 hover:text-gray-400 cursor-pointer items-center">
         <i class="fa fa-lg fa-envelope" aria-hidden="true"></i>

@@ -57,6 +57,7 @@ export default {
     },
   },
   async created() {
+    this.products = [];
     await this.setCategory(this.cat);
   },
 };
