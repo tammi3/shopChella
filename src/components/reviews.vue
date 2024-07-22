@@ -1,132 +1,115 @@
 <template>
-    <div class="py-40 px-24 bg-purple flex justify-center items-center">
-
-        <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="ride">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <div class="flex gap-10 justify-center items-center">
-                        <img class="w-72 h-72 rounded-full " src="../assets/pexels-annetnavi-1035671.jpg" alt="">
-                        <div class="w-2/4 flex flex-col gap-3">
-                            <div class="flex gap-3 ">
-                                <p class="font-Ubuntu font-black text-3xl tracking-wide uppercase">Anne Navi</p>
-                                <div class="flex gap-2 items-end pb-2">
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star"></span>
-                                </div>
-                            </div>
-                            <p class="font-EdGaramond font-normal  text-xl ">Lorem ipsum dolor sit amet, consectetur
-                                adipiscing
-                                elit. Praesent facilisis quam non risus viverra,
-                                non mollis est blandit. Vivamus luctus semper eros sit amet blandit,Lorem ipsum dolor
-                                sit amet,
-                                consectetur adipiscing elit. Praesent facilisis quam non risus viverra, non mollis est
-                                blandit.
-                                Vivamus luctus semper eros sit amet blandit.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="flex gap-10 justify-center items-center">
-                        <img class="w-72 h-72 rounded-full " src="../assets/pexels-olly-3812760.jpg" alt="">
-                        <div class="w-2/4 flex flex-col gap-3">
-                            <div class="flex gap-3 ">
-                                <p class="font-Ubuntu font-black text-3xl tracking-wide uppercase">Olly Grace</p>
-                                <div class="flex gap-2 items-end pb-2">
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star"></span>
-                                    <span class="fa fa-star"></span>
-                                </div>
-                            </div>
-                            <p class="font-EdGaramond font-normal  text-xl ">Lorem ipsum dolor sit amet, consectetur
-                                adipiscing
-                                elit. Praesent facilisis quam non risus viverra,
-                                non mollis est blandit. Vivamus luctus semper eros sit amet blandit,Lorem ipsum dolor
-                                sit amet,
-                                consectetur adipiscing elit. Praesent facilisis quam non risus viverra, non mollis est
-                                blandit.
-                                Vivamus luctus semper eros sit amet blandit.
-                            </p>
-
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="flex gap-10 justify-center items-center">
-                        <img class="w-72 h-72 rounded-full " src="../assets/pexels-wilsonvitorino-2167673.jpg" alt="">
-                        <div class="w-2/4 flex flex-col gap-3">
-                            <div class="flex gap-3 ">
-                                <p class="font-Ubuntu font-black text-3xl tracking-wide uppercase">Victoria Wilson</p>
-                                <div class="flex gap-2 items-end pb-2">
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star"></span>
-                                </div>
-                            </div>
-                            <p class="font-EdGaramond font-normal  text-xl ">Lorem ipsum dolor sit amet, consectetur
-                                adipiscing
-                                elit. Praesent facilisis quam non risus viverra,
-                                non mollis est blandit. Vivamus luctus semper eros sit amet blandit,Lorem ipsum dolor
-                                sit amet,
-                                consectetur adipiscing elit. Praesent facilisis quam non risus viverra, non mollis est
-                                blandit.
-                                Vivamus luctus semper eros sit amet blandit.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="flex gap-10 justify-center items-center">
-                        <img class="w-72 h-72 rounded-full " src="../assets/pexels-george-dolgikh-551816-1310522.jpg"
-                            alt="">
-                        <div class="w-2/4 flex flex-col gap-3">
-                            <div class="flex gap-3 ">
-                                <p class="font-Ubuntu font-black text-3xl tracking-wide uppercase">Dolgikh Faith</p>
-                                <div class="flex gap-2 items-end pb-2">
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star checked"></span>
-                                    <span class="fa fa-star"></span>
-                                </div>
-                            </div>
-                            <p class="font-EdGaramond font-normal text-xl ">Lorem ipsum dolor sit amet, consectetur
-                                adipiscing
-                                elit. Praesent facilisis quam non risus viverra,
-                                non mollis est blandit. Vivamus luctus semper eros sit amet blandit,Lorem ipsum dolor
-                                sit amet,
-                                consectetur adipiscing elit. Praesent facilisis quam non risus viverra, non mollis est
-                                blandit.
-                                Vivamus luctus semper eros sit amet blandit.
-                            </p>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
-                data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden ">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
-                data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div>
-
+  <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+      <button
+        type="button"
+        data-bs-target="#carouselExampleIndicators"
+        data-bs-slide-to="0"
+        class="active"
+        aria-current="true"
+        aria-label="Slide 1"
+      ></button>
+      <button
+        type="button"
+        data-bs-target="#carouselExampleIndicators"
+        data-bs-slide-to="1"
+        aria-label="Slide 2"
+      ></button>
+      <button
+        type="button"
+        data-bs-target="#carouselExampleIndicators"
+        data-bs-slide-to="2"
+        aria-label="Slide 3"
+      ></button>
     </div>
-
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img
+          src="../assets/a5f34309-e364-4aec-9a59-e0c2f88897c2.jfif"
+          class="w-full h-dvh object-cover"
+          alt="..."
+        />
+      </div>
+      <div class="carousel-item">
+        <img
+          src="../assets/Gold jewelry collection _ Stunning rings and bracelets.jfif"
+          class="w-full h-dvh object-cover"
+          alt="..."
+        />
+      </div>
+      <div class="carousel-item">
+        <img
+          src="../assets/Ideas de fotografía creativa para tu marca - Una idea creativa.jfif"
+          class="w-full h-dvh object-cover"
+          alt="..."
+        />
+      </div>
+    </div>
+    <button
+      class="carousel-control-prev"
+      type="button"
+      data-bs-target="#carouselExampleIndicators"
+      data-bs-slide="prev"
+    >
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button
+      class="carousel-control-next"
+      type="button"
+      data-bs-target="#carouselExampleIndicators"
+      data-bs-slide="next"
+    >
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+  <!-- <div class="p-10 grid gap-4">
+    <div class="flex items-center justify-center">
+      <img
+        class="h-auto max-w-full rounded-lg"
+        src="https://flowbite.s3.amazonaws.com/docs/gallery/featured/image.jpg"
+        alt=""
+      />
+    </div>
+    <div class="grid grid-cols-5 gap-4">
+      <div>
+        <img
+          class="h-auto max-w-full rounded-lg"
+          src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg"
+          alt=""
+        />
+      </div>
+      <div>
+        <img
+          class="h-auto max-w-full rounded-lg"
+          src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg"
+          alt=""
+        />
+      </div>
+      <div>
+        <img
+          class="h-auto max-w-full rounded-lg"
+          src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-3.jpg"
+          alt=""
+        />
+      </div>
+      <div>
+        <img
+          class="h-auto max-w-full rounded-lg"
+          src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-4.jpg"
+          alt=""
+        />
+      </div>
+      <div>
+        <img
+          class="h-auto max-w-full rounded-lg"
+          src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-5.jpg"
+          alt=""
+        />
+      </div>
+    </div>
+  </div> -->
 </template>
 
-<script>
-
-</script>
+<script></script>

@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@paystack/inline-js": "^2.19.2",
     "axios": "^1.7.2",
     "firebase": "^10.12.2",
     "flowbite": "^2.4.1",
@@ -16,7 +17,9 @@
     "sweetalert2": "^11.12.2",
     "uuid": "^10.0.0",
     "vue": "^3.4.27",
+    "vue-flutterwave": "^1.0.0",
     "vue-router": "^4.3.0",
+    "vue-scrollto": "^2.20.0",
     "vue-the-mask": "^0.11.1"
   },
   "devDependencies": {

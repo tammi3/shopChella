@@ -6,17 +6,22 @@ export default {
       trackedOrder: {},
       trackingID: "",
       statusText: "",
+      statusBg: "",
       loading: false,
     };
   },
   methods: {
     trackPackage() {
+      this.trackedOrder = {};
+      this.statusBg = "";
+      this.statusText = "";
       this.loading = true;
       const trackingResult = document.getElementById("tracking-result");
+      trackingResult.classList.add("hidden");
+      trackingResult.classList.remove("flex");
 
       const q = query(collection(db, "orders"), where("orderID", "==", this.trackingID));
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
-        const cities = [];
         querySnapshot.forEach((doc) => {
           this.trackedOrder = {
             ...doc.data(),
@@ -25,16 +30,32 @@ export default {
       });
 
       setTimeout(() => {
+        if (this.trackedOrder.status == "In transit") {
+          this.statusBg = "bg-yellow-500";
+          console.log(this.statusBg);
+        }
+        if (this.trackedOrder.status == "Processing") {
+          this.statusBg = "bg-orange-400";
+          console.log(this.statusBg);
+        }
+        if (this.trackedOrder.status == "Delivered") {
+          this.statusBg = "bg-green-400";
+          console.log(this.statusBg);
+        }
         console.log(this.trackedOrder);
-
-        this.statusText =
-          "The status of your package " +
-          "(" +
-          this.trackingID +
-          ")" +
-          "  is " +
-          this.trackedOrder.status +
-          " .";
+        if (Object.keys(this.trackedOrder).length === 0) {
+          this.statusText = "Invalid tracking ID.";
+          this.statusBg = "bg-red-200";
+        } else {
+          this.statusText = this.trackedOrder.status;
+          // "The status of your package " +
+          // "(" +
+          // this.trackingID +
+          // ")" +
+          // "  is " +
+          // this.trackedOrder.status +
+          // " .";
+        }
 
         trackingResult.classList.remove("hidden");
         trackingResult.classList.add("flex");
@@ -91,14 +112,15 @@ export default {
         <div v-if="trackedOrder.status == 'Delivered'" class="max-w-xs">
           <img src="../assets/courier.png" alt="" />
         </div>
-        <div v-if="trackedOrder == ''" class="max-w-xs">
+        <div v-if="Object.keys(trackedOrder).length === 0" class="max-w-xs">
           <img src="../assets/open-box.png" alt="" />
         </div>
-        <h2 class="text-xl font-bold mb-2">Tracking Status:</h2>
-        <div class="flex items-center">
-          <p class="text-gray-700 font-semibold mr-2">Status:</p>
-          <span class="shadow-md text-black px-3 py-1 rounded-full">{{
-            trackedOrder.status
+
+        <div class="w-full flex flex-col items-center">
+          <h2 class="text-xl font-bold mb-2">Tracking Status:</h2>
+          <!-- <p class="text-gray-700 font-semibold mr-2">Status:</p> -->
+          <span :class="statusBg + ' shadow-md text-black px-3 py-1 rounded-full'">{{
+            statusText
           }}</span>
         </div>
       </div>

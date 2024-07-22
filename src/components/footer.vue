@@ -1,6 +1,33 @@
 <script>
+import {
+  db,
+  query,
+  doc,
+  onSnapshot,
+  collection,
+  Timestamp,
+  updateDoc,
+  getDocs,
+} from "../db/firebase.js";
 export default {
   props: ["categories"],
+  data() {
+    return {
+      infoHeaders: [],
+    };
+  },
+  created() {
+    const q = query(collection(db, "shopchella_information"));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        this.infoHeaders.push({
+          title: doc.data().title,
+          id: doc.id,
+        });
+      });
+      console.log(this.infoHeaders);
+    });
+  },
 };
 </script>
 
@@ -47,9 +74,13 @@ export default {
         >Information</routerLink
       >
       <ul class="capitalize font-EdGaramond tracking-wider text-lg flex flex-col gap-2">
-        <li class="hover:text-gray-400 cursor-pointer">Terms & Conditions</li>
-        <li class="hover:text-gray-400 cursor-pointer">Returns & Exchange</li>
-        <li class="hover:text-gray-400 cursor-pointer">Shipping & Delivery</li>
+        <router-link
+          :to="'/Information/' + info.id"
+          v-for="info in infoHeaders"
+          class="hover:text-gray-400 cursor-pointer"
+          >{{ info.title }}</router-link
+        >
+
         <router-link class="hover:text-gray-400 cursor-pointer" to="/Tracking"
           >Tracking Package</router-link
         >

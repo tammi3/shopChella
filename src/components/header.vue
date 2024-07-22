@@ -111,11 +111,10 @@ export default {
         <!-- Icons and Dropdown -->
         <div class="flex items-center space-x-4">
           <!-- Cart Icon -->
-          <a href="#" class="relative">
+          <div @click="toggleCart" class="relative cursor-pointer">
             <svg
-              @click="toggleCart"
               id="cart"
-              class="opacity-80 hover:opacity-60 cursor-pointer"
+              class="opacity-80 hover:opacity-60"
               width="30px"
               height="30px"
               viewBox="0 0 24 24"
@@ -134,7 +133,7 @@ export default {
               class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full"
               >{{ Object.keys(cart).length }}</span
             >
-          </a>
+          </div>
 
           <!-- Profile Dropdown -->
           <div class="relative dropdown">
@@ -213,9 +212,9 @@ export default {
                   <h3 class="text-gray-800 text-xl">
                     {{ product.product_name }}
                   </h3>
-                  <p class="text-gray-600">${{ product.price }}</p>
+                  <p class="text-gray-600"> &#8358;{{ product.price }}</p>
                   <p class="text-gray-600">Quantity: {{ product.quantity }}</p>
-                  <p class="text-gray-600">Total: ${{ product.total_price }}</p>
+                  <p class="text-gray-600">Total: &#8358;{{ product.total_price }}</p>
                 </div>
                 <i
                   @click="deleteFromCart(index)"

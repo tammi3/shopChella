@@ -53,7 +53,9 @@ export default {
           });
         });
       }
-      this.loading = false;
+      setTimeout(() => {
+        this.loading = false;
+      }, 2000);
     },
   },
   async created() {
@@ -116,6 +118,7 @@ export default {
         </div>
       </div>
       <div
+        v-for="skeleton in filteredProducts"
         v-else
         class="max-w-[288px] w-72 mx-auto bg-white shadow-lg rounded-lg overflow-hidden"
       >

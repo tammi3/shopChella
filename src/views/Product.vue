@@ -92,7 +92,7 @@ export default {
         <!-- Product Details -->
         <div class="lg:w-1/2 lg:pl-6 mt-6 lg:mt-0">
           <h1 class="text-3xl font-bold text-gray-800">{{ product.name }}</h1>
-          <p class="text-xl text-gray-600 mt-2">${{ product.price }}</p>
+          <p class="text-xl text-gray-600 mt-2">&#8358;{{ product.price }}</p>
           <p class="text-gray-700 text-xl mt-4 font-EdGaramond">
             {{ product.description }}
           </p>
