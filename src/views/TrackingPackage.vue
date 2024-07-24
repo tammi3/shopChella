@@ -67,11 +67,13 @@ export default {
 };
 </script>
 <template>
-  <div class="container mx-auto p-4">
+  <div class="container mx-auto px-4 py-14">
     <div
-      class="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto flex flex-col justify-center items-center"
+      class="bg-white p-6 rounded-lg max-w-md mx-auto flex flex-col justify-center items-center"
     >
-      <div class="max-w-xs"><img src="../assets/tracking.png" alt="" /></div>
+      <div v-if="!trackingID" class="max-w-xs">
+        <img src="../assets/tracking.png" alt="" />
+      </div>
       <h1 class="text-3xl font-bold mb-4 text-center">Track Your Package</h1>
       <form @submit.prevent="trackPackage()" id="tracking-form" class="w-full mb-4">
         <label for="tracking-ID" class="block text-sm font-medium text-gray-700 mb-2"
@@ -82,13 +84,13 @@ export default {
           id="tracking-ID"
           name="tracking-ID"
           v-model="trackingID"
-          class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple focus:border-purple"
+          class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-gray-300"
           placeholder="Tracking ID"
           required
         />
         <button
           type="sumbit"
-          class="mt-4 w-full flex justify-center items-center bg-purple text-white py-2 px-4 rounded-lg shadow-md hover:bg-purple/75 focus:outline-none focus:ring-2 focus:ring-purple/25 focus:ring-opacity-50"
+          class="mt-4 w-full flex justify-center items-center bg-gray-500 text-white py-2 px-4 rounded-lg shadow-md hover:bg-gray-500/75 focus:outline-none focus:ring-2 focus:ring-purple/25 focus:ring-opacity-50"
         >
           <img
             v-if="loading"
@@ -100,6 +102,7 @@ export default {
         </button>
       </form>
       <div
+        v-if="trackingID"
         id="tracking-result"
         class="hidden w-full flex-col justify-center items-center"
       >
@@ -117,11 +120,15 @@ export default {
         </div>
 
         <div class="w-full flex flex-col items-center">
-          <h2 class="text-xl font-bold mb-2">Tracking Status:</h2>
+          <h2 class="text-xl font-bold mb-2 uppercase">Tracking Status:</h2>
           <!-- <p class="text-gray-700 font-semibold mr-2">Status:</p> -->
-          <span :class="statusBg + ' shadow-md text-black px-3 py-1 rounded-full'">{{
-            statusText
-          }}</span>
+          <span
+            :class="
+              statusBg +
+              ' shadow-md text-black font-Ubuntu font-semibold text-md px-3 py-1 rounded-full'
+            "
+            >{{ statusText }}</span
+          >
         </div>
       </div>
     </div>

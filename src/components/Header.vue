@@ -25,6 +25,7 @@ export default {
       updatedProfileImage: true,
     };
   },
+  props: ["categories"],
   methods: {
     toggleCart() {
       this.cartDisplay = document.querySelector("#cartDisplay");
@@ -100,12 +101,15 @@ export default {
         >
 
         <!-- Navigation Links -->
-        <div class="hidden md:flex space-x-6">
-          <RouterLink
-            to="/Shop/allcategories"
+        <div class="hidden md:flex space-x-6 uppercase text-sm">
+          <routerLink
+            activeClass=""
+            v-for="cat in categories"
+            :to="'/shop/' + cat"
             class="text-gray-700 font-bold hover:text-gray-900"
-            >Shop</RouterLink
           >
+            {{ cat }}
+          </routerLink>
         </div>
 
         <!-- Icons and Dropdown -->
@@ -136,7 +140,7 @@ export default {
           </div>
 
           <!-- Profile Dropdown -->
-          <div class="relative dropdown">
+          <router-link to="/Profile" class="relative dropdown">
             <button class="flex items-center focus:outline-none">
               <i
                 v-if="updatedProfileImage"
@@ -152,15 +156,15 @@ export default {
                 alt=""
               />
             </button>
-            <div class="dropdown-content right-0 mt-2 rounded-lg shadow-lg">
+            <!-- <div class="dropdown-content right-0 mt-2 rounded-lg shadow-lg">
               <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-200"
                 >Profile</a
               >
               <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-200"
                 >Logout</a
               >
-            </div>
-          </div>
+            </div> -->
+          </router-link>
         </div>
       </div>
     </nav>
@@ -212,7 +216,7 @@ export default {
                   <h3 class="text-gray-800 text-xl">
                     {{ product.product_name }}
                   </h3>
-                  <p class="text-gray-600"> &#8358;{{ product.price }}</p>
+                  <p class="text-gray-600">&#8358;{{ product.price }}</p>
                   <p class="text-gray-600">Quantity: {{ product.quantity }}</p>
                   <p class="text-gray-600">Total: &#8358;{{ product.total_price }}</p>
                 </div>

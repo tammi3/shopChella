@@ -17,6 +17,7 @@ import {
   sum,
 } from "../db/firebase.js";
 import Paystack from "@paystack/inline-js";
+import { keys } from "../utilities/env.js";
 
 import { v4 as uuidv4 } from "uuid";
 import Swal from "sweetalert2";
@@ -146,7 +147,7 @@ export default {
       try {
         const popup = new Paystack();
         popup.newTransaction({
-          key: "pk",
+          key: keys.paystack.publicKey,
           email: this.userInfo.email,
           amount: this.total * 100,
           currency: "NGN",
@@ -172,7 +173,7 @@ export default {
                 `https://api.paystack.co/transaction/verify/${transaction.reference}`,
                 {
                   headers: {
-                    Authorization: `Bearer sk`,
+                    Authorization: `Bearer ${keys.paystack.secretKey}`,
                   },
                 }
               )
@@ -207,7 +208,7 @@ export default {
       try {
         const uuid = uuidv4();
         const modal = FlutterwaveCheckout({
-          public_key: "",
+          public_key: keys.flutterwave.publicKey,
           tx_ref: "shopChella-" + uuid,
           amount: this.total,
           currency: "NGN",
@@ -263,7 +264,6 @@ export default {
     const user = auth.currentUser;
     onSnapshot(doc(db, "users", user.uid), (doc) => {
       this.userInfo = doc.data();
-      console.log(this.userInfo);
     });
     axios.get("https://countriesnow.space/api/v0.1/countries/").then((data) => {
       this.countries = data.data.data;
@@ -299,7 +299,7 @@ export default {
                   {{ product.product_name }}
                 </h4>
                 <p class="text-gray-600">Quantity: {{ product.quantity }}</p>
-                <p class="text-gray-600">Price: &#8358;{{ product.total_price }}</p>
+                <p class="text-gray-600">Price: ${{ product.total_price }}</p>
               </div>
             </div>
           </div>
@@ -311,15 +311,15 @@ export default {
           <div class="text-gray-600">
             <div class="flex justify-between mb-2">
               <span>Subtotal</span>
-              <span>&#8358;{{ subtotal }}.00</span>
+              <span>${{ subtotal }}.00</span>
             </div>
             <div class="flex justify-between mb-2">
               <span>Shipping</span>
-              <span>&#8358;24.00</span>
+              <span>$24.00</span>
             </div>
             <div class="flex justify-between font-semibold">
               <span>Total</span>
-              <span>&#8358;{{ total }}.00</span>
+              <span>${{ total }}.00</span>
             </div>
           </div>
         </div>

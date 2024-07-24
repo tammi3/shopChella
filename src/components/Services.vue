@@ -2,7 +2,7 @@
 export default {};
 </script>
 <template>
-  <div class="flex flex-col lg:flex-row px-10 py-20 gap-10">
+  <!-- <div class="flex flex-col lg:flex-row px-10 py-20 gap-10">
     <div class="lg:w-1/3 flex flex-col justify-start items-center gap-6">
       <img class="w-2/4" src="../assets/customer-service.png" alt="" />
       <div class="w-full flex flex-col justify-start text-center items-center">
@@ -39,5 +39,5 @@ export default {};
         </p>
       </div>
     </div>
-  </div>
+  </div> -->
 </template>

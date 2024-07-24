@@ -2,10 +2,12 @@
 import { RouterView } from "vue-router";
 import { doc, db, onSnapshot, getDocs, collection } from "./db/firebase.js";
 import AppHeader from "./components/Header.vue";
+import AppFooter from "./components/Footer.vue";
 
 export default {
   components: {
     AppHeader,
+    AppFooter,
   },
   data() {
     return {
@@ -24,7 +26,8 @@ export default {
 
 <template>
   <div class="h-screen w-screen overflow-scroll">
-    <AppHeader />
+    <AppHeader :categories="categories" />
     <RouterView :categories="categories" />
+    <AppFooter :categories="categories" />
   </div>
 </template>

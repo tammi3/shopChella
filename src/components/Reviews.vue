@@ -24,25 +24,13 @@
     </div>
     <div class="carousel-inner">
       <div class="carousel-item active">
-        <img
-          src="../assets/a5f34309-e364-4aec-9a59-e0c2f88897c2.jfif"
-          class="w-full h-dvh object-cover"
-          alt="..."
-        />
+        <img src="" class="w-full h-dvh object-cover" alt="..." />
       </div>
       <div class="carousel-item">
-        <img
-          src="../assets/Gold jewelry collection _ Stunning rings and bracelets.jfif"
-          class="w-full h-dvh object-cover"
-          alt="..."
-        />
+        <img src="" class="w-full h-dvh object-cover" alt="..." />
       </div>
       <div class="carousel-item">
-        <img
-          src="../assets/Ideas de fotografía creativa para tu marca - Una idea creativa.jfif"
-          class="w-full h-dvh object-cover"
-          alt="..."
-        />
+        <img src="" class="w-full h-dvh object-cover" alt="..." />
       </div>
     </div>
     <button
