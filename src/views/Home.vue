@@ -36,14 +36,15 @@ export default {
   <div v-if="!loading">
     <div class="relative h-dvh">
       <img
-        class="absolute object-cover h-dvh w-full"
+        class="absolute object-cover inset-0 h-dvh w-full"
         :src="landingContent.welcome"
         alt=""
       />
+      <div class="bg-black h-dvh w-full inset-0 opacity-30 absolute"></div>
       <div class="container mx-auto px-4 py-20 flex items-end justify-center">
         <router-link
           to="/Shop/allcategories"
-          class="bg-white hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg hover:shadow-white/75 transform duration-200 ease-in-out w-60 uppercase h-16 flex justify-center items-center rounded-xl text-lg text-black font-bold tracking-wider font-Ubuntu"
+          class="bg-black border border-white hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg hover:shadow-white/50 transform duration-200 ease-in-out w-60 uppercase h-16 flex justify-center items-center rounded-xl text-lg text-white font-bold tracking-wider font-Ubuntu"
         >
           Explore</router-link
         >

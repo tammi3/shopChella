@@ -158,7 +158,7 @@ export default {
         <RouterLink
           v-if="admin"
           class="bg-purple w-56 h-8 text-lg font-medium rounded-lg hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg hover:shadow-purple/75 transform duration-200 ease-in-out border border-gray-500 p-4 justify-center items-center flex"
-          to="/Admin"
+          to="/Admin/Products"
           >Admin</RouterLink
         >
       </div>

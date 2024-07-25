@@ -87,7 +87,7 @@ export default {
     <div class="w-full p-4 flex justify-center items-center font-semibold">
       <button
         @click="toggleAddProduct()"
-        class="cursor-pointer uppercase bg-purple w-44 h-10 rounded-xl hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg hover:shadow-purple/75 transform duration-200 ease-in-out border border-purple p-4 justify-center items-center flex"
+        class="w-44 h-10 uppercase cursor-pointer rounded-xl hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg transform duration-200 ease-in-out border bg-black text-white hover:shadow-black/60 border-black p-4 justify-center items-center flex"
       >
         Add Product
       </button>

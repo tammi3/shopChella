@@ -8,6 +8,7 @@ import {
   uploadBytes,
   getDownloadURL,
   collection,
+  deleteObject,
   addDoc,
 } from "../db/firebase.js";
 
@@ -35,25 +36,36 @@ export default {
       const category = productForm.category.value;
       const inputFile = document.getElementById("image");
       const uploadImage = inputFile.files[0];
-      const storageRef = ref(storage, "products/" + uploadImage.name);
 
-      // if (uploadImage == !"") {
-      //   deleteObject(ref(storage, this.product.image)).then(() => {
-      uploadBytes(storageRef, uploadImage).then((snapshot) => {
-        getDownloadURL(storageRef).then((url) => {
-          updateDoc(doc(db, "products", this.product.id), {
-            name: title,
-            price: price,
-            description: description,
-            category: category,
-            image: url,
+      if (uploadImage) {
+        console.log(title, price, uploadImage);
+
+        const storageRef = ref(storage, "products/" + uploadImage.name);
+        deleteObject(ref(storage, this.product.image)).then(() => {
+          uploadBytes(storageRef, uploadImage).then((snapshot) => {
+            getDownloadURL(storageRef).then((url) => {
+              updateDoc(doc(db, "products", this.product.id), {
+                name: title,
+                price: price,
+                description: description,
+                category: category,
+                image: url,
+              }).then(() => {
+                this.closeModal();
+              });
+            });
           });
-          this.closeModal();
-          // this.$router.go(0);
         });
-      });
-      //   });
-      // }
+      } else {
+        updateDoc(doc(db, "products", this.product.id), {
+          name: title,
+          price: price,
+          description: description,
+          category: category,
+        }).then(() => {
+          console.log("updated");
+        });
+      }
     },
     closeModal() {
       const productForm = document.querySelector(".addProduct");
@@ -107,9 +119,7 @@ export default {
     class="w-full right-0 absolute justify-center flex items-center top-0 backdrop-blur-lg h-full"
   >
     <div class="w-full flex justify-center items-center py-4">
-      <section
-        class="flex flex-col shadow-lg rounded-lg bg-white dark:bg-gray-900 w-96 md:w-2/4"
-      >
+      <section class="flex flex-col shadow-lg rounded-lg bg-white w-96 md:w-2/4">
         <div class="flex justify-end p-4 items-center">
           <svg
             class="cursor-pointer"
@@ -118,7 +128,7 @@ export default {
             width="20"
             height="21"
           >
-            <g fill="#e4c1f9" fill-rule="evenodd">
+            <g fill="#000000" fill-rule="evenodd">
               <path d="M2.575.954l16.97 16.97-2.12 2.122L.455 3.076z" />
               <path d="M.454 17.925L17.424.955l2.122 2.12-16.97 16.97z" />
             </g>
@@ -128,16 +138,15 @@ export default {
           <form class="addProduct" @submit.prevent="submitForm">
             <div class="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
               <div class="sm:col-span-2">
-                <label
-                  for="name"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                <label for="name" class="block mb-2 text-sm font-medium text-gray-900"
                   >Product Name</label
                 >
                 <input
+                  required
                   type="text"
                   name="name"
                   id="name"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                   placeholder="Type product name"
                 />
               </div>
@@ -149,10 +158,11 @@ export default {
                   >Price</label
                 >
                 <input
+                  required
                   type="number"
                   name="price"
                   id="price"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                   placeholder="$299"
                 />
               </div>
@@ -163,8 +173,9 @@ export default {
                   >Category</label
                 >
                 <select
+                  required
                   id="category"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
                 >
                   <option v-for="cat in categories">{{ cat }}</option>
                 </select>
@@ -173,13 +184,13 @@ export default {
               <div class="sm:col-span-2">
                 <label
                   for="description"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  class="block mb-2 text-sm font-medium text-gray-900"
                   >Description</label
                 >
                 <textarea
                   id="description"
                   rows="8"
-                  class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500"
                   placeholder="Write a product description here..."
                 ></textarea>
               </div>
@@ -188,17 +199,17 @@ export default {
               <label
                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 for="image"
-                >Upload product image</label
+                >Upload product image (optional)</label
               >
               <input
-                class="block w-full mb-5 text-xs text-gray-900 border border-gray-300 cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                class="block w-full mb-5 text-xs text-gray-900 border border-gray-300 cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none"
                 id="image"
                 type="file"
               />
             </div>
             <div class="flex items-center">
               <button
-                class="cursor-pointer bg-purple uppercase w-44 h-16 rounded-lg hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg hover:shadow-gray-500/75 transform duration-200 ease-in-out border border-gray-500 p-4 justify-center items-center flex"
+                class="w-48 h-10 uppercase cursor-pointer rounded-xl hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg transform duration-200 ease-in-out border bg-black text-white hover:shadow-black/60 border-black p-4 justify-center items-center flex"
               >
                 <span v-if="action == 'add'">Add Product</span>
                 <span v-if="action == 'edit'">Update Product</span>

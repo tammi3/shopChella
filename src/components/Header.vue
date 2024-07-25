@@ -14,6 +14,7 @@ import {
   arrayRemove,
   Timestamp,
 } from "../db/firebase.js";
+import { Drawer } from "flowbite";
 
 export default {
   data() {
@@ -65,6 +66,52 @@ export default {
         console.log("deleted to cart");
       });
     },
+    getProfileImg() {
+      if (this.userInfo.updatedProfileImage) {
+        this.updatedProfileImage = false;
+        getDownloadURL(ref(storage, "profile/" + this.userInfo.profile_image))
+          .then((url) => {
+            // Or inserted into an <img> element
+            const img = document.getElementById("profile");
+            img.setAttribute("src", url);
+          })
+          .catch((error) => {});
+      }
+      if (!this.userInfo.updatedProfileImage) {
+        this.updatedProfileImage = true;
+      }
+    },
+    menuToggle() {
+      // set the drawer menu element
+      const $targetEl = document.getElementById("drawer-navigation");
+
+      // options with default values
+      const options = {
+        placement: "right",
+        backdrop: true,
+        bodyScrolling: false,
+        edge: false,
+        edgeOffset: "",
+        backdropClasses: "bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-30",
+        onHide: () => {
+          console.log("drawer is hidden");
+        },
+        onShow: () => {
+          console.log("drawer is shown");
+        },
+        onToggle: () => {
+          console.log("drawer has been toggled");
+        },
+      };
+
+      // instance options object
+      const instanceOptions = {
+        id: "drawer-js-example",
+        override: true,
+      };
+      const drawer = new Drawer($targetEl, options, instanceOptions);
+      drawer.toggle();
+    },
   },
   created() {
     const user = auth.currentUser;
@@ -72,19 +119,7 @@ export default {
       this.getCart();
       onSnapshot(doc(db, "users", user.uid), (doc) => {
         this.userInfo = doc.data();
-        if (this.userInfo.updatedProfileImage) {
-          this.updatedProfileImage = false;
-          getDownloadURL(ref(storage, "profile/" + this.userInfo.profile_image))
-            .then((url) => {
-              // Or inserted into an <img> element
-              const img = document.getElementById("profile");
-              img.setAttribute("src", url);
-            })
-            .catch((error) => {});
-        }
-        if (!this.userInfo.updatedProfileImage) {
-          this.updatedProfileImage = true;
-        }
+        this.getProfileImg();
       });
     }
   },
@@ -156,14 +191,6 @@ export default {
                 alt=""
               />
             </button>
-            <!-- <div class="dropdown-content right-0 mt-2 rounded-lg shadow-lg">
-              <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-200"
-                >Profile</a
-              >
-              <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-200"
-                >Logout</a
-              >
-            </div> -->
           </router-link>
         </div>
       </div>
@@ -182,7 +209,7 @@ export default {
             width="20"
             height="21"
           >
-            <g fill="#e4c1f9" fill-rule="evenodd">
+            <g fill="#000000" fill-rule="evenodd">
               <path d="M2.575.954l16.97 16.97-2.12 2.122L.455 3.076z" />
               <path d="M.454 17.925L17.424.955l2.122 2.12-16.97 16.97z" />
             </g>
@@ -191,7 +218,7 @@ export default {
 
         <div
           v-if="cart == ''"
-          class="w-full font-EdGaramond text-4xl flex flex-col gap-16 p-10 justify-center items-center"
+          class="w-full text-4xl flex flex-col gap-16 p-10 justify-center items-center"
         >
           <p>Your cart is empty :(</p>
           <img class="w-2/4" src="../assets/bag (1).png" />
@@ -216,9 +243,9 @@ export default {
                   <h3 class="text-gray-800 text-xl">
                     {{ product.product_name }}
                   </h3>
-                  <p class="text-gray-600">&#8358;{{ product.price }}</p>
+                  <p class="text-gray-600">${{ product.price }}</p>
                   <p class="text-gray-600">Quantity: {{ product.quantity }}</p>
-                  <p class="text-gray-600">Total: &#8358;{{ product.total_price }}</p>
+                  <p class="text-gray-600">Total: ${{ product.total_price }}</p>
                 </div>
                 <i
                   @click="deleteFromCart(index)"
@@ -231,7 +258,7 @@ export default {
               <RouterLink
                 to="/Checkout"
                 @click="toggleCart"
-                class="w-full uppercase font-bold bg-purple flex items-center justify-center hover:bg-purple/75 px-4 py-2 rounded"
+                class="w-full uppercase font-bold bg-black flex items-center justify-center hover:bg-black/60 text-white px-4 py-2 rounded"
               >
                 <span> Checkout</span>
               </RouterLink>
@@ -240,6 +267,7 @@ export default {
         </div>
       </div>
     </div>
+    <div></div>
   </div>
 </template>
 <style>

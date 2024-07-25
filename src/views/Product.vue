@@ -17,6 +17,7 @@ export default {
       product: {},
       productQuantity: 1,
       orderLimit: false,
+      loading: true,
     };
   },
   watch: {
@@ -65,21 +66,27 @@ export default {
         this.productQuantity--;
       }
     },
+    getProduct() {
+      onSnapshot(doc(db, "products", this.id), (doc) => {
+        this.product = {
+          ...doc.data(),
+          id: this.id,
+        };
+      });
+      setTimeout(() => {
+        this.loading = false;
+      }, 2000);
+    },
   },
 
   created() {
-    onSnapshot(doc(db, "products", this.id), (doc) => {
-      this.product = {
-        ...doc.data(),
-        id: this.id,
-      };
-    });
+    this.getProduct();
   },
 };
 </script>
 <template>
-  <div class="w-full flex justify-center items-center">
-    <div class="container mx-auto p-6 font-ubuntu">
+  <div v-if="!loading" class="w-full flex justify-center items-center">
+    <div class="container mx-auto p-6 font-ubuntu relative">
       <div class="p-6 flex flex-col lg:flex-row justify-center items-center">
         <!-- Product Image -->
         <div class="lg:w-1/2 flex items-center justify-center">
@@ -92,7 +99,7 @@ export default {
         <!-- Product Details -->
         <div class="lg:w-1/2 lg:pl-6 mt-6 lg:mt-0">
           <h1 class="text-3xl font-bold text-gray-800">{{ product.name }}</h1>
-          <p class="text-xl text-gray-600 mt-2">&#8358;{{ product.price }}</p>
+          <p class="text-xl text-gray-600 mt-2">${{ product.price }}</p>
           <p class="text-gray-700 text-xl mt-4 font-EdGaramond">
             {{ product.description }}
           </p>
@@ -183,6 +190,7 @@ export default {
       </div>
     </div>
   </div>
+  <div v-else class="h-dvh animate-pulse bg-gray-300 w-full"></div>
 </template>
 <style>
 /* Chrome, Safari, Edge, Opera */

@@ -9,6 +9,7 @@ import {
   updateDoc,
   getDocs,
 } from "../db/firebase.js";
+import { Drawer } from "flowbite";
 import searchMixin from "@/mixins/searchMixin";
 export default {
   mixins: [searchMixin],
@@ -61,6 +62,7 @@ export default {
   async created() {
     this.products = [];
     await this.setCategory(this.cat);
+    console.log(Drawer);
   },
 };
 </script>
