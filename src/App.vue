@@ -25,9 +25,9 @@ export default {
 </script>
 
 <template>
-  <div class="h-screen w-screen  overflow-y-scroll">
+  <div>
     <AppHeader :categories="categories" />
+
     <RouterView :categories="categories" />
-    <AppFooter :categories="categories" />
   </div>
 </template>

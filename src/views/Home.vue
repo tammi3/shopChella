@@ -1,5 +1,6 @@
 <script>
 import { doc, db, onSnapshot } from "../db/firebase.js";
+import AppFooter from "../components/Footer.vue";
 
 export default {
   data() {
@@ -9,7 +10,9 @@ export default {
       articles: {},
     };
   },
-
+  components: {
+    AppFooter,
+  },
   methods: {
     getLandingContent() {
       const unsub = onSnapshot(doc(db, "pages_content", "landing"), (doc) => {
@@ -114,6 +117,7 @@ export default {
         </div>
       </div>
     </section>
+    <AppFooter />
   </div>
   <div v-else>
     <div class="w-full h-dvh animate-pulse bg-gray-300"></div>

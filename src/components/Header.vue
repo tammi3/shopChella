@@ -14,7 +14,6 @@ import {
   arrayRemove,
   Timestamp,
 } from "../db/firebase.js";
-import { Drawer } from "flowbite";
 
 export default {
   data() {
@@ -24,9 +23,22 @@ export default {
       search: "",
       cartDisplay: "",
       updatedProfileImage: true,
+      isMenuVisible: false,
     };
   },
   props: ["categories"],
+  watch: {
+    $route: {
+      handler(to, from) {
+        if (this.isMenuVisible) {
+          this.toggleMenu();
+          console.log(to, from);
+        } else if (to.path.startsWith("/User") || from.path.startsWith("/User")) {
+          this.getProfileImg();
+        }
+      },
+    },
+  },
   methods: {
     toggleCart() {
       this.cartDisplay = document.querySelector("#cartDisplay");
@@ -81,36 +93,22 @@ export default {
         this.updatedProfileImage = true;
       }
     },
-    menuToggle() {
-      // set the drawer menu element
-      const $targetEl = document.getElementById("drawer-navigation");
-
-      // options with default values
-      const options = {
-        placement: "right",
-        backdrop: true,
-        bodyScrolling: false,
-        edge: false,
-        edgeOffset: "",
-        backdropClasses: "bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-30",
-        onHide: () => {
-          console.log("drawer is hidden");
-        },
-        onShow: () => {
-          console.log("drawer is shown");
-        },
-        onToggle: () => {
-          console.log("drawer has been toggled");
-        },
-      };
-
-      // instance options object
-      const instanceOptions = {
-        id: "drawer-js-example",
-        override: true,
-      };
-      const drawer = new Drawer($targetEl, options, instanceOptions);
-      drawer.toggle();
+    toggleMenu() {
+      const navLinks = document.getElementById("nav-links");
+      const navLinksBg = document.getElementById("nav-links-bg");
+      if (navLinks.classList.contains("hidden")) {
+        navLinks.classList.remove("hidden");
+        navLinks.classList.add("absolute");
+        navLinksBg.classList.remove("hidden");
+        navLinks.classList.add("flex");
+        this.isMenuVisible = true;
+      } else {
+        navLinks.classList.add("hidden");
+        navLinksBg.classList.add("hidden");
+        navLinks.classList.remove("flex");
+        navLinks.classList.remove("absolute");
+        this.isMenuVisible = false;
+      }
     },
   },
   created() {
@@ -136,7 +134,24 @@ export default {
         >
 
         <!-- Navigation Links -->
-        <div class="hidden md:flex space-x-6 uppercase text-sm">
+        <div
+          id="nav-links"
+          class="hidden lg:flex flex-col space-y-10 lg:space-y-0 z-10 h-dvh lg:h-0 bg-white lg:bg-inherit top-0 py-10 px-4 lg:p-0 w-3/4 right-0 text-lg justify-start items-start lg:justify-center lg:items-center lg:flex-row lg:space-x-6 uppercase lg:text-sm"
+        >
+          <div class="w-full flex lg:hidden justify-end items-center">
+            <svg
+              class="cursor-pointer"
+              @click="toggleMenu"
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="21"
+            >
+              <g fill="#000000" fill-rule="evenodd">
+                <path d="M2.575.954l16.97 16.97-2.12 2.122L.455 3.076z" />
+                <path d="M.454 17.925L17.424.955l2.122 2.12-16.97 16.97z" />
+              </g>
+            </svg>
+          </div>
           <routerLink
             activeClass=""
             v-for="cat in categories"
@@ -146,6 +161,11 @@ export default {
             {{ cat }}
           </routerLink>
         </div>
+        <div
+          id="nav-links-bg"
+          @click="toggleMenu"
+          class="absolute hidden inset-0 h-dvh backdrop-blur-sm"
+        ></div>
 
         <!-- Icons and Dropdown -->
         <div class="flex items-center space-x-4">
@@ -175,7 +195,7 @@ export default {
           </div>
 
           <!-- Profile Dropdown -->
-          <router-link to="/Profile" class="relative dropdown">
+          <router-link to="/Profile" class="relative">
             <button class="flex items-center focus:outline-none">
               <i
                 v-if="updatedProfileImage"
@@ -192,6 +212,13 @@ export default {
               />
             </button>
           </router-link>
+          <div @click="toggleMenu" class="block lg:hidden">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="21">
+              <g fill="#000000" fill-rule="evenodd">
+                <path d="M0 0h24v3H0zM0 9h24v3H0zM0 18h24v3H0z" />
+              </g>
+            </svg>
+          </div>
         </div>
       </div>
     </nav>
@@ -270,16 +297,3 @@ export default {
     <div></div>
   </div>
 </template>
-<style>
-/* Additional styles for dropdown functionality */
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: white;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-}
-.dropdown:hover .dropdown-content {
-  display: block;
-}
-</style>
