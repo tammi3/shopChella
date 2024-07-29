@@ -97,13 +97,13 @@ const router = createRouter({
 router.beforeEach(async (to, from) => {
   let loggedIn =
     (localStorage.getItem("loggedIn") == "true" ? true : false) || false;
-  let userUID = localStorage.getItem("userUID");
+  let admin = localStorage.getItem("Admin");
   if (to.path.includes("User") && loggedIn)
     return { path: "/Shop/allcategories" };
   if (
     to.path.includes("Admin") &&
     loggedIn &&
-    userUID !== "lvfgmkM6dtfKWye6GUeMdr9ob462"
+    admin
   )
     return { path: "/" };
   if (to.path == "/User" || to.path == "/User/") return { name: "Login" };

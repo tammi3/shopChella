@@ -10,6 +10,7 @@ export default {
       articles: {},
     };
   },
+
   components: {
     AppFooter,
   },
@@ -36,7 +37,7 @@ export default {
 };
 </script>
 <template>
-  <div v-if="!loading">
+  <div v-show="!loading">
     <div class="relative h-dvh">
       <img
         class="absolute object-cover inset-0 h-dvh w-full"
@@ -119,7 +120,7 @@ export default {
     </section>
     <AppFooter />
   </div>
-  <div v-else>
+  <div v-if="loading">
     <div class="w-full h-dvh animate-pulse bg-gray-300"></div>
   </div>
 </template>

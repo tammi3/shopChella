@@ -13,6 +13,7 @@ import {
   updateDoc,
   arrayRemove,
   Timestamp,
+  signOut,
 } from "../db/firebase.js";
 
 export default {
@@ -23,16 +24,19 @@ export default {
       search: "",
       cartDisplay: "",
       updatedProfileImage: true,
-      isMenuVisible: false,
+      isBurgerMenuVisible: false,
+      isProfileMenuVisible: false,
     };
   },
   props: ["categories"],
   watch: {
     $route: {
       handler(to, from) {
-        if (this.isMenuVisible) {
+        if (this.isBurgerMenuVisible) {
           this.toggleMenu();
           console.log(to, from);
+        } else if (this.isProfiileMenuVisible) {
+          this.toggleProfileMenu();
         } else if (to.path.startsWith("/User") || from.path.startsWith("/User")) {
           this.getProfileImg();
         }
@@ -50,6 +54,22 @@ export default {
       } else {
         this.cartDisplay.classList.add("hidden");
         this.cartDisplay.classList.remove("flex");
+      }
+    },
+    toggleProfileMenu() {
+      const profileMenu = document.getElementById("profile-menu");
+      const profileMenuBg = document.getElementById("profile-menu-bg");
+      if (profileMenu.classList.contains("hidden")) {
+        profileMenu.classList.remove("hidden");
+        profileMenu.classList.add("flex");
+        profileMenuBg.classList.remove("hidden");
+        this.isProfiileMenuVisible = true;
+      } else {
+        profileMenu.classList.add("hidden");
+        profileMenuBg.classList.add("hidden");
+
+        profileMenu.classList.remove("flex");
+        this.isProfiileMenuVisible = false;
       }
     },
     getCart() {
@@ -74,12 +94,11 @@ export default {
       await updateDoc(doc(db, "carts", user.uid), {
         items: arrayRemove(item),
         updated_at: Timestamp.fromDate(new Date()),
-      }).then(() => {
-        console.log("deleted to cart");
       });
     },
     getProfileImg() {
-      if (this.userInfo.updatedProfileImage) {
+      const user = auth.currentUser;
+      if (user && this.userInfo.updatedProfileImage) {
         this.updatedProfileImage = false;
         getDownloadURL(ref(storage, "profile/" + this.userInfo.profile_image))
           .then((url) => {
@@ -88,10 +107,18 @@ export default {
             img.setAttribute("src", url);
           })
           .catch((error) => {});
-      }
-      if (!this.userInfo.updatedProfileImage) {
+      } else {
         this.updatedProfileImage = true;
       }
+    },
+    logOut() {
+      signOut(auth)
+        .then(() => {
+          this.$router.replace({ name: "Login" });
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
     },
     toggleMenu() {
       const navLinks = document.getElementById("nav-links");
@@ -101,13 +128,13 @@ export default {
         navLinks.classList.add("absolute");
         navLinksBg.classList.remove("hidden");
         navLinks.classList.add("flex");
-        this.isMenuVisible = true;
+        this.isBurgerMenuVisible = true;
       } else {
         navLinks.classList.add("hidden");
         navLinksBg.classList.add("hidden");
         navLinks.classList.remove("flex");
         navLinks.classList.remove("absolute");
-        this.isMenuVisible = false;
+        this.isBurgerMenuVisible = false;
       }
     },
   },
@@ -153,7 +180,14 @@ export default {
             </svg>
           </div>
           <routerLink
-            activeClass=""
+            activeClass="border-2 shadow-md shadow-gray-300 border-gray-400 rounded-md  p-2"
+            to="/Admin/Products"
+            class="text-gray-700 font-bold hover:text-gray-900"
+          >
+            Admin
+          </routerLink>
+          <routerLink
+            activeClass="border-2 shadow-md shadow-gray-300 border-gray-400 rounded-md  p-2"
             v-for="cat in categories"
             :to="'/shop/' + cat"
             class="text-gray-700 font-bold hover:text-gray-900"
@@ -195,23 +229,49 @@ export default {
           </div>
 
           <!-- Profile Dropdown -->
-          <router-link to="/Profile" class="relative">
-            <button class="flex items-center focus:outline-none">
+          <div class="relative">
+            <button
+              @click="toggleProfileMenu"
+              class="flex items-center focus:outline-none"
+            >
               <i
                 v-if="updatedProfileImage"
-                class="fa fa-user-o fa-lg"
+                class="fa fa-user-o fa-2x"
                 aria-hidden="true"
               ></i>
               <!-- custom profile image -->
               <img
-                v-if="userInfo.updatedProfileImage"
+                v-show="!updatedProfileImage"
                 id="profile"
                 class="w-10 h-10 rounded-full"
                 src=""
                 alt=""
               />
             </button>
-          </router-link>
+            <div
+              id="profile-menu"
+              class="absolute top-[50px] right-0 z-10 bg-white p-4 rounded-sm shadow-gray-400 shadow-md hidden flex-col space-y-3 uppercase"
+            >
+              <router-link
+                to="/Profile"
+                activeClass="border-2 shadow-md shadow-gray-300 border-gray-400 rounded-md  p-2 "
+                class="text-gray-700 font-bold hover:border-2 hover:rounded-md hover:border-gray-300 p-2"
+                >Profile
+              </router-link>
+              <div
+                class="text-gray-700 cursor-pointer font-bold hover:border-2 hover:rounded-md hover:border-gray-300 p-2"
+                @click="logOut"
+              >
+                Logout
+              </div>
+            </div>
+          </div>
+          <div
+            id="profile-menu-bg"
+            @click="toggleProfileMenu"
+            class="absolute hidden inset-0 h-dvh bg-grey-100 opacity-5"
+          ></div>
+
           <div @click="toggleMenu" class="block lg:hidden">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="21">
               <g fill="#000000" fill-rule="evenodd">

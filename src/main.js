@@ -1,5 +1,6 @@
 import "./input.css";
 
+import { onSnapshot, db, doc, } from './db/firebase.js'
 import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
@@ -23,11 +24,20 @@ app.use(VueScrollTo)
 
 
 let mounted = false;
+let admin = false
 auth.onAuthStateChanged((user) => {
 
-
+ if(auth.currentUser){
+  onSnapshot(doc(db, "users", user.uid), (doc) => {
+    admin = doc.data().isAdmin;
+     console.log(admin);
+ 
+  })
+ }
+ console.log(admin);
   localStorage.setItem('loggedIn', user ? true : false);
-  localStorage.setItem('userUID',  user ? user.uid : '' );
+  localStorage.setItem('Admin',  user ? admin : false );
+ 
 
   if (!mounted) {
     app.mount("#app");

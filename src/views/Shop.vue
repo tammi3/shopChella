@@ -95,7 +95,7 @@ export default {
     </div>
     <div class="px-10 grid items-end grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
       <div
-        v-if="!loading"
+        v-show="!loading"
         v-for="product in filteredProducts"
         class="mx-auto bg-white overflow-hidden"
       >
@@ -119,7 +119,7 @@ export default {
       </div>
       <div
         v-for="skeleton in filteredProducts"
-        v-else
+        v-if="loading"
         class="max-w-[288px] w-72 mx-auto bg-white shadow-lg rounded-lg overflow-hidden"
       >
         <div class="animate-pulse">

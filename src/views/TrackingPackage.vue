@@ -67,7 +67,7 @@ export default {
 };
 </script>
 <template>
-  <div class="container mx-auto px-4 py-14">
+  <div class="container mx-auto px-4 py-14 h-full flex overflow-visible">
     <div
       class="bg-white p-6 rounded-lg max-w-md mx-auto flex flex-col justify-center items-center"
     >

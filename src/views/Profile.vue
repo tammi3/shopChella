@@ -57,15 +57,7 @@ export default {
         });
       });
     },
-    logOut() {
-      signOut(auth)
-        .then(() => {
-          this.$router.replace({ name: "Login" });
-        })
-        .catch((err) => {
-          console.log(err.message);
-        });
-    },
+
     deleteUserCred() {
       const user = auth.currentUser;
       const storageRef = ref(storage, "profile/" + this.userInfo.profile_image);
@@ -151,136 +143,118 @@ export default {
 };
 </script>
 <template>
-  <div v-if="userInfo.name" class="flex flex-col px-20 py-8 font-Ubuntu w-full gap-10">
-    <div class="flex w-full gap-10 py-3">
-      <h1 class="text-6xl w-2/4">Hello, {{ userInfo.name.firstname }} !</h1>
-      <div class="w-2/4 px-3 flex justify-end items-center">
-        <RouterLink
-          v-if="admin"
-          class="bg-purple w-56 h-8 text-lg font-medium rounded-lg hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg hover:shadow-purple/75 transform duration-200 ease-in-out border border-gray-500 p-4 justify-center items-center flex"
-          to="/Admin/Products"
-          >Admin</RouterLink
-        >
-      </div>
-    </div>
+  <div v-if="userInfo.name">
+    <div class="bg-gray-100">
+      <div class="container mx-auto p-4">
+        <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center">
+          <!-- Profile Picture -->
 
-    <div class="flex w-full gap-16 justify-center">
-      <div class="w-1/4 p-4 flex gap-3 flex-col justify-center items-center">
-        <!-- default profile image -->
-        <img
-          v-if="!userInfo.updatedProfileImage"
-          id="updateImg"
-          class="h-96 w-96 rounded-full"
-          src="../assets/user.png"
-          alt=""
-        />
-        <!-- custom profile image -->
-        <img
-          v-if="userInfo.updatedProfileImage"
-          id="profileImg"
-          class="h-96 w-96 rounded-full"
-          src=""
-          alt=""
-        />
-        <div class="flex py-4 relative items-center justify-center">
-          <!--default html file upload button-->
-          <input
-            v-if="!userInfo.updatedProfileImage"
-            class="opacity-0"
-            type="file"
-            accept="image/png, image/jpeg"
-            id="inputFile"
-            v-on:change="uploadImage"
-          />
+          <div class="w-full flex gap-3 flex-col justify-center items-center mb-4">
+            <!-- default profile image -->
+            <img
+              v-if="!userInfo.updatedProfileImage"
+              id="updateImg"
+              class="w-32 h-32 rounded-full object-cover"
+              src="../assets/user.png"
+              alt=""
+            />
+            <!-- custom profile image -->
+            <img
+              v-if="userInfo.updatedProfileImage"
+              id="profileImg"
+              class="w-32 h-32 rounded-full object-cover"
+              src=""
+              alt=""
+            />
+            <div class="flex py-4 relative items-center justify-center">
+              <!--default html file upload button-->
+              <input
+                v-if="!userInfo.updatedProfileImage"
+                class="opacity-0"
+                type="file"
+                accept="image/png, image/jpeg"
+                id="inputFile"
+                v-on:change="uploadImage"
+              />
 
-          <!--custom html file upload button-->
-          <label
-            v-if="!userInfo.updatedProfileImage"
-            for="inputFile"
-            class="absolute bg-purple w-56 h-8 text-lg font-medium rounded-lg hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg hover:shadow-purple/75 transform duration-200 ease-in-out border border-gray-500 p-4 justify-center items-center flex"
-          >
-            Update image
-          </label>
+              <!--custom html file upload button-->
+              <label
+                v-if="!userInfo.updatedProfileImage"
+                for="inputFile"
+                class="absolute bg-purple w-56 h-8 text-lg font-medium rounded-lg hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg hover:shadow-purple/75 transform duration-200 ease-in-out border border-gray-500 p-4 justify-center items-center flex"
+              >
+                Update image
+              </label>
 
-          <!-- delete image -->
-          <button
-            @click="deleteImage"
-            v-if="userInfo.updatedProfileImage"
-            class="bg-purple w-56 h-8 text-lg font-medium rounded-lg hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg hover:shadow-purple/75 transform duration-200 ease-in-out border border-gray-500 p-4 justify-center items-center flex"
-          >
-            Delete image
-          </button>
-        </div>
-      </div>
-      <div class="w-3/4 flex flex-col gap-10 py-4 pl-10">
-        <div class="text-4xl font-medium">User Information</div>
-        <div class="flex flex-col gap-3">
-          <!-- Name -->
-          <div class="flex flex-col gap-3 p-2">
-            <h1 class="text-2xl font-normal tracking-wide">Name</h1>
-            <h2 class="text-lg font-normal">
+              <!-- delete image -->
+              <button
+                @click="deleteImage"
+                v-if="userInfo.updatedProfileImage"
+                class="bg-purple w-56 h-8 text-lg font-medium rounded-lg hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg hover:shadow-purple/75 transform duration-200 ease-in-out border border-gray-500 p-4 justify-center items-center flex"
+              >
+                Delete image
+              </button>
+            </div>
+          </div>
+
+          <!-- User Name -->
+          <div class="text-center mb-4">
+            <h1 class="text-2xl font-bold">
               {{ userInfo.name.firstname }} {{ userInfo.name.lastname }}
-            </h2>
+            </h1>
           </div>
 
-          <!-- Address -->
-          <div class="flex flex-col gap-3 p-2">
-            <h1 class="text-2xl font-normal tracking-wide">Address</h1>
-            <div class="flex gap-2">
-              <i class="fa fa-home pt-1" aria-hidden="true"></i>
-              <div class="flex flex-col gap-2">
-                <h2 class="text-lg font-normal">
-                  {{ userInfo.address.street }}
-                </h2>
-                <h2 class="text-lg font-normal">
-                  {{ userInfo.address.city }}, {{ userInfo.address.country }}.
-                </h2>
-              </div>
+          <!-- User Info -->
+          <div class="w-full sm:w-1/2 mb-4">
+            <!-- Email -->
+            <div class="mb-4">
+              <label class="block text-gray-700 font-semibold">Email:</label>
+              <p class="text-gray-600">{{ userInfo.email }}</p>
+            </div>
+
+            <!-- Phone -->
+            <div class="mb-4">
+              <label class="block text-gray-700 font-semibold">Phone:</label>
+              <p class="text-gray-600">{{ userInfo.phone }}</p>
+            </div>
+
+            <!-- Street -->
+            <div class="mb-4">
+              <label class="block text-gray-700 font-semibold">Street:</label>
+              <p class="text-gray-600">{{ userInfo.address.street }}</p>
+            </div>
+
+            <!-- City -->
+            <div class="mb-4">
+              <label class="block text-gray-700 font-semibold">City:</label>
+              <p class="text-gray-600">{{ userInfo.address.city }}</p>
+            </div>
+
+            <!-- Country -->
+            <div class="mb-4">
+              <label class="block text-gray-700 font-semibold">Country:</label>
+              <p class="text-gray-600">{{ userInfo.address.country }}</p>
             </div>
           </div>
 
-          <!-- Contact-->
-          <div class="flex flex-col gap-3 p-2">
-            <h1 class="text-2xl font-normal tracking-wide">Contact</h1>
-            <div class="flex flex-col gap-8">
-              <div class="flex gap-2">
-                <i
-                  class="fa fa-phone flex items-center justify-center"
-                  aria-hidden="true"
-                ></i>
-                <h2 class="text-lg font-normal">{{ userInfo.phone }}</h2>
-              </div>
-              <div class="flex gap-2">
-                <i
-                  class="fa fa-envelope flex items-center justify-center"
-                  aria-hidden="true"
-                ></i>
-                <h2 class="text-lg font-normal">{{ userInfo.email }}</h2>
-              </div>
-            </div>
+          <div class="flex w-full justify-center items-center">
+            <button
+              class="w-56 h-10 uppercase cursor-pointer rounded-xl hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg transform duration-200 ease-in-out border bg-black text-white hover:shadow-black/60 border-black p-4 justify-center items-center flex"
+              @click="toggleReauthUser"
+            >
+              DELETE ACCOUNT
+            </button>
           </div>
-        </div>
-        <div class="flex gap-10">
-          <button
-            class="bg-purple w-96 h-16 font-bold rounded-lg hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg hover:shadow-purple/75 transform duration-200 ease-in-out border border-gray-500 p-4 justify-center items-center flex"
-            @click="logOut"
-          >
-            LOGOUT
-          </button>
-          <button
-            class="bg-purple w-96 h-16 font-bold rounded-lg hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg hover:shadow-purple/75 transform duration-200 ease-in-out border border-gray-500 p-4 justify-center items-center flex"
-            @click="toggleReauthUser"
-          >
-            DELETE ACCOUNT
-          </button>
         </div>
       </div>
     </div>
+
     <div
       id="reauthUser"
       class="w-full right-0 h-screen absolute hidden justify-center items-center top-0 backdrop-blur-lg z-50"
     >
-      <div
+      <form
+        @sumbit.prevent="toggleReauthUser"
         class="w-2/4 h-2/4 items-center justify-start bg-white z-50 flex flex-col gap-4 shadow-lg border-gray-400"
       >
         <div class="w-full px-10 py-4 flex justify-end items-center">
@@ -322,7 +296,7 @@ export default {
         </div>
         <button
           class="bg-purple w-96 h-16 font-bold rounded-lg hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg hover:shadow-purple/75 transform duration-200 ease-in-out border border-gray-500 p-4 justify-center items-center flex"
-          @click="deleteUserCred"
+          type="sumbit"
         >
           <img
             v-if="loading"
@@ -332,7 +306,7 @@ export default {
           />
           <span v-if="!loading">DELETE ACCOUNT</span>
         </button>
-      </div>
+      </form>
     </div>
   </div>
 </template>
