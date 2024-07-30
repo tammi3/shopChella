@@ -66,6 +66,7 @@ export default {
               phone: this.phone,
               updatedProfileImage: false,
               userId: user.uid,
+              isAdmin: false,
               creationTime: user.metadata.creationTime,
             }).then(() => {
               setDoc(doc(db, "carts", user.uid), {
@@ -234,7 +235,7 @@ export default {
 
     <button
       type="submit"
-      class="w-full h-10 uppercase cursor-pointer rounded-xl hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg transform duration-200 ease-in-out border bg-black text-white hover:shadow-black/60 border-black p-4 justify-center items-center flex"
+      class="w-full h-10 uppercase cursor-pointer focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-75 rounded-xl hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg transform duration-200 ease-in-out border bg-black text-white hover:shadow-black/60 border-black p-4 justify-center items-center flex"
     >
       <img
         v-if="loading"

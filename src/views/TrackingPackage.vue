@@ -48,13 +48,6 @@ export default {
           this.statusBg = "bg-red-200";
         } else {
           this.statusText = this.trackedOrder.status;
-          // "The status of your package " +
-          // "(" +
-          // this.trackingID +
-          // ")" +
-          // "  is " +
-          // this.trackedOrder.status +
-          // " .";
         }
 
         trackingResult.classList.remove("hidden");
@@ -90,7 +83,7 @@ export default {
         />
         <button
           type="sumbit"
-          class="mt-4 w-full flex justify-center items-center bg-gray-500 text-white py-2 px-4 rounded-lg shadow-md hover:bg-gray-500/75 focus:outline-none focus:ring-2 focus:ring-purple/25 focus:ring-opacity-50"
+          class="mt-4 w-full flex justify-center items-center bg-gray-500 text-white py-2 px-4 rounded-lg shadow-md hover:bg-gray-500/75 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-75"
         >
           <img
             v-if="loading"

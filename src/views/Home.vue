@@ -3,6 +3,7 @@ import { doc, db, onSnapshot } from "../db/firebase.js";
 import AppFooter from "../components/Footer.vue";
 
 export default {
+  props: ["categories"],
   data() {
     return {
       landingContent: {},

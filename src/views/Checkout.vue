@@ -335,7 +335,7 @@ export default {
                 <input
                   @click="changeAddress()"
                   type="checkbox"
-                  class="form-checkbox text-blue-600"
+                  class="form-checkbox text-gray-600"
                   id="useDefaultAddress"
                 />
                 <span class="ml-2 text-gray-700">Use default address</span>
@@ -345,7 +345,7 @@ export default {
               <label class="block text-gray-700 mb-2" for="address">Address</label>
               <input
                 v-if="!defaultAddress"
-                class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
                 type="text"
                 id="address"
                 v-model="address"
@@ -360,7 +360,7 @@ export default {
               <select
                 v-if="!defaultAddress"
                 id="country"
-                class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
                 v-model="selectedCountryCode"
                 @change="updateCities"
                 required
@@ -379,7 +379,7 @@ export default {
               <select
                 v-if="!defaultAddress"
                 id="city"
-                class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
                 v-model="selectedCity"
                 required
               >
@@ -395,8 +395,9 @@ export default {
               <label class="block text-gray-700 mb-2" for="phone">Phone Number</label>
               <input
                 v-if="!defaultAddress"
-                class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
                 type="text"
+                v-mask="['####-###-####', '####-###-####']"
                 v-model="phone"
                 id="phone"
                 required
@@ -408,7 +409,7 @@ export default {
             <div class="flex justify-end">
               <button
                 type="submit"
-                class="px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75"
+                class="px-6 py-2 uppercase cursor-pointer font-bold rounded-xl hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg transform duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-75 border bg-black text-white hover:shadow-black/60 border-black p-4 justify-center items-center flex"
               >
                 Place Order
               </button>
@@ -428,7 +429,7 @@ export default {
           <div class="mb-4">
             <label class="block text-gray-700 mb-2" for="cardName">Name on Card</label>
             <input
-              class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
               type="text"
               id="cardName"
               required
@@ -437,7 +438,7 @@ export default {
           <div class="mb-4">
             <label class="block text-gray-700 mb-2" for="cardNumber">Card Number</label>
             <input
-              class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
               type="text"
               id="cardNumber"
               v-model="cardNumber"
@@ -451,7 +452,7 @@ export default {
             <div class="w-1/2 mr-2">
               <label class="block text-gray-700 mb-2" for="expiryDate">Expiry Date</label>
               <input
-                class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
                 type="text"
                 id="expiryDate"
                 required
@@ -460,7 +461,7 @@ export default {
             <div class="w-1/2 ml-2">
               <label class="block text-gray-700 mb-2" for="cvv">CVV</label>
               <input
-                class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
                 type="text"
                 id="cvv"
                 required
@@ -477,7 +478,7 @@ export default {
             </button>
             <button
               type="submit"
-              class="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75"
+              class="px-4 py-2 bg-gray-500 text-white font-semibold rounded-lg shadow-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-75"
             >
               <img
                 v-if="loading"

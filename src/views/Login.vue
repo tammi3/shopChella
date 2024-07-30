@@ -59,7 +59,7 @@ export default {
     <div class="w-full flex flex-col gap-3">
       <label for="">Email</label>
       <input
-        class="focus:outline-none font-normal border-b border-gray-600"
+        class="font-normal border-b border-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-75"
         type="text"
         placeholder="@johndoe"
         name="email"
@@ -73,7 +73,7 @@ export default {
       <div class="w-full flex relative">
         <input
           id="password"
-          class="focus:outline-none w-full font-normal border-b border-gray-600"
+          class="focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-75 w-full font-normal border-b border-gray-600"
           type="password"
           placeholder="Password"
           name="password"
@@ -90,7 +90,7 @@ export default {
     </div>
     <button
       type="submit"
-      class="w-full h-10 uppercase cursor-pointer rounded-xl hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg transform duration-200 ease-in-out border bg-black text-white hover:shadow-black/60 border-black p-4 justify-center items-center flex"
+      class="w-full h-10 uppercase cursor-pointer font-bold rounded-xl hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg transform duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-75 border bg-black text-white hover:shadow-black/60 border-black p-4 justify-center items-center flex"
     >
       <img
         v-if="loading"

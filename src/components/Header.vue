@@ -23,6 +23,7 @@ export default {
       cart: {},
       search: "",
       cartDisplay: "",
+      loadingHeader: true,
       updatedProfileImage: true,
       isBurgerMenuVisible: false,
       isProfileMenuVisible: false,
@@ -34,11 +35,18 @@ export default {
       handler(to, from) {
         if (this.isBurgerMenuVisible) {
           this.toggleMenu();
-          console.log(to, from);
-        } else if (this.isProfiileMenuVisible) {
+        }
+        if (this.isProfiileMenuVisible) {
           this.toggleProfileMenu();
-        } else if (to.path.startsWith("/User") || from.path.startsWith("/User")) {
-          this.getProfileImg();
+        }
+        if (from.path.startsWith("/User")) {
+          this.getUserInfo();
+          this.getCart();
+        }
+        if (to.path.startsWith("/User")) {
+          this.updatedProfileImage = true;
+          this.getUserInfo();
+          this.getCart();
         }
       },
     },
@@ -111,6 +119,19 @@ export default {
         this.updatedProfileImage = true;
       }
     },
+    getUserInfo() {
+      const user = auth.currentUser;
+
+      if (user) {
+        this.getCart();
+        onSnapshot(doc(db, "users", user.uid), (doc) => {
+          this.userInfo = doc.data();
+          this.getProfileImg();
+        });
+      } else {
+        this.userInfo = "";
+      }
+    },
     logOut() {
       signOut(auth)
         .then(() => {
@@ -139,20 +160,20 @@ export default {
     },
   },
   created() {
-    const user = auth.currentUser;
-    if (user) {
-      this.getCart();
-      onSnapshot(doc(db, "users", user.uid), (doc) => {
-        this.userInfo = doc.data();
-        this.getProfileImg();
-      });
-    }
+    this.getUserInfo();
+    this.getCart();
+    setTimeout(() => {
+      this.loadingHeader = false;
+    }, 1000);
   },
 };
 </script>
 <template>
   <div class="sticky top-0 w-full z-50 border-solid border-b">
-    <nav class="font-Ubuntu bg-white">
+    <div v-if="loadingHeader">
+      <div class="w-full h-12 animate-pulse bg-gray-300"></div>
+    </div>
+    <nav v-show="!loadingHeader" class="font-Ubuntu bg-white">
       <div class="container mx-auto px-4 py-2 flex justify-between items-center">
         <!-- Brand Name -->
 
@@ -180,6 +201,7 @@ export default {
             </svg>
           </div>
           <routerLink
+            v-if="userInfo.isAdmin"
             activeClass="border-2 shadow-md shadow-gray-300 border-gray-400 rounded-md  p-2"
             to="/Admin/Products"
             class="text-gray-700 font-bold hover:text-gray-900"
@@ -257,6 +279,12 @@ export default {
                 activeClass="border-2 shadow-md shadow-gray-300 border-gray-400 rounded-md  p-2 "
                 class="text-gray-700 font-bold hover:border-2 hover:rounded-md hover:border-gray-300 p-2"
                 >Profile
+              </router-link>
+              <router-link
+                to="/OrdersHistory"
+                activeClass="border-2 shadow-md shadow-gray-300 border-gray-400 rounded-md  p-2 "
+                class="text-gray-700 font-bold hover:border-2 hover:rounded-md hover:border-gray-300 p-2"
+                >Orders
               </router-link>
               <div
                 class="text-gray-700 cursor-pointer font-bold hover:border-2 hover:rounded-md hover:border-gray-300 p-2"

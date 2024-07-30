@@ -27,6 +27,7 @@ export default {
       modalAction: "add",
       productToEdit: {},
       products: [],
+      loadingProductsTab: true,
     };
   },
   methods: {
@@ -56,6 +57,7 @@ export default {
           deleteObject(productImageRef)
             .then(() => {
               deleteDoc(doc(db, "products", product.id));
+              this.products = [];
               Swal.fire({
                 title: "Deleted!",
                 text: "Your file has been deleted.",
@@ -68,22 +70,31 @@ export default {
         }
       });
     },
-  },
-  created() {
-    const q = query(collection(db, "products"));
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        this.products.push({
-          id: doc.id,
-          ...doc.data(),
+    getProducts() {
+      const q = query(collection(db, "products"));
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          this.products.push({
+            id: doc.id,
+            ...doc.data(),
+          });
         });
       });
-    });
+    },
+  },
+  created() {
+    this.getProducts();
+    setTimeout(() => {
+      this.loadingProductsTab = false;
+    }, 2000);
   },
 };
 </script>
 <template>
-  <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+  <div
+    v-show="!loadingProductsTab"
+    class="relative overflow-x-auto shadow-md sm:rounded-lg"
+  >
     <div class="w-full p-4 flex justify-center items-center font-semibold">
       <button
         @click="toggleAddProduct()"
@@ -138,6 +149,9 @@ export default {
         </tr>
       </tbody>
     </table>
+  </div>
+  <div v-if="loadingProductsTab">
+    <div class="w-full h-dvh animate-pulse bg-gray-300"></div>
   </div>
   <ManageProduct
     v-if="showModal"

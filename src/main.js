@@ -1,6 +1,7 @@
 import "./input.css";
 
-import { onSnapshot, db, doc, } from './db/firebase.js'
+import { onSnapshot, db, doc, } from './db/firebase.js';
+import { keys } from "./utilities/env.js";
 import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
@@ -19,24 +20,25 @@ const app = createApp(App);
 app.use(router);
 app.use(VueTheMask);
 app.use(pinia)
-app.use(Flutterwave, { publicKey: 'FLWPUBK_TEST-e17db5250c99e6d06e889d66daee3f21-X' })
+app.use(Flutterwave, { publicKey:  keys.flutterwave.publicKey })
 app.use(VueScrollTo)
 
 
 let mounted = false;
-let admin = false
+
 auth.onAuthStateChanged((user) => {
 
- if(auth.currentUser){
+ if(user){
   onSnapshot(doc(db, "users", user.uid), (doc) => {
-    admin = doc.data().isAdmin;
-     console.log(admin);
- 
+    let admin = doc.data().isAdmin;
+    localStorage.setItem('admin',  user ? admin : false );
   })
+ }else{
+  localStorage.setItem('admin', false );
  }
- console.log(admin);
+
   localStorage.setItem('loggedIn', user ? true : false);
-  localStorage.setItem('Admin',  user ? admin : false );
+  
  
 
   if (!mounted) {

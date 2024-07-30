@@ -72,6 +72,12 @@ const router = createRouter({
       component: () => import("../views/Checkout.vue"),
     },
     {
+      path: "/OrdersHistory",
+      name: "OrdersHistory",
+      meta: { requiresAuth: true },
+      component: () => import("../views/OrdersHistory.vue"),
+    },
+    {
       path: "/Information",
       name: "Information",
       meta: { requiresAuth: true },
@@ -97,13 +103,13 @@ const router = createRouter({
 router.beforeEach(async (to, from) => {
   let loggedIn =
     (localStorage.getItem("loggedIn") == "true" ? true : false) || false;
-  let admin = localStorage.getItem("Admin");
+  let admin =  (localStorage.getItem("admin") == "true" ? true : false) || false;;
   if (to.path.includes("User") && loggedIn)
     return { path: "/Shop/allcategories" };
   if (
     to.path.includes("Admin") &&
     loggedIn &&
-    admin
+    !admin
   )
     return { path: "/" };
   if (to.path == "/User" || to.path == "/User/") return { name: "Login" };

@@ -116,7 +116,7 @@ export default {
 <template>
   <div
     id="addProduct"
-    class="w-full right-0 absolute justify-center flex items-start pt-20 top-0 backdrop-blur-lg h-full"
+    class="w-full inset-0 absolute z-30 justify-center flex items-start pt-20 top-0 backdrop-blur-lg h-dvh"
   >
     <div class="w-full flex justify-center items-center py-4">
       <section class="flex flex-col shadow-lg rounded-lg bg-white w-96 md:w-2/4">
@@ -209,7 +209,7 @@ export default {
             </div>
             <div class="flex items-center">
               <button
-                class="w-48 h-10 uppercase cursor-pointer rounded-xl hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg transform duration-200 ease-in-out border bg-black text-white hover:shadow-black/60 border-black p-4 justify-center items-center flex"
+                class="w-48 h-10 font-bold focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-75 uppercase cursor-pointer rounded-xl hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg transform duration-200 ease-in-out border bg-black text-white hover:shadow-black/60 border-black p-4 justify-center items-center flex"
               >
                 <span v-if="action == 'add'">Add Product</span>
                 <span v-if="action == 'edit'">Update Product</span>

@@ -17,21 +17,29 @@ import {
   EmailAuthProvider,
 } from "../db/firebase.js";
 import togglePassword from "@/mixins/togglePassword.js";
+import AppFooter from "../components/Footer.vue";
 
 export default {
   mixins: [togglePassword],
+  components: {
+    AppFooter,
+  },
+  props: ["categories"],
   data() {
     return {
       userInfo: {},
-      loading: false,
+      loadingDeleteAcc: false,
+      loadingUpdateImg: false,
+      loadingDeleteImg: false,
       error: "",
       password: "",
-      admin: false,
+      loadingProfile: true,
     };
   },
 
   methods: {
     uploadImage() {
+      this.loadingUpdateImg = true;
       var updateImg = document.getElementById("updateImg");
       var inputFile = document.getElementById("inputFile");
       updateImg.src = URL.createObjectURL(inputFile.files[0]);
@@ -46,15 +54,18 @@ export default {
           profile_image: image.name,
           updatedProfileImage: true,
         });
+        this.loadingUpdateImg = false;
       });
     },
     deleteImage() {
+      this.loadingDeleteImg = true;
       const user = auth.currentUser;
       const storageRef = ref(storage, "profile/" + this.userInfo.profile_image);
       deleteObject(storageRef).then(() => {
         updateDoc(doc(db, "users", user.uid), {
           updatedProfileImage: false,
         });
+        this.loadingDeleteImg = false;
       });
     },
 
@@ -63,9 +74,8 @@ export default {
       const storageRef = ref(storage, "profile/" + this.userInfo.profile_image);
       const userRef = doc(db, "users", this.userInfo.userId);
 
-      if (this.password == "") this.error = "Enter your password.";
-      else if (this.userInfo.updatedProfileImage) {
-        this.loading = true;
+      if (this.userInfo.updatedProfileImage) {
+        this.loadingDeleteAcc = true;
         const credential = EmailAuthProvider.credential(user.email, this.password);
         reauthenticateWithCredential(user, credential)
           .then(() => {
@@ -86,10 +96,10 @@ export default {
           .catch((error) => {
             // An error ocurred
             this.error = "Incorrect password";
-            if (this.error !== "") this.loading = false;
+            if (this.error !== "") this.loadingDeleteAcc = false;
           });
       } else {
-        this.loading = true;
+        this.loadingDeleteAcc = true;
         const credential = EmailAuthProvider.credential(user.email, this.password);
         reauthenticateWithCredential(user, credential)
           .then(() => {
@@ -125,9 +135,7 @@ export default {
     const user = auth.currentUser;
     onSnapshot(doc(db, "users", user.uid), (doc) => {
       this.userInfo = doc.data();
-      if (this.userInfo.userId == "lvfgmkM6dtfKWye6GUeMdr9ob462") {
-        this.admin = true;
-      }
+
       if (this.userInfo.updatedProfileImage) {
         getDownloadURL(ref(storage, "profile/" + this.userInfo.profile_image))
           .then((url) => {
@@ -138,13 +146,19 @@ export default {
           })
           .catch((error) => {});
       }
+
+      setTimeout(() => {
+        if (this.userInfo.name) {
+          this.loadingProfile = false;
+        }
+      }, 2000);
     });
   },
 };
 </script>
 <template>
   <div v-if="userInfo.name">
-    <div class="bg-gray-100">
+    <div v-show="!loadingProfile" class="bg-gray-100">
       <div class="container mx-auto p-4">
         <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center">
           <!-- Profile Picture -->
@@ -155,12 +169,12 @@ export default {
               v-if="!userInfo.updatedProfileImage"
               id="updateImg"
               class="w-32 h-32 rounded-full object-cover"
-              src="../assets/user.png"
+              src="../assets/default-profile-picture.png"
               alt=""
             />
             <!-- custom profile image -->
             <img
-              v-if="userInfo.updatedProfileImage"
+              v-show="userInfo.updatedProfileImage"
               id="profileImg"
               class="w-32 h-32 rounded-full object-cover"
               src=""
@@ -181,18 +195,30 @@ export default {
               <label
                 v-if="!userInfo.updatedProfileImage"
                 for="inputFile"
-                class="absolute bg-purple w-56 h-8 text-lg font-medium rounded-lg hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg hover:shadow-purple/75 transform duration-200 ease-in-out border border-gray-500 p-4 justify-center items-center flex"
+                class="absolute w-56 h-8 uppercase cursor-pointer font-bold rounded-xl hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg transform duration-200 ease-in-out border bg-black text-white hover:shadow-black/60 border-black p-4 justify-center items-center flex"
               >
-                Update image
+                <img
+                  v-if="loadingUpdateImg"
+                  class="animate-spin-slow w-6"
+                  src="../assets/loading.png"
+                  alt=""
+                />
+                <span v-if="!loadingUpdateImg"> Update image</span>
               </label>
 
               <!-- delete image -->
               <button
                 @click="deleteImage"
                 v-if="userInfo.updatedProfileImage"
-                class="bg-purple w-56 h-8 text-lg font-medium rounded-lg hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg hover:shadow-purple/75 transform duration-200 ease-in-out border border-gray-500 p-4 justify-center items-center flex"
+                class="w-56 h-8 uppercase cursor-pointer font-bold rounded-xl hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg transform duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-75 border bg-black text-white hover:shadow-black/60 border-black p-4 justify-center items-center flex"
               >
-                Delete image
+                <img
+                  v-if="loadingDeleteImg"
+                  class="animate-spin-slow w-6"
+                  src="../assets/loading.png"
+                  alt=""
+                />
+                <span v-if="!loadingDeleteImg">Delete image</span>
               </button>
             </div>
           </div>
@@ -239,7 +265,7 @@ export default {
 
           <div class="flex w-full justify-center items-center">
             <button
-              class="w-56 h-10 uppercase cursor-pointer rounded-xl hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg transform duration-200 ease-in-out border bg-black text-white hover:shadow-black/60 border-black p-4 justify-center items-center flex"
+              class="w-56 h-10 uppercase cursor-pointer font-bold rounded-xl hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg transform duration-200 ease-in-out border bg-black text-white hover:shadow-black/60 border-black p-4 justify-center items-center flex"
               @click="toggleReauthUser"
             >
               DELETE ACCOUNT
@@ -248,7 +274,10 @@ export default {
         </div>
       </div>
     </div>
-
+    <!-- skeleton -->
+    <div v-if="loadingProfile">
+      <div class="w-full h-dvh animate-pulse bg-gray-300"></div>
+    </div>
     <div
       id="reauthUser"
       class="w-full right-0 h-screen absolute hidden justify-center items-center top-0 backdrop-blur-lg z-50"
@@ -282,6 +311,7 @@ export default {
               class="focus:outline-none w-full font-normal border-b border-gray-600"
               type="password"
               placeholder="Password"
+              required
               name="password"
               v-model="password"
               v-on:keydown="error = ''"
@@ -295,16 +325,16 @@ export default {
           </div>
         </div>
         <button
-          class="bg-purple w-96 h-16 font-bold rounded-lg hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg hover:shadow-purple/75 transform duration-200 ease-in-out border border-gray-500 p-4 justify-center items-center flex"
+          class="w-56 h-8 uppercase cursor-pointer font-bold rounded-xl hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg transform duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-75 border bg-black text-white hover:shadow-black/60 border-black p-4 justify-center items-center flex"
           type="sumbit"
         >
           <img
-            v-if="loading"
+            v-if="loadingDeleteAcc"
             class="animate-spin-slow w-6"
             src="../assets/loading.png"
             alt=""
           />
-          <span v-if="!loading">DELETE ACCOUNT</span>
+          <span v-if="!loadingDeleteAcc">DELETE ACCOUNT</span>
         </button>
       </form>
     </div>
