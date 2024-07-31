@@ -10,6 +10,7 @@ export default {
       loading: false,
     };
   },
+
   methods: {
     trackPackage() {
       this.trackedOrder = {};
@@ -32,17 +33,14 @@ export default {
       setTimeout(() => {
         if (this.trackedOrder.status == "In transit") {
           this.statusBg = "bg-yellow-500";
-          console.log(this.statusBg);
         }
         if (this.trackedOrder.status == "Processing") {
           this.statusBg = "bg-orange-400";
-          console.log(this.statusBg);
         }
         if (this.trackedOrder.status == "Delivered") {
           this.statusBg = "bg-green-400";
-          console.log(this.statusBg);
         }
-        console.log(this.trackedOrder);
+
         if (Object.keys(this.trackedOrder).length === 0) {
           this.statusText = "Invalid tracking ID.";
           this.statusBg = "bg-red-200";
@@ -56,6 +54,15 @@ export default {
         this.loading = false;
       }, 1000);
     },
+  },
+  created() {
+    const previousRoute = this.$router.options.history.state.back;
+    if (previousRoute.startsWith("/Orders")) {
+      navigator.clipboard.readText().then((clipText) => (this.trackingID = clipText));
+      setTimeout(() => {
+        if (this.trackingID != "") this.trackPackage();
+      }, 500);
+    }
   },
 };
 </script>

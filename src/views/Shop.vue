@@ -102,7 +102,7 @@ export default {
         <div>
           <div class="w-full flex justify-center overflow-hidden">
             <img
-              class="w-72 object-fit"
+              class="w-full h-full object-fit"
               :src="product.image"
               :alt="product.name + ' image'"
             />
@@ -120,23 +120,11 @@ export default {
       <div
         v-for="skeleton in filteredProducts"
         v-if="loading"
-        class="max-w-[288px] w-72 mx-auto bg-white shadow-lg rounded-lg overflow-hidden"
+        class="max-w-[288px] w-96 mx-auto bg-white shadow-lg rounded-lg overflow-hidden"
       >
         <div class="animate-pulse">
           <!-- Image Placeholder -->
-          <div class="bg-gray-300 h-72 w-full"></div>
-
-          <!-- Content Placeholder -->
-          <div class="p-4 space-y-4">
-            <!-- Title Placeholder -->
-            <div class="bg-gray-300 h-6 w-3/4"></div>
-
-            <!-- Price Placeholder -->
-            <div class="bg-gray-300 h-4 w-1/4"></div>
-
-            <!-- Button Placeholder -->
-            <div class="bg-gray-300 h-8 w-1/2 rounded-md"></div>
-          </div>
+          <div class="bg-gray-300 h-96 w-full"></div>
         </div>
       </div>
     </div>

@@ -89,7 +89,7 @@ const router = createRouter({
           component: () => import("../views/InformationSections.vue"),
         },
         {
-          path: "/Tracking",
+          path: "Tracking",
           name: "Tracking",
           meta: { requiresAuth: true },
           component: () => import("../views/TrackingPackage.vue"),

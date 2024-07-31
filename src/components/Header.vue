@@ -200,14 +200,7 @@ export default {
               </g>
             </svg>
           </div>
-          <routerLink
-            v-if="userInfo.isAdmin"
-            activeClass="border-2 shadow-md shadow-gray-300 border-gray-400 rounded-md  p-2"
-            to="/Admin/Products"
-            class="text-gray-700 font-bold hover:text-gray-900"
-          >
-            Admin
-          </routerLink>
+
           <routerLink
             activeClass="border-2 shadow-md shadow-gray-300 border-gray-400 rounded-md  p-2"
             v-for="cat in categories"
@@ -280,6 +273,14 @@ export default {
                 class="text-gray-700 font-bold hover:border-2 hover:rounded-md hover:border-gray-300 p-2"
                 >Profile
               </router-link>
+              <routerLink
+                v-if="userInfo.isAdmin"
+                activeClass="border-2 shadow-md shadow-gray-300 border-gray-400 rounded-md  p-2 "
+                class="text-gray-700 font-bold hover:border-2 hover:rounded-md hover:border-gray-300 p-2"
+                to="/Admin/Products"
+              >
+                Admin
+              </routerLink>
               <router-link
                 to="/OrdersHistory"
                 activeClass="border-2 shadow-md shadow-gray-300 border-gray-400 rounded-md  p-2 "

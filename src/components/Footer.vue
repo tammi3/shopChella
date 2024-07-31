@@ -45,7 +45,7 @@ export default {
         <router-link
           activeClass="text-gray-500"
           class="font-Ubuntu uppercase font-medium text-md tracking-wider hover:text-gray-400"
-          to="/Tracking"
+          to="/Information/Tracking"
           >Tracking Package</router-link
         >
       </div>
