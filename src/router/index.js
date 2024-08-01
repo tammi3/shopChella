@@ -63,6 +63,11 @@ const router = createRouter({
           name: "AdminOrders",
           component: () => import("../views/AdminOrders.vue"),
         },
+        {
+          path: "Users",
+          name: "AdminUsers",
+          component: () => import("../views/AdminUsers.vue"),
+        },
       ]
     },
     {
@@ -104,7 +109,7 @@ router.beforeEach(async (to, from) => {
   let loggedIn =
     (localStorage.getItem("loggedIn") == "true" ? true : false) || false;
   let admin =  (localStorage.getItem("admin") == "true" ? true : false) || false;;
-  if (to.path.includes("User") && loggedIn)
+  if (to.path.startsWith("/User") && loggedIn)
     return { path: "/Shop/allcategories" };
   if (
     to.path.includes("Admin") &&
