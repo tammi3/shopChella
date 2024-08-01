@@ -75,6 +75,7 @@ export default {
     <table class="w-full mt-5 text-sm text-left rtl:text-right text-gray-500 ">
       <thead class="text-xs text-gray-700 uppercase bg-gray-100  ">
         <tr>
+          <th scope="col" class="px-6 py-3">Customer Name</th>
           <th scope="col" class="px-6 py-3">Order ID</th>
           <th scope="col" class="px-6 py-3">Date</th>
           <th scope="col" class="px-6 py-3">Time</th>
