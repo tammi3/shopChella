@@ -7,7 +7,9 @@ import {
   onSnapshot,
   updateDoc,
   Timestamp,
+  arrayRemove,
   arrayUnion,
+  getDoc,
 } from "../db/firebase.js";
 import Swal from "sweetalert2";
 import { InputCounter } from "flowbite";
@@ -21,19 +23,6 @@ export default {
       loading: true,
     };
   },
-  // watch: {
-  //   productQuantity(val) {
-  //     if (val > 20 || val < 1) {
-  //       this.productQuantity = 1;
-  //     }
-
-  //     if (val == 20) {
-  //       this.orderLimit = true;
-  //     } else {
-  //       this.orderLimit = false;
-  //     }
-  //   },
-  // },
   methods: {
     async addToCart() {
       const user = auth.currentUser;
@@ -45,19 +34,51 @@ export default {
         price: this.product.price,
         total_price: this.product.price * this.productQuantity,
       };
-      console.log(item);
-      await updateDoc(doc(db, "carts", user.uid), {
-        items: arrayUnion(item),
-        updated_at: Timestamp.fromDate(new Date()),
-      }).then(() => {
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Add to cart!",
-          showConfirmButton: false,
-          timer: 1500,
-        });
+      const cartRef = doc(db, "carts", user.uid);
+      const cartSnap = await getDoc(cartRef);
+      const itemExists = cartSnap.data().items.filter((product) => {
+        return product.product_id.toLowerCase().includes(item.product_id.toLowerCase());
       });
+      if (itemExists.length > 0) {
+        await updateDoc(doc(db, "carts", user.uid), {
+          items: arrayUnion({
+            product_id: this.product.id,
+            product_image: this.product.image,
+            product_name: this.product.name,
+            quantity:
+              this.productQuantity + itemExists[0].quantity > 20
+                ? 20
+                : this.productQuantity + itemExists[0].quantity,
+            price: this.product.price,
+            total_price: this.product.price * this.productQuantity,
+          }),
+          updated_at: Timestamp.fromDate(new Date()),
+        }).then(() => {
+          updateDoc(doc(db, "carts", user.uid), {
+            items: arrayRemove({ ...itemExists[0] }),
+          });
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Updated cart!",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        });
+      } else {
+        await updateDoc(doc(db, "carts", user.uid), {
+          items: arrayUnion(item),
+          updated_at: Timestamp.fromDate(new Date()),
+        }).then(() => {
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Added to cart!",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        });
+      }
     },
     inputCounter(operation) {
       // set the target element of the input field
@@ -71,7 +92,7 @@ export default {
       // optional options with default values and callback functions
       const options = {
         minValue: 1,
-        maxValue: 20, // infinite
+        maxValue: 20,
         onIncrement: () => {
           console.log("input field value has been incremented");
         },
@@ -174,18 +195,18 @@ export default {
                   aria-describedby="helper-text-explanation"
                   class="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-sm focus:ring-gray-500 focus:border-gray-500 block w-full py-2.5"
                   placeholder="999"
-                  value="1"
+                  :value="productQuantity"
                   required
                 />
                 <button
                   type="button"
                   id="increment-button"
+                  @click="inputCounter('inc')"
                   data-input-counter-increment="quantity-input"
                   class="bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 focus:ring-2 focus:outline-none"
                 >
                   <svg
                     class="w-3 h-3 text-gray-900 dark:text-white"
-                    @click="inputCounter('inc')"
                     aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"

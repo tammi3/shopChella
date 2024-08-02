@@ -133,10 +133,7 @@ export default {
           </div>
         </ul>
 
-        <!-- <div class="flex items-center">
-        <p class="text-gray-700 font-semibold mr-2">Status:</p>
-        <span class="bg-green-500 text-white px-3 py-1 rounded-full">Shipped</span>
-      </div> -->
+        
       </div>
     </div>
     <div

@@ -4,6 +4,7 @@ import {
   doc,
   setDoc,
   addDoc,
+ getDoc,
   onSnapshot,
   updateDoc,
   deleteDoc,
@@ -16,6 +17,7 @@ import {
   arrayRemove,
   getAggregateFromServer,
   sum,
+  runTransaction 
 } from "firebase/firestore";
 import {
   getAuth,
@@ -58,9 +60,11 @@ export {
   updateDoc,
   storage,
   addDoc,
+  getDoc,
   getDocs,
   uploadBytes,
   deleteObject,
+  runTransaction ,
   getDownloadURL,
   ref,
   query,
