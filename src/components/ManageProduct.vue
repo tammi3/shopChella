@@ -18,6 +18,7 @@ export default {
   data() {
     return {
       products: [],
+      loading: false
     };
   },
   methods: {
@@ -29,6 +30,7 @@ export default {
       productForm.category.value = this.product.category;
     },
     updateProduct() {
+      this.loading = true;
       const productForm = document.querySelector(".addProduct");
       const title = productForm.name.value;
       const price = productForm.price.value;
@@ -38,7 +40,6 @@ export default {
       const uploadImage = inputFile.files[0];
 
       if (uploadImage) {
-        console.log(title, price, uploadImage);
 
         const storageRef = ref(storage, "products/" + uploadImage.name);
         deleteObject(ref(storage, this.product.image)).then(() => {
@@ -52,6 +53,7 @@ export default {
                 image: url,
               }).then(() => {
                 this.closeModal();
+
               });
             });
           });
@@ -63,16 +65,19 @@ export default {
           description: description,
           category: category,
         }).then(() => {
-          console.log("updated");
+          this.closeModal();
         });
       }
+
     },
     closeModal() {
       const productForm = document.querySelector(".addProduct");
-      this.product = "";
+      productForm.reset();
       this.$emit("close");
+      this.loading = false;
     },
     uploadProduct() {
+      this.loading = true;
       const productForm = document.querySelector(".addProduct");
       const title = productForm.name.value;
       const price = productForm.price.value;
@@ -168,8 +173,11 @@ export default {
             <div class="flex items-center">
               <button
                 class="w-48 h-10 font-bold focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-75 uppercase cursor-pointer rounded-xl hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg transform duration-200 ease-in-out border bg-black text-white hover:shadow-black/60 border-black p-4 justify-center items-center flex">
-                <span v-if="action == 'add'">Add Product</span>
-                <span v-if="action == 'edit'">Update Product</span>
+
+                <img v-if="loading" class="animate-spin-slow w-6" src="../assets/loading.png" alt="" />
+                <div v-else><span v-if="action == 'add'">Add Product</span>
+                  <span v-if="action == 'edit'">Update Product</span>
+                </div>
               </button>
             </div>
           </form>

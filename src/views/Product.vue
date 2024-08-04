@@ -144,11 +144,7 @@ export default {
       <div class="p-6 flex flex-col lg:flex-row justify-center items-center">
         <!-- Product Image -->
         <div class="lg:w-1/2 flex items-center justify-center">
-          <img
-            :src="product.image"
-            alt="Product Image"
-            class="w-96 lg:w-[450px] rounded-lg"
-          />
+          <img :src="product.image" alt="Product Image" class="w-96 lg:w-[450px] rounded-lg" />
         </div>
         <!-- Product Details -->
         <div class="lg:w-1/2 lg:pl-6 mt-6 lg:mt-0">
@@ -158,75 +154,34 @@ export default {
             {{ product.description }}
           </p>
           <div class="mt-4">
-            <label for="quantity" class="block text-sm font-medium text-gray-700"
-              >Quantity</label
-            >
+            <label for="quantity" class="block text-sm font-medium text-gray-700">Quantity</label>
             <div class="mt-2 relative flex items-center">
               <div class="relative flex items-center max-w-[8rem]">
-                <button
-                  type="button"
-                  id="decrement-button"
-                  @click="inputCounter('dec')"
+                <button type="button" id="decrement-button" @click="inputCounter('dec')"
                   data-input-counter-decrement="quantity-input"
-                  class="bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11 focus:ring-gray-100 focus:ring-2 focus:outline-none"
-                >
-                  <svg
-                    class="w-3 h-3 text-gray-900 dark:text-white"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 18 2"
-                  >
-                    <path
-                      stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M1 1h16"
-                    />
+                  class="bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11 focus:ring-gray-100 focus:ring-2 focus:outline-none">
+                  <svg class="w-3 h-3 text-gray-900 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 18 2">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M1 1h16" />
                   </svg>
                 </button>
-                <input
-                  type="text"
-                  id="quantity-input"
-                  data-input-counter
-                  data-input-counter-min="1"
-                  data-input-counter-max="50"
-                  aria-describedby="helper-text-explanation"
+                <input type="text" id="quantity-input" data-input-counter data-input-counter-min="1"
+                  data-input-counter-max="50" aria-describedby="helper-text-explanation"
                   class="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-sm focus:ring-gray-500 focus:border-gray-500 block w-full py-2.5"
-                  placeholder="999"
-                  :value="productQuantity"
-                  required
-                />
-                <button
-                  type="button"
-                  id="increment-button"
-                  @click="inputCounter('inc')"
+                  placeholder="999" :value="productQuantity" required />
+                <button type="button" id="increment-button" @click="inputCounter('inc')"
                   data-input-counter-increment="quantity-input"
-                  class="bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 focus:ring-2 focus:outline-none"
-                >
-                  <svg
-                    class="w-3 h-3 text-gray-900 dark:text-white"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 18 18"
-                  >
-                    <path
-                      stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M9 1v16M1 9h16"
-                    />
+                  class="bg-gray-100 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 focus:ring-2 focus:outline-none">
+                  <svg class="w-3 h-3 text-gray-900 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 18 18">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M9 1v16M1 9h16" />
                   </svg>
                 </button>
               </div>
             </div>
-            <p
-              id="helper-text-explanation"
-              class="mt-2 text-sm text-gray-500 dark:text-gray-400"
-            >
+            <p id="helper-text-explanation" class="mt-2 text-sm text-gray-500 dark:text-gray-400">
               Maximum of 20 pieces per order.
             </p>
           </div>
@@ -235,14 +190,11 @@ export default {
             <span class="text-gray-500">Category:</span>
             <span class="text-gray-800 font-semibold pl-1">
               <routerLink :to="'/Shop/' + product.category">
-                {{ product.category }}</routerLink
-              ></span
-            >
+                {{ product.category }}</routerLink>
+            </span>
           </div>
-          <button
-            @click="addToCart()"
-            class="mt-6 w-full text-white font-semibold tracking-wide py-2 px-4 rounded-lg h-10 bg-black hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg hover:shadow-black/60 transform duration-200 ease-in-out text-md cursor-pointer focus:outline-none focus:ring-2 focus:ring-gray-600 focus:ring-opacity-50"
-          >
+          <button @click="addToCart()"
+            class="mt-6 w-full text-white font-semibold tracking-wide py-2 px-4 rounded-lg h-10 bg-black hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg hover:shadow-black/60 transform duration-200 ease-in-out text-md cursor-pointer focus:outline-none focus:ring-2 focus:ring-gray-600 focus:ring-opacity-50">
             Add to Cart
           </button>
         </div>

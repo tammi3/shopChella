@@ -92,6 +92,7 @@ export default {
         shipping_info: {
           country: this.selectedCountry,
           city: this.selectedCity,
+          customer_name: this.userInfo.name.firstname + ' ' + this.userInfo.name.lastname,
           address: this.address,
           phone: this.phone,
           name: this.name,
@@ -122,7 +123,7 @@ export default {
           currency: "NGN",
           firstName: this.userInfo.name.firstname,
           lastName: this.userInfo.name.lastname,
-          phone: this.userInfo.phone,
+          phone: this.phone,
           channels: [
             "card",
             "bank",
@@ -195,20 +196,20 @@ export default {
           },
           customizations: {
             title: "shopChella",
-            description: "Payment for an awesome cruise",
+            description: "Payment for cart",
             logo:
               "https://www.logolynx.com/images/logolynx/22/2239ca38f5505fbfce7e55bbc0604386.jpeg",
           },
           callback: function (data) {
-            console.log("payment callback:", data);
+            //console.log("payment callback:", data);
           },
           onclose: function () {
             console.log("Payment cancelled!");
           },
         });
-        console.log(modal);
+        // console.log(modal);
       } catch (error) {
-        console.error(error);
+        //console.error(error);
       }
     },
     changeAddress() {
@@ -295,7 +296,7 @@ export default {
           <form @submit.prevent="paystack()">
             <div class="mb-6">
               <label class="inline-flex items-center">
-                <input @click="changeAddress()" type="checkbox" class="form-checkbox text-gray-600"
+                <input @click="changeAddress()" type="checkbox" class="form-checkbox text-gray-600 cursor-pointer"
                   id="useDefaultAddress" />
                 <span class="ml-2 text-gray-700">Use default address</span>
               </label>
@@ -355,49 +356,6 @@ export default {
         </div>
       </div>
     </div>
-    <!--Payment  Modal -->
-    <div id="modal" class="hidden fixed inset-0 w-full bg-black bg-opacity-50 z-50 items-center justify-center">
-      <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-        <h2 class="text-xl font-semibold mb-4">Enter Card Details</h2>
-        <form @submit.prevent="payCart()">
-          <div class="mb-4">
-            <label class="block text-gray-700 mb-2" for="cardName">Name on Card</label>
-            <input class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
-              type="text" id="cardName" required />
-          </div>
-          <div class="mb-4">
-            <label class="block text-gray-700 mb-2" for="cardNumber">Card Number</label>
-            <input class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
-              type="text" id="cardNumber" v-model="cardNumber" required />
-            <p v-if="errorMessage" class="text-red-500 text-sm mt-2">
-              {{ errorMessage }}
-            </p>
-          </div>
-          <div class="flex mb-4">
-            <div class="w-1/2 mr-2">
-              <label class="block text-gray-700 mb-2" for="expiryDate">Expiry Date</label>
-              <input class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
-                type="text" id="expiryDate" required />
-            </div>
-            <div class="w-1/2 ml-2">
-              <label class="block text-gray-700 mb-2" for="cvv">CVV</label>
-              <input class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
-                type="text" id="cvv" required />
-            </div>
-          </div>
-          <div class="flex justify-end">
-            <button type="button" @click="toggleModal()"
-              class="px-4 py-2 bg-gray-500 text-white font-semibold rounded-lg shadow-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-75 mr-2">
-              Cancel
-            </button>
-            <button type="submit"
-              class="px-4 py-2 bg-gray-500 text-white font-semibold rounded-lg shadow-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-75">
-              <img v-if="loading" class="animate-spin-slow w-6" src="../assets/loading.png" alt="" />
-              <span v-if="!loading">Pay Now</span>
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+
   </div>
 </template>
