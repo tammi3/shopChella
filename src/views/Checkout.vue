@@ -92,10 +92,9 @@ export default {
         shipping_info: {
           country: this.selectedCountry,
           city: this.selectedCity,
-          customer_name: this.userInfo.name.firstname + ' ' + this.userInfo.name.lastname,
+          customer_name: this.userInfo.name.firstname + " " + this.userInfo.name.lastname,
           address: this.address,
           phone: this.phone,
-          name: this.name,
           subtotal: this.subtotal,
           total: this.total,
           shipping_fee: 24.0,
@@ -119,7 +118,7 @@ export default {
         popup.newTransaction({
           key: keys.paystack.publicKey,
           email: this.userInfo.email,
-          amount: this.total * 100,
+          amount: this.total * 100 * 1700,
           currency: "NGN",
           firstName: this.userInfo.name.firstname,
           lastName: this.userInfo.name.lastname,
@@ -149,29 +148,29 @@ export default {
               )
               .then((response) => {
                 const res = response.data;
-                console.log(res);
+                //console.log(res);
                 if (
                   res.status &&
                   res.data.status == "success" &&
-                  res.data.amount >= this.total / 100
+                  res.data.amount >= (this.total * 1700) / 100
                 ) {
                   this.createOrder();
                 }
               });
           },
           onLoad: (response) => {
-            console.log("onLoad: ", response);
+            //console.log("onLoad: ", response);
           },
           onCancel: () => {
-            console.log("onCancel");
+            //console.log("onCancel");
           },
           onError: (error) => {
-            console.log("Error: ", error.message);
+            //console.log("Error: ", error.message);
             this.flutterwave();
           },
         });
       } catch (error) {
-        console.error(error);
+        //console.error(error);
       }
     },
     async flutterwave() {
@@ -242,28 +241,40 @@ export default {
 };
 </script>
 <template>
-  <div v-if="cart == ''"
-    class="w-full h-dvh font-EdGaramond text-4xl flex flex-col gap-10 p-10 justify-center items-center">
+  <div
+    v-if="cart == ''"
+    class="w-full h-dvh font-Ubuntu text-4xl font-semibold flex flex-col p-10 justify-center items-center"
+  >
     <p>Your cart is empty :(</p>
-    <img class="max-w-sm" src="../assets/bag (1).png" />
   </div>
-  <div v-else class="min-h-screen bg-gray-200 flex items-center justify-center p-6">
+  <div
+    v-else
+    class="min-h-screen bg-gray-200 flex items-center justify-center p-6 font-Ubuntu"
+  >
     <div v-if="userInfo" class="container mx-auto max-w-4xl">
       <div class="bg-white shadow-md rounded-lg p-6">
-        <h2 class="text-2xl font-semibold mb-6">Checkout</h2>
+        <h2 class="font-semibold text-3xl uppercase mb-6">Checkout</h2>
 
         <!-- Cart Items -->
         <div class="mb-6">
           <h3 class="text-xl font-semibold mb-4">Cart Items</h3>
           <div class="space-y-4">
             <div v-for="product in cart" class="flex items-center">
-              <img :src="product.product_image" alt="Product Image" class="w-16 h-16 object-fit rounded mr-4" />
+              <img
+                :src="product.product_image"
+                alt="Product Image"
+                class="w-16 h-16 object-fit rounded mr-4"
+              />
               <div>
-                <h4 class="text-lg font-semibold">
+                <h4 class="text-xl font-semibold">
                   {{ product.product_name }}
                 </h4>
-                <p class="text-gray-600">Quantity: {{ product.quantity }}</p>
-                <p class="text-gray-600">Price: ${{ product.total_price }}</p>
+                <p class="text-gray-600 text-md font-medium">
+                  Quantity: {{ product.quantity }}
+                </p>
+                <p class="text-gray-600 text-md font-medium">
+                  Price: ${{ product.total_price }}
+                </p>
               </div>
             </div>
           </div>
@@ -296,25 +307,39 @@ export default {
           <form @submit.prevent="paystack()">
             <div class="mb-6">
               <label class="inline-flex items-center">
-                <input @click="changeAddress()" type="checkbox" class="form-checkbox text-gray-600 cursor-pointer"
-                  id="useDefaultAddress" />
+                <input
+                  @click="changeAddress()"
+                  type="checkbox"
+                  class="form-checkbox text-gray-600 cursor-pointer"
+                  id="useDefaultAddress"
+                />
                 <span class="ml-2 text-gray-700">Use default address</span>
               </label>
             </div>
             <div class="mb-4">
               <label class="block text-gray-700 mb-2" for="address">Address</label>
-              <input v-if="!defaultAddress"
+              <input
+                v-if="!defaultAddress"
                 class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
-                type="text" id="address" v-model="address" required />
+                type="text"
+                id="address"
+                v-model="address"
+                required
+              />
               <div v-else class="w-full px-3 py-2 border rounded-lg">
                 {{ userInfo.address.street }}
               </div>
             </div>
             <div class="mb-4">
               <label class="block text-gray-700 mb-2" for="country">Country</label>
-              <select v-if="!defaultAddress" id="country"
+              <select
+                v-if="!defaultAddress"
+                id="country"
                 class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
-                v-model="selectedCountryCode" @change="updateCities" required>
+                v-model="selectedCountryCode"
+                @change="updateCities"
+                required
+              >
                 <option value="" disabled selected>Select a country</option>
                 <option v-for="(country, code) in countries" :value="code">
                   {{ country.country }}
@@ -326,9 +351,13 @@ export default {
             </div>
             <div class="mb-4">
               <label class="block text-gray-700 mb-2" for="city">City</label>
-              <select v-if="!defaultAddress" id="city"
+              <select
+                v-if="!defaultAddress"
+                id="city"
                 class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
-                v-model="selectedCity" required>
+                v-model="selectedCity"
+                required
+              >
                 <option value="" disabled selected>Select a city</option>
                 <option v-for="city in cities" :value="city">{{ city }}</option>
               </select>
@@ -339,16 +368,24 @@ export default {
 
             <div class="mb-4">
               <label class="block text-gray-700 mb-2" for="phone">Phone Number</label>
-              <input v-if="!defaultAddress"
+              <input
+                v-if="!defaultAddress"
                 class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
-                type="text" v-mask="['####-###-####', '####-###-####']" v-model="phone" id="phone" required />
+                type="text"
+                v-mask="['####-###-####', '####-###-####']"
+                v-model="phone"
+                id="phone"
+                required
+              />
               <div v-else class="w-full px-3 py-2 border rounded-lg">
                 {{ userInfo.phone }}
               </div>
             </div>
             <div class="flex justify-end">
-              <button type="submit"
-                class="px-6 py-2 uppercase cursor-pointer font-bold rounded-xl hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg transform duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-75 border bg-black text-white hover:shadow-black/60 border-black p-4 justify-center items-center flex">
+              <button
+                type="submit"
+                class="px-6 py-2 uppercase cursor-pointer font-bold rounded-xl hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg transform duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-75 border bg-black text-white hover:shadow-black/60 border-black p-4 justify-center items-center flex"
+              >
                 Place Order
               </button>
             </div>
@@ -356,6 +393,5 @@ export default {
         </div>
       </div>
     </div>
-
   </div>
 </template>

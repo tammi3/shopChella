@@ -26,15 +26,15 @@ export default {
 };
 </script>
 <template>
-  <section class="container mx-auto px-4 py-10 md:py-24 h-full">
-    <h2 class="text-2xl font-bold uppercase mb-4">{{ information.title }}</h2>
-    <p class="text-gray-700 text-lg mb-4">
+  <section class="container mx-auto px-4 py-10 md:py-24 h-full font-EdGaramond">
+    <h2 class="text-3xl font-bold uppercase mb-4 font-Ubuntu">{{ information.title }}</h2>
+    <p class="text-gray-700 text-xl mb-4 line">
       {{ information.intro }}
     </p>
-    <ul class="list-disc list-inside text-gray-700 mb-4 text-lg">
+    <ul class="list-disc list-inside text-gray-700 mb-4 text-xl">
       <li class="mb-2" v-for="bulletin in information.bulletins">{{ bulletin }}</li>
     </ul>
-    <p class="text-gray-700 text-lg">
+    <p class="text-gray-700 text-xl">
       {{ information.note }}
     </p>
   </section>

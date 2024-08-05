@@ -32,7 +32,7 @@ export default {
           });
           Toast.fire({
             icon: "success",
-            title: "Signed in successfully",
+            title: "Welcome back!",
           });
           this.$router.replace({ path: "/Shop/allcategories" });
         })
@@ -44,6 +44,9 @@ export default {
             this.error = "Invalid credentials.";
             this.loading = false;
           }
+          setTimeout(() => {
+            this.error = "";
+          }, 2000);
         });
     },
   },
@@ -53,15 +56,14 @@ export default {
 <template>
   <form
     @submit.prevent="handleSubmit"
-    class="login w-full py-10 flex flex-col justify-start items-center gap-10 font-medium tracking-wide"
+    class="login w-full py-10 flex flex-col justify-start items-center gap-10 font-medium tracking-wide font-Ubuntu"
   >
-    <p v-if="error != ''" class="text-red-600">{{ error }}</p>
     <div class="w-full flex flex-col gap-3">
       <label for="">Email</label>
       <input
-        class="font-normal border-b border-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-75"
+        class="font-normal border-b border-gray-600 focus:outline-none"
         type="text"
-        placeholder="@johndoe"
+        placeholder="johndoe@gmail.com"
         name="email"
         v-model="email"
         id="email"
@@ -73,7 +75,7 @@ export default {
       <div class="w-full flex relative">
         <input
           id="password"
-          class="focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-75 w-full font-normal border-b border-gray-600"
+          class="focus:outline-none w-full font-normal border-b border-gray-600"
           type="password"
           placeholder="Password"
           name="password"
@@ -88,6 +90,7 @@ export default {
         ></i>
       </div>
     </div>
+    <p v-if="error != ''" class="text-red-600">{{ error }}</p>
     <button
       type="submit"
       class="w-full h-10 uppercase cursor-pointer font-bold rounded-xl hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg transform duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-75 border bg-black text-white hover:shadow-black/60 border-black p-4 justify-center items-center flex"

@@ -59,7 +59,8 @@ export default {
 };
 </script>
 <template>
-  <div v-show="!loadingOrders" class="bg-gray-100">
+  <div v-show="!loadingOrders" class="relative">
+    <div class="absolute inset-0 -z-10 bg-gray-100 w-full h-full"></div>
     <div v-if="isOrders" class="container mx-auto px-4 py-8">
       <h1 class="text-3xl font-bold mb-6 uppercase">Order History</h1>
 
@@ -132,8 +133,6 @@ export default {
             </div>
           </div>
         </ul>
-
-        
       </div>
     </div>
     <div

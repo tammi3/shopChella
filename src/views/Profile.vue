@@ -157,7 +157,7 @@ export default {
 };
 </script>
 <template>
-  <div v-if="userInfo.name">
+  <div class="relative" v-if="userInfo.name">
     <div v-show="!loadingProfile" class="bg-gray-100">
       <div class="container mx-auto p-4">
         <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center">
@@ -280,63 +280,73 @@ export default {
     </div>
     <div
       id="reauthUser"
-      class="w-full right-0 h-screen absolute hidden justify-center items-center top-0 backdrop-blur-lg z-50"
+      class="w-full hidden inset-0 absolute z-30 justify-center items-start pt-10 backdrop-blur-lg h-full font-Ubuntu"
     >
-      <form
-        @sumbit.prevent="toggleReauthUser"
-        class="w-2/4 h-2/4 items-center justify-start bg-white z-50 flex flex-col gap-4 shadow-lg border-gray-400"
-      >
-        <div class="w-full px-10 py-4 flex justify-end items-center">
-          <svg
-            class="cursor-pointer"
-            @click="toggleReauthUser"
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="21"
-          >
-            <g fill="#e4c1f9" fill-rule="evenodd">
-              <path d="M2.575.954l16.97 16.97-2.12 2.122L.455 3.076z" />
-              <path d="M.454 17.925L17.424.955l2.122 2.12-16.97 16.97z" />
-            </g>
-          </svg>
-        </div>
-        <p v-if="error != ''" class="text-red-600">{{ error }}</p>
-        <div
-          class="font-Ubuntu flex flex-col gap-16 p-10 tracking-wide justify-center items-center"
-        >
-          <label for="">Enter your password to delete your account.</label>
-          <div class="w-full flex relative">
-            <input
-              id="userPassword"
-              class="focus:outline-none w-full font-normal border-b border-gray-600"
-              type="password"
-              placeholder="Password"
-              required
-              name="password"
-              v-model="password"
-              v-on:keydown="error = ''"
-            />
-            <i
-              class="fa fa-eye fa-lg py-1 pl-2 border-b border-gray-600 cursor-pointer"
-              id="iconEye"
-              @click="togglePassword"
-              aria-hidden="true"
-            ></i>
+      <div class="w-full flex justify-center items-center py-4">
+        <section class="flex flex-col shadow-lg rounded-lg bg-white max-w-xl">
+          <div class="flex justify-end p-4 items-center">
+            <svg
+              class="cursor-pointer"
+              @click="toggleReauthUser"
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="21"
+            >
+              <g fill="#000000" fill-rule="evenodd">
+                <path d="M2.575.954l16.97 16.97-2.12 2.122L.455 3.076z" />
+                <path d="M.454 17.925L17.424.955l2.122 2.12-16.97 16.97z" />
+              </g>
+            </svg>
           </div>
-        </div>
-        <button
-          class="w-56 h-8 uppercase cursor-pointer font-bold rounded-xl hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg transform duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-75 border bg-black text-white hover:shadow-black/60 border-black p-4 justify-center items-center flex"
-          type="sumbit"
-        >
-          <img
-            v-if="loadingDeleteAcc"
-            class="animate-spin-slow w-6"
-            src="../assets/loading.png"
-            alt=""
-          />
-          <span v-if="!loadingDeleteAcc">DELETE ACCOUNT</span>
-        </button>
-      </form>
+          <div class="max-w-xl px-4 py-8 mx-auto lg:py-16">
+            <form
+              class="addProduct flex flex-col items-center w-full space-y-2"
+              @sumbit.prevent="handleSubmit"
+            >
+              <div class="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
+                <p v-if="error != ''" class="text-red-600">{{ error }}</p>
+                <div class="sm:col-span-2">
+                  <label
+                    for="name"
+                    class="block mb-2 text-md md:text-lg font-medium text-gray-900"
+                    >Enter your password to delete your account.</label
+                  >
+                  <div class="w-full flex relative">
+                    <input
+                      id="password"
+                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                      type="password"
+                      placeholder="Password"
+                      required
+                      name="password"
+                      v-model="password"
+                      v-on:keydown="error = ''"
+                    />
+                    <i
+                      class="fa fa-eye fa-lg py-1 pl-2 cursor-pointer border-gray-300"
+                      id="iconEye"
+                      @click="togglePassword"
+                      aria-hidden="true"
+                    ></i>
+                  </div>
+                </div>
+              </div>
+              <button
+                class="w-56 h-8 uppercase cursor-pointer font-bold rounded-xl hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg transform duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-75 border bg-black text-white hover:shadow-black/60 border-black p-4 justify-center items-center flex"
+                type="sumbit"
+              >
+                <img
+                  v-if="loadingDeleteAcc"
+                  class="animate-spin-slow w-6"
+                  src="../assets/loading.png"
+                  alt=""
+                />
+                <span v-if="!loadingDeleteAcc">DELETE ACCOUNT</span>
+              </button>
+            </form>
+          </div>
+        </section>
+      </div>
     </div>
   </div>
 </template>
