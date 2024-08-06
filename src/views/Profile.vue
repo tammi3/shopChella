@@ -123,6 +123,7 @@ export default {
       this.reauthUser = document.querySelector("#reauthUser");
 
       if (this.reauthUser.classList.contains("hidden")) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
         this.reauthUser.classList.remove("hidden");
         this.reauthUser.classList.add("flex");
       } else {
@@ -300,21 +301,21 @@ export default {
           </div>
           <div class="max-w-xl px-4 py-8 mx-auto lg:py-16">
             <form
-              class="addProduct flex flex-col items-center w-full space-y-2"
-              @sumbit.prevent="handleSubmit"
+              class="flex flex-col items-center w-full space-y-2"
+              @submit.prevent="deleteUserCred"
             >
               <div class="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
                 <p v-if="error != ''" class="text-red-600">{{ error }}</p>
                 <div class="sm:col-span-2">
                   <label
-                    for="name"
+                    for="password"
                     class="block mb-2 text-md md:text-lg font-medium text-gray-900"
                     >Enter your password to delete your account.</label
                   >
                   <div class="w-full flex relative">
                     <input
                       id="password"
-                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                      class="border-b border-gray-500 text-gray-900 text-base focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                       type="password"
                       placeholder="Password"
                       required
@@ -323,7 +324,7 @@ export default {
                       v-on:keydown="error = ''"
                     />
                     <i
-                      class="fa fa-eye fa-lg py-1 pl-2 cursor-pointer border-gray-300"
+                      class="fa fa-eye fa-lg pt-3 pl-2 border-b cursor-pointer border-gray-500"
                       id="iconEye"
                       @click="togglePassword"
                       aria-hidden="true"

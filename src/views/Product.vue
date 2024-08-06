@@ -127,6 +127,7 @@ export default {
           id: this.id,
         };
       });
+
       setTimeout(() => {
         this.loading = false;
       }, 2000);
@@ -134,6 +135,7 @@ export default {
   },
 
   created() {
+    window.scrollTo({ top: 0, behavior: "smooth" });
     this.getProduct();
   },
 };

@@ -1,6 +1,13 @@
 <script>
 import AppFooter from "../components/Footer.vue";
 export default {
+  watch: {
+    $route: {
+      handler(to, from) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      },
+    },
+  },
   components: {
     AppFooter,
   },

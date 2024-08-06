@@ -16,6 +16,7 @@ export default {
     };
   },
   created() {
+    this.infoHeaders = [];
     const q = query(collection(db, "shopchella_information"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       querySnapshot.forEach((doc) => {
@@ -25,6 +26,7 @@ export default {
         });
       });
     });
+    console.log(this.infoHeaders);
   },
 };
 </script>
@@ -71,55 +73,6 @@ export default {
           aria-hidden="true"
         ></i>
       </ul>
-
-      <!-- Information -->
-      <!-- <div class="flex flex-col gap-3">
-        <routerLink
-          to="/Information"
-          class="font-Ubuntu uppercase font-medium text-lg tracking-wider"
-          >Information</routerLink
-        >
-        <ul class="capitalize font-EdGaramond tracking-wider text-lg flex flex-col gap-2">
-          <router-link
-            :to="'/Information/' + info.id"
-            v-for="info in infoHeaders"
-            class="hover:text-gray-400 cursor-pointer"
-            >{{ info.title }}</router-link
-          >
-
-          <router-link class="hover:text-gray-400 cursor-pointer" to="/Tracking"
-            >Tracking Package</router-link
-          >
-        </ul>
-      </div> -->
-
-      <!-- Contact -->
-      <!-- <div class="flex flex-col gap-3">
-        <p class="font-Ubuntu uppercase font-medium text-lg tracking-wider">Contact</p>
-        <div class="flex gap-2 hover:text-gray-400 cursor-pointer items-center">
-         
-          <p class="font-EdGaramond text-lg">contactcenter@shopchella.ng.com</p>
-        </div>
-        <ul class="flex gap-4">
-          <i class="fa hover:text-gray-400 cursor-pointer fa-lg fa-envelope" aria-hidden="true"></i>
-          <i
-            class="fa hover:text-gray-400 cursor-pointer fa-lg fa-twitter"
-            aria-hidden="true"
-          ></i>
-          <i
-            class="fa hover:text-gray-400 cursor-pointer fa-lg fa-facebook"
-            aria-hidden="true"
-          ></i>
-          <i
-            class="fa hover:text-gray-400 cursor-pointer fa-lg fa-instagram"
-            aria-hidden="true"
-          ></i>
-          <i
-            class="fa hover:text-gray-400 cursor-pointer fa-lg fa-pinterest"
-            aria-hidden="true"
-          ></i>
-        </ul>
-      </div> -->
     </div>
   </section>
 </template>
