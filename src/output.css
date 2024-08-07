@@ -630,6 +630,10 @@ video {
   bottom: 0px;
 }
 
+.bottom-10{
+  bottom: 2.5rem;
+}
+
 .bottom-\[60px\]{
   bottom: 60px;
 }
@@ -664,6 +668,10 @@ video {
 
 .top-\[50px\]{
   top: 50px;
+}
+
+.top-10{
+  top: 2.5rem;
 }
 
 .-z-10{
@@ -919,6 +927,10 @@ video {
   width: 100%;
 }
 
+.w-2\/4{
+  width: 50%;
+}
+
 .max-w-4xl{
   max-width: 56rem;
 }
@@ -1057,6 +1069,10 @@ video {
   flex-direction: column;
 }
 
+.flex-wrap{
+  flex-wrap: wrap;
+}
+
 .items-start{
   align-items: flex-start;
 }
@@ -1181,6 +1197,19 @@ video {
   white-space: nowrap;
 }
 
+.text-wrap{
+  text-wrap: wrap;
+}
+
+.break-normal{
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+.break-words{
+  overflow-wrap: break-word;
+}
+
 .rounded{
   border-radius: 0.25rem;
 }
@@ -1292,6 +1321,11 @@ video {
 .border-gray-600{
   --tw-border-opacity: 1;
   border-color: rgb(75 85 99 / var(--tw-border-opacity));
+}
+
+.border-gray-900{
+  --tw-border-opacity: 1;
+  border-color: rgb(17 24 39 / var(--tw-border-opacity));
 }
 
 .border-white{
@@ -1574,6 +1608,11 @@ video {
   line-height: 2.5rem;
 }
 
+.text-base{
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
 .text-lg{
   font-size: 1.125rem;
   line-height: 1.75rem;
@@ -1592,11 +1631,6 @@ video {
 .text-xs{
   font-size: 0.75rem;
   line-height: 1rem;
-}
-
-.text-base{
-  font-size: 1rem;
-  line-height: 1.5rem;
 }
 
 .font-black{
@@ -1922,6 +1956,11 @@ video {
   --tw-shadow: var(--tw-shadow-colored);
 }
 
+.hover\:shadow-gray-500:hover{
+  --tw-shadow-color: #6b7280;
+  --tw-shadow: var(--tw-shadow-colored);
+}
+
 .hover\:shadow-gray-500\/75:hover{
   --tw-shadow-color: rgb(107 114 128 / 0.75);
   --tw-shadow: var(--tw-shadow-colored);
@@ -2062,6 +2101,10 @@ video {
     margin-top: 0px;
   }
 
+  .lg\:block{
+    display: block;
+  }
+
   .lg\:flex{
     display: flex;
   }
@@ -2086,10 +2129,6 @@ video {
     width: 450px;
   }
 
-  .lg\:max-w-md{
-    max-width: 28rem;
-  }
-
   .lg\:grid-cols-3{
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -2108,6 +2147,10 @@ video {
 
   .lg\:items-center{
     align-items: center;
+  }
+
+  .lg\:justify-start{
+    justify-content: flex-start;
   }
 
   .lg\:justify-center{
@@ -2134,9 +2177,18 @@ video {
     padding: 0px;
   }
 
+  .lg\:p-10{
+    padding: 2.5rem;
+  }
+
   .lg\:py-16{
     padding-top: 4rem;
     padding-bottom: 4rem;
+  }
+
+  .lg\:py-6{
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
   }
 
   .lg\:pl-6{

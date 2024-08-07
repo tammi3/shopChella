@@ -288,12 +288,6 @@ export default {
                 class="text-gray-700 font-bold hover:border-2 hover:rounded-md hover:border-gray-300 p-2"
                 >Orders
               </router-link>
-              <router-link
-                to="/Information/returns_&_exchange"
-                activeClass="border-2 shadow-md shadow-gray-300 border-gray-400 rounded-md  p-2 "
-                class="text-gray-700 font-bold hover:border-2 hover:rounded-md hover:border-gray-300 p-2"
-                >Information
-              </router-link>
               <div
                 class="text-gray-700 cursor-pointer font-bold hover:border-2 hover:rounded-md hover:border-gray-300 p-2"
                 @click="logOut"
