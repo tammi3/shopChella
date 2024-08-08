@@ -33,6 +33,7 @@ export default {
   watch: {
     $route: {
       handler(to, from) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
         if (this.isBurgerMenuVisible) {
           this.toggleMenu();
         }
@@ -264,35 +265,51 @@ export default {
               />
             </button>
             <div
-              v-if="userInfo != ''"
               id="profile-menu"
               class="absolute top-[50px] right-0 z-10 bg-white p-4 rounded-sm shadow-gray-400 shadow-md hidden flex-col space-y-3 uppercase"
             >
-              <router-link
-                to="/Profile"
-                activeClass="border-2 shadow-md shadow-gray-300 border-gray-400 rounded-md  p-2 "
-                class="text-gray-700 font-bold hover:border-2 hover:rounded-md hover:border-gray-300 p-2"
-                >Profile
-              </router-link>
-              <routerLink
-                v-if="userInfo.isAdmin"
-                activeClass="border-2 shadow-md shadow-gray-300 border-gray-400 rounded-md  p-2 "
-                class="text-gray-700 font-bold hover:border-2 hover:rounded-md hover:border-gray-300 p-2"
-                to="/Admin/Products"
-              >
-                Admin
-              </routerLink>
-              <router-link
-                to="/OrdersHistory"
-                activeClass="border-2 shadow-md shadow-gray-300 border-gray-400 rounded-md  p-2 "
-                class="text-gray-700 font-bold hover:border-2 hover:rounded-md hover:border-gray-300 p-2"
-                >Orders
-              </router-link>
-              <div
-                class="text-gray-700 cursor-pointer font-bold hover:border-2 hover:rounded-md hover:border-gray-300 p-2"
-                @click="logOut"
-              >
-                Logout
+              <div v-if="userInfo == ''" class="w-full flex flex-col space-y-2">
+                <router-link
+                  to="/User/login"
+                  activeClass="border-2 shadow-md shadow-gray-300 border-gray-400 rounded-md  p-2 "
+                  class="text-gray-700 font-bold hover:border-2 hover:rounded-md hover:border-gray-300 p-2 w-20"
+                  >Log in
+                </router-link>
+                <router-link
+                  to="/User/signup"
+                  activeClass="border-2 shadow-md shadow-gray-300 border-gray-400 rounded-md  p-2 "
+                  class="text-gray-700 font-bold hover:border-2 hover:rounded-md hover:border-gray-300 p-2 w-24"
+                  >sign up
+                </router-link>
+              </div>
+
+              <div v-if="userInfo != ''" class="w-full flex flex-col space-y-2">
+                <router-link
+                  to="/Profile"
+                  activeClass="border-2 shadow-md shadow-gray-300 border-gray-400 rounded-md  p-2 "
+                  class="text-gray-700 font-bold hover:border-2 hover:rounded-md hover:border-gray-300 p-2"
+                  >Profile
+                </router-link>
+                <routerLink
+                  v-if="userInfo.isAdmin"
+                  activeClass="border-2 shadow-md shadow-gray-300 border-gray-400 rounded-md  p-2 "
+                  class="text-gray-700 font-bold hover:border-2 hover:rounded-md hover:border-gray-300 p-2"
+                  to="/Admin/Products"
+                >
+                  Admin
+                </routerLink>
+                <router-link
+                  to="/OrdersHistory"
+                  activeClass="border-2 shadow-md shadow-gray-300 border-gray-400 rounded-md  p-2 "
+                  class="text-gray-700 font-bold hover:border-2 hover:rounded-md hover:border-gray-300 p-2"
+                  >Orders
+                </router-link>
+                <div
+                  class="text-gray-700 cursor-pointer font-bold hover:border-2 hover:rounded-md hover:border-gray-300 p-2"
+                  @click="logOut"
+                >
+                  Logout
+                </div>
               </div>
             </div>
           </div>

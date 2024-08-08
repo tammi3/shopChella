@@ -13,6 +13,7 @@ export default {
   data() {
     return {
       infoHeaders: [],
+      loadingfooter: true,
     };
   },
   created() {
@@ -26,13 +27,18 @@ export default {
         });
       });
     });
-    console.log(this.infoHeaders);
+    setTimeout(() => {
+      this.loadingfooter = false;
+    }, 2000);
   },
 };
 </script>
 
 <template>
-  <section class="mx-auto p-10 bg-black text-white">
+  <div v-if="loadingfooter">
+    <div class="w-full h-20 animate-pulse bg-gray-700"></div>
+  </div>
+  <section v-show="!loadingfooter" class="mx-auto p-10 bg-black text-white w-full">
     <div class="grid grid-cols-1 lg:grid-cols-4 xl:grid-cols-5 gap-8">
       <!-- Categories -->
       <div v-for="info in infoHeaders">

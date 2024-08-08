@@ -1,5 +1,5 @@
 <script>
-import { onSnapshot, doc, db, collection, query } from "../db/firebase.js";
+import { onSnapshot, doc, db } from "../db/firebase.js";
 
 export default {
   data() {
