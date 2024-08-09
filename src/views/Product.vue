@@ -34,50 +34,54 @@ export default {
         price: this.product.price,
         total_price: this.product.price * this.productQuantity,
       };
-      const cartRef = doc(db, "carts", user.uid);
-      const cartSnap = await getDoc(cartRef);
-      const itemExists = cartSnap.data().items.filter((product) => {
-        return product.product_id.toLowerCase().includes(item.product_id.toLowerCase());
-      });
-      if (itemExists.length > 0) {
-        await updateDoc(doc(db, "carts", user.uid), {
-          items: arrayUnion({
-            product_id: this.product.id,
-            product_image: this.product.image,
-            product_name: this.product.name,
-            quantity:
-              this.productQuantity + itemExists[0].quantity > 20
-                ? 20
-                : this.productQuantity + itemExists[0].quantity,
-            price: this.product.price,
-            total_price: this.product.price * this.productQuantity,
-          }),
-          updated_at: Timestamp.fromDate(new Date()),
-        }).then(() => {
-          updateDoc(doc(db, "carts", user.uid), {
-            items: arrayRemove({ ...itemExists[0] }),
-          });
-          Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "Updated cart!",
-            showConfirmButton: false,
-            timer: 1500,
-          });
+      if (user) {
+        const cartRef = doc(db, "carts", user.uid);
+        const cartSnap = await getDoc(cartRef);
+        const itemExists = cartSnap.data().items.filter((product) => {
+          return product.product_id.toLowerCase().includes(item.product_id.toLowerCase());
         });
+        if (itemExists.length > 0) {
+          await updateDoc(doc(db, "carts", user.uid), {
+            items: arrayUnion({
+              product_id: this.product.id,
+              product_image: this.product.image,
+              product_name: this.product.name,
+              quantity:
+                this.productQuantity + itemExists[0].quantity > 20
+                  ? 20
+                  : this.productQuantity + itemExists[0].quantity,
+              price: this.product.price,
+              total_price: this.product.price * this.productQuantity,
+            }),
+            updated_at: Timestamp.fromDate(new Date()),
+          }).then(() => {
+            updateDoc(doc(db, "carts", user.uid), {
+              items: arrayRemove({ ...itemExists[0] }),
+            });
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "Updated cart!",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          });
+        } else {
+          await updateDoc(doc(db, "carts", user.uid), {
+            items: arrayUnion(item),
+            updated_at: Timestamp.fromDate(new Date()),
+          }).then(() => {
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "Added to cart!",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          });
+        }
       } else {
-        await updateDoc(doc(db, "carts", user.uid), {
-          items: arrayUnion(item),
-          updated_at: Timestamp.fromDate(new Date()),
-        }).then(() => {
-          Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "Added to cart!",
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        });
+        this.$router.push({ name: "User" });
       }
     },
     inputCounter(operation) {
@@ -93,12 +97,8 @@ export default {
       const options = {
         minValue: 1,
         maxValue: 20,
-        onIncrement: () => {
-          console.log("input field value has been incremented");
-        },
-        onDecrement: () => {
-          console.log("input field value has been decremented");
-        },
+        onIncrement: () => {},
+        onDecrement: () => {},
       };
 
       const instanceOptions = {

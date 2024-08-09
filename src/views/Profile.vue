@@ -81,10 +81,8 @@ export default {
           .then(() => {
             deleteUser(user)
               .then(() => {
-                console.log("user deleted");
                 deleteObject(storageRef)
                   .then(() => {
-                    console.log("image deleted");
                     deleteDoc(userRef).then(() => {
                       this.$router.replace({ name: "Signup" });
                     });
@@ -96,7 +94,9 @@ export default {
           .catch((error) => {
             // An error ocurred
             this.error = "Incorrect password";
-            if (this.error !== "") this.loadingDeleteAcc = false;
+            if (this.error !== "") {
+              this.loadingDeleteAcc = false;
+            }
           });
       } else {
         this.loadingDeleteAcc = true;
@@ -105,8 +105,6 @@ export default {
           .then(() => {
             deleteUser(user)
               .then(() => {
-                console.log("user deleted");
-
                 deleteDoc(userRef).then(() => {
                   this.$router.replace({ name: "Signup" });
                 });
@@ -160,7 +158,7 @@ export default {
 <template>
   <div class="relative" v-if="userInfo.name">
     <div v-show="!loadingProfile" class="bg-gray-100">
-      <div class="container mx-auto p-4">
+      <div class="container mx-auto pt-4 px-4 pb-20">
         <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center">
           <!-- Profile Picture -->
 
@@ -305,7 +303,9 @@ export default {
               @submit.prevent="deleteUserCred"
             >
               <div class="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
-                <p v-if="error != ''" class="text-red-600">{{ error }}</p>
+                <p v-if="error != ''" class="text-red-600 font-semibold text-center">
+                  {{ error }}
+                </p>
                 <div class="sm:col-span-2">
                   <label
                     for="password"
@@ -315,7 +315,7 @@ export default {
                   <div class="w-full flex relative">
                     <input
                       id="password"
-                      class="border-b border-gray-500 text-gray-900 text-base focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                      class="border-b border-gray-500 text-gray-900 text-base block w-full p-2.5"
                       type="password"
                       placeholder="Password"
                       required

@@ -13,14 +13,14 @@ const router = createRouter({
     {
       path: "/Shop/:category",
       name: "Shop",
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: false },
       component: () => import("../views/Shop.vue"),
      
     },
     {
       path: "/Product/:id",
       name: "Product",
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: false },
       component: () => import("../views/Product.vue"),
     },
     {
@@ -85,7 +85,7 @@ const router = createRouter({
     {
       path: "/Information",
       name: "Information",
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: false },
       component: () => import("../views/Information.vue"),
       children:[
         {
@@ -96,7 +96,7 @@ const router = createRouter({
         {
           path: "Tracking",
           name: "Tracking",
-          meta: { requiresAuth: true },
+       
           component: () => import("../views/TrackingPackage.vue"),
         }
       ]

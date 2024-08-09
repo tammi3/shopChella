@@ -43,11 +43,11 @@ export default {
         (this.password.length <= 5 || this.password.length > 20)
       ) {
         this.error = "Password should be 6-20 characters long.";
-        this.clearError();
+        window.scrollTo({ top: 0, behavior: "smooth" });
       } else if (!regularPassword.test(this.password)) {
         this.error =
           "Password should contain atleast one number and one special character.";
-        this.clearError();
+        window.scrollTo({ top: 0, behavior: "smooth" });
       } else {
         this.loading = true;
         createUserWithEmailAndPassword(auth, email, password)
@@ -94,7 +94,8 @@ export default {
               icon: "success",
               title: "Signed in successfully",
             });
-            this.$router.replace({ path: "/Shop/allcategories" });
+            const previousRoute = this.$router.options.history.state.back;
+            this.$router.push({ path: previousRoute });
           })
           .catch((err) => {
             if ((err.message = "Firebase: Error (auth/email-already-in-use).")) {
@@ -104,7 +105,7 @@ export default {
               this.error = err.message.slice(9);
               this.loading = false;
             }
-            this.clearError();
+            window.scrollTo({ top: 0, behavior: "smooth" });
           });
       }
     },
@@ -114,9 +115,7 @@ export default {
       this.selectedCountry = this.countries[this.selectedCountryCode].country;
     },
     clearError() {
-      setTimeout(() => {
-        this.error = "";
-      }, 2000);
+      this.error = "";
     },
   },
 
@@ -132,12 +131,15 @@ export default {
     @submit.prevent="handleSubmit"
     class="signup w-full flex flex-col justify-center items-center gap-10 font-medium tracking-wide font-Ubuntu"
   >
+    <!-- Error message -->
+    <p v-if="error != ''" class="text-red-600">{{ error }}</p>
     <!-- NAME -->
 
     <div class="w-full flex flex-col gap-3">
       <label for="">First Name</label>
       <input
         v-model="firstName"
+        v-on:keydown="clearError()"
         class="font-normal capitalize focus:outline-none border-b border-gray-600"
         type="text"
         placeholder="First Name"
@@ -150,6 +152,7 @@ export default {
       <label for="">Last Name</label>
       <input
         v-model="lastName"
+        v-on:keydown="clearError()"
         class="font-normal capitalize focus:outline-none border-b border-gray-600"
         type="text"
         placeholder="Last Name"
@@ -163,6 +166,7 @@ export default {
       <label for="country">Country:</label>
       <select
         v-on:change="error = ''"
+        v-on:keydown="clearError()"
         id="country"
         class="border-b pb-1 border-gray-600 w-full focus:outline-none"
         v-model="selectedCountryCode"
@@ -179,6 +183,7 @@ export default {
       <label for="city">City:</label>
       <select
         v-on:change="error = ''"
+        v-on:keydown="clearError()"
         id="city"
         class="border-b pb-1 border-gray-600 w-full focus:outline-none"
         v-model="selectedCity"
@@ -193,6 +198,7 @@ export default {
       <div class="flex flex-col">
         <input
           v-model="street"
+          v-on:keydown="clearError()"
           class="font-normal focus:outline-none border-b border-gray-600"
           type="text"
           placeholder="Street"
@@ -208,6 +214,7 @@ export default {
       <label for="">Email</label>
       <input
         v-model="email"
+        v-on:keydown="clearError()"
         class="font-normal focus:outline-none border-b border-gray-600"
         type="text"
         placeholder="name@address.com"
@@ -220,6 +227,7 @@ export default {
       <input
         id="phone"
         v-model="phone"
+        v-on:keydown="clearError()"
         class="font-normal focus:outline-none border-b border-gray-600"
         v-mask="['####-###-####', '####-###-####']"
         placeholder="Enter your phone number"
@@ -240,6 +248,7 @@ export default {
           placeholder="Password"
           name="password"
           v-model="password"
+          v-on:keydown="clearError()"
           required
         />
         <i
@@ -250,9 +259,6 @@ export default {
         ></i>
       </div>
     </div>
-
-    <!-- Error message -->
-    <p v-if="error != ''" class="text-red-600">{{ error }}</p>
 
     <!-- REGISTER BUTTON -->
 

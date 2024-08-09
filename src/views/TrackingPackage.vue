@@ -121,7 +121,7 @@ export default {
 
         <div class="w-full flex flex-col items-center">
           <h2 class="text-xl font-bold mb-2 uppercase">Tracking Status:</h2>
-          <!-- <p class="text-gray-700 font-semibold mr-2">Status:</p> -->
+
           <span
             :class="
               statusBg +

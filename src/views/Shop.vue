@@ -20,6 +20,7 @@ export default {
       images: [],
       search: "",
       loading: true,
+      loadingShopImages: true,
     };
   },
   watch: {
@@ -27,6 +28,24 @@ export default {
       async handler(oldValue, newValue) {
         await this.setCategory(oldValue.params.category);
       },
+    },
+    filteredProducts: {
+      handler(val) {
+        const productView = document.getElementById("productView");
+        const emptySearch = document.getElementById("emptySearch");
+        if (val.length == 0) {
+          productView.classList.add("hidden");
+          productView.classList.remove("grid");
+          emptySearch.classList.add("flex");
+          emptySearch.classList.remove("hidden");
+        } else {
+          emptySearch.classList.remove("flex");
+          emptySearch.classList.add("hidden");
+          productView.classList.remove("hidden");
+          productView.classList.add("grid");
+        }
+      },
+      deep: true,
     },
   },
   methods: {
@@ -63,8 +82,14 @@ export default {
     getImages() {
       const unsub = onSnapshot(doc(db, "pages_content", "shop"), (doc) => {
         this.images = doc.data().images;
-        console.log(this.images[0]);
       });
+      setTimeout(() => {
+        this.loadingShopImages = false;
+      }, 1000);
+    },
+    scrollToProduct() {
+      const element = document.getElementById("productView");
+      element.scrollIntoView({ behavior: "smooth" });
     },
   },
   async created() {
@@ -81,6 +106,7 @@ export default {
         <div class="w-96 h-10 relative bg-gray-400/25 shadow-md rounded-lg">
           <input
             v-model="search"
+            @click="scrollToProduct"
             class="focus:outline-none absolute bg-transparent uppercase top-0 left-0 h-full w-full pr-2 pl-12"
             type="text"
             placeholder="Search products"
@@ -107,7 +133,7 @@ export default {
 
     <div class="flex flex-col gap-3 pb-16 font-Ubuntu">
       <div
-        v-show="cat == 'allcategories'"
+        v-show="cat == 'allcategories' && !loadingShopImages"
         id="carouselExampleInterval"
         class="carousel slide relative"
         data-bs-ride="carousel"
@@ -140,8 +166,11 @@ export default {
           <span class="visually-hidden">Next</span>
         </button>
       </div>
-
+      <div v-if="loadingShopImages">
+        <div class="w-full h-dvh animate-pulse bg-gray-300"></div>
+      </div>
       <div
+        id="productView"
         class="px-10 pt-4 grid items-end grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5"
       >
         <div
@@ -176,6 +205,11 @@ export default {
             <!-- Image Placeholder -->
             <div class="bg-gray-300 h-96 w-full"></div>
           </div>
+        </div>
+      </div>
+      <div id="emptySearch" class="hidden items-center justify-center min-h-screen">
+        <div class="text-center">
+          <h1 class="text-6xl font-bold text-gray-800 mb-4">No product found.</h1>
         </div>
       </div>
     </div>

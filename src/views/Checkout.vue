@@ -60,8 +60,6 @@ export default {
               0
             );
             this.total = this.subtotal + 24.0;
-
-            console.log(this.cart);
           }
         });
       } else {
@@ -199,17 +197,12 @@ export default {
             logo:
               "https://www.logolynx.com/images/logolynx/22/2239ca38f5505fbfce7e55bbc0604386.jpeg",
           },
-          callback: function (data) {
-            //console.log("payment callback:", data);
-          },
+          callback: function (data) {},
           onclose: function () {
             console.log("Payment cancelled!");
           },
         });
-        // console.log(modal);
-      } catch (error) {
-        //console.error(error);
-      }
+      } catch (error) {}
     },
     changeAddress() {
       this.defaultAddress = !this.defaultAddress;

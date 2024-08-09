@@ -34,7 +34,8 @@ export default {
             icon: "success",
             title: "Welcome back!",
           });
-          this.$router.replace({ path: "/Shop/allcategories" });
+          const previousRoute = this.$router.options.history.state.back;
+          this.$router.push({ path: previousRoute });
         })
         .catch((err) => {
           if (err.message == "Firebase: Error (auth/invalid-email).") {
@@ -44,10 +45,11 @@ export default {
             this.error = "Invalid credentials.";
             this.loading = false;
           }
-          setTimeout(() => {
-            this.error = "";
-          }, 2000);
+          window.scrollTo({ top: 0, behavior: "smooth" });
         });
+    },
+    clearError() {
+      this.error = "";
     },
   },
 };
@@ -58,14 +60,16 @@ export default {
     @submit.prevent="handleSubmit"
     class="login w-full py-10 flex flex-col justify-start items-center gap-10 font-medium tracking-wide font-Ubuntu"
   >
+    <p v-if="error != ''" class="text-red-600">{{ error }}</p>
     <div class="w-full flex flex-col gap-3">
-      <label for="">Email</label>
+      <label for="email">Email</label>
       <input
         class="font-normal border-b border-gray-600 focus:outline-none"
         type="text"
         placeholder="johndoe@gmail.com"
         name="email"
         v-model="email"
+        v-on:keydown="clearError()"
         id="email"
         required
       />
@@ -81,6 +85,7 @@ export default {
           name="password"
           required
           v-model="password"
+          v-on:keydown="clearError()"
         />
         <i
           class="fa fa-eye fa-lg py-1 pl-2 border-b border-gray-600 cursor-pointer"
@@ -90,7 +95,7 @@ export default {
         ></i>
       </div>
     </div>
-    <p v-if="error != ''" class="text-red-600">{{ error }}</p>
+
     <button
       type="submit"
       class="w-full h-10 uppercase cursor-pointer font-bold rounded-xl hover:translate-x-0 hover:-translate-y-2 hover:shadow-lg transform duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-75 border bg-black text-white hover:shadow-black/60 border-black p-4 justify-center items-center flex"
