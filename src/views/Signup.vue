@@ -35,7 +35,8 @@ export default {
     handleSubmit() {
       const email = this.email;
       const password = this.password;
-      var regularPassword = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
+      var regularPassword =
+        /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
 
       //validates password
       if (
@@ -98,7 +99,9 @@ export default {
             this.$router.push({ path: previousRoute });
           })
           .catch((err) => {
-            if ((err.message = "Firebase: Error (auth/email-already-in-use).")) {
+            if (
+              (err.message = "Firebase: Error (auth/email-already-in-use).")
+            ) {
               this.error = "Email already associated with another account.";
               this.loading = false;
             } else {
@@ -174,7 +177,11 @@ export default {
         required
       >
         <option value="" disabled selected>Select a country</option>
-        <option v-for="(country, code) in countries" :value="code">
+        <option
+          v-for="(country, code) in countries"
+          :key="country"
+          :value="code"
+        >
           {{ country.country }}
         </option>
       </select>
@@ -190,7 +197,9 @@ export default {
         required
       >
         <option value="" disabled selected>Select a city</option>
-        <option v-for="city in cities" :value="city">{{ city }}</option>
+        <option v-for="city in cities" :key="city" :value="city">
+          {{ city }}
+        </option>
       </select>
     </div>
 
